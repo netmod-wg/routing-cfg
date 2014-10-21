@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module name="example-rip"
+        xmlns="urn:ietf:params:xml:ns:yang:yin:1"
+        xmlns:rip="http://example.com/rip"
+        xmlns:rt="urn:ietf:params:xml:ns:yang:ietf-routing">
+  <namespace uri="http://example.com/rip"/>
+  <prefix value="rip"/>
+  <import module="ietf-routing">
+    <prefix value="rt"/>
+  </import>
+
+  <identity name="rip">
+    <base name="rt:routing-protocol"/>
+    <description>
+      <text>Identity for the RIP routing protocol.</text>
+    </description>
+  </identity>
+
+  <typedef name="rip-metric">
+    <type name="uint8">
+      <range value="0..16"/>
+    </type>
+  </typedef>
+
+  <grouping name="route-content">
+    <description>
+      <text>This grouping defines RIP-specific route attributes.</text>
+    </description>
+    <leaf name="metric">
+      <type name="rip-metric"/>
+    </leaf>
+    <leaf name="tag">
+      <type name="uint16"/>
+      <default value="0"/>
+      <description>
+        <text>
+          This leaf may be used to carry additional info, e.g. AS
+          number.
+        </text>
+      </description>
+    </leaf>
+  </grouping>
+
+  <augment
+      target-node="/rt:routing-state/rt:ribs/rt:rib/rt:routes/rt:route">
+    <when condition="rt:source-protocol = 'rip:rip'">
+      <description>
+	<text>This augment is only valid for a routes whose source
+	protocol is RIP.</text>
+      </description>
+    </when>
+    <description>
+      <text>RIP-specific route attributes.</text>
+    </description>
+    <uses name="route-content"/>
+  </augment>
+
+  <augment target-node="/rt:active-route/rt:output/rt:route">
+    <description>
+      <text>
+	RIP-specific route attributes in the output of 'active-route' RPC.
+      </text>
+    </description>
+    <uses name="route-content"/>
+  </augment>
+
+  <augment
+      target-node="/rt:routing/rt:routing-instance/rt:routing-protocols/rt:routing-protocol">
+    <when condition="rt:type = 'rip:rip'">
+      <description>
+	<text>This augment is only valid for a routing protocol
+	instance of type 'rip'.</text>
+      </description>
+    </when>
+    <container name="rip">
+      <description>
+	<text>RIP instance configuration.</text>
+      </description>
+      <container name="interfaces">
+	<description>
+	  <text>
+	    Per-interface RIP configuration.
+	  </text>
+	</description>
+	<list name="interface">
+	  <key value="name"/>
+	  <leaf name="name">
+	    <type name="leafref">
+	      <path value="../../../../../../rt:interfaces/rt:interface/rt:name"/>
+	    </type>
+	  </leaf>
+	  <leaf name="enabled">
+	    <type name="boolean"/>
+	    <default value="true"/>
+	  </leaf>
+	  <leaf name="metric">
+	    <type name="rip-metric"/>
+	    <default value="1"/>
+	  </leaf>
+	  <description>
+	    <text>
+	      RIP is enabled on interfaces that have an entry in this
+	      list, unless 'enabled' is set to 'false' for that entry.
+	    </text>
+	  </description>
+	</list>
+      </container>
+      <leaf name="update-interval">
+        <type name="uint8">
+          <range value="10..60"/>
+        </type>
+        <units name="seconds"/>
+        <default value="30"/>
+        <description>
+          <text>Time interval between periodic updates.</text>
+        </description>
+      </leaf>
+    </container>
+  </augment>
+
+</module>

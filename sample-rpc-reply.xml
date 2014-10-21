@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+
+<nc:rpc-reply
+    message-id="101"
+    xmlns="urn:ietf:params:xml:ns:yang:ietf-ipv4-unicast-routing"
+    xmlns:nc="urn:ietf:params:xml:ns:netconf:base:1.0"
+    xmlns:rt="urn:ietf:params:xml:ns:yang:ietf-routing"
+    xmlns:rip="http://example.com/rip">
+  <rt:route>
+    <rt:source-protocol>rip0</rt:source-protocol>
+    <rt:last-modified>2010-04-01T18:02:45+01:00</rt:last-modified>
+    <destination-prefix>0.0.0.0/0</destination-prefix>
+    <next-hop>192.168.1.254</next-hop>
+    <rip:metric>2</rip:metric>
+    <rip:tag>64500</rip:tag>
+  </rt:route>
+</nc:rpc-reply>
