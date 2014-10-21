@@ -15,7 +15,7 @@
     <prefix value="if"/>
   </import>
   <xi:include href=".tools/bplate/netmod-module.yinx"
-              xpointer="xpointer(id('org')/*)"/>
+              xpointer="xpointer(id('org'))"/>
   <contact>
     <text>
       <xi:include href=".tools/bplate/netmod-module.yinx"
