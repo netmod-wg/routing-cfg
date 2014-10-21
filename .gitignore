@@ -4,6 +4,7 @@ yang.ent
 *.aw
 hello.xml
 model.tree
+*-tree.txt
 *.rn[gc]
 *.sch
 *.dsrl

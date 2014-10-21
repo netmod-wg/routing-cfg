@@ -99,21 +99,25 @@ model.tree: hello.xml
 	pyang $(PYANG_OPTS) -f tree -o $@ -L $<
 
 state-tree.txt: model.tree
-        awk -v yam=ietf-routing -v root=routing-state -v types=1 -f ../bin/tree.awk $< > $@
+	@awk -v yam=ietf-routing -v root=routing-state -v types=1 \
+	     -f .tools/awk/tree.awk $< > $@
 
 config-tree.txt: model.tree
-        awk -v yam=ietf-routing -v root=routing -v types=1 -f ../bin/tree.awk $< > $@
+	@awk -v yam=ietf-routing -v root=routing -v types=1 \
+	     -f .tools/awk/tree.awk $< > $@
 
 state-coll-tree.txt: model.tree
-        awk -v yam=ietf-routing -v root=routing-state -v depth=4 -f ../bin/tree.awk $< > $@
+	@awk -v yam=ietf-routing -v root=routing-state -v depth=4 \
+	     -f .tools/awk/tree.awk $< > $@
 
 config-coll-tree.txt: model.tree
-        awk -v yam=ietf-routing -v root=routing -v depth=4 -f ../bin/tree.awk $< > $@
+	@awk -v yam=ietf-routing -v root=routing -v depth=4 \
+	     -f .tools/awk/tree.awk $< > $@
 
 static-routes-tree.txt: model.tree
-        awk -v yam=ietf-routing \
-            -v root=routing/routing-instance*/routing-protocols/routing-protocol*/static-routes \
-            -f ../bin/tree.awk $< > $@
+	@awk -v yam=ietf-routing \
+	     -v root=routing/routing-instance*/routing-protocols/routing-protocol*/static-routes \
+	     -f .tools/awk/tree.awk $< > $@
 clean:
 	@rm -rf *.rng *.rnc *.sch *.dsrl *.yang hello.xml model.tree \
 	        $(idrev).* $(artworks) figures.ent yang.ent

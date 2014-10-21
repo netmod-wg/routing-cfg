@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<!DOCTYPE rfc SYSTEM '../bin/rfc2629.dtd' [
+<!DOCTYPE rfc SYSTEM '.tools/schema/rfc2629.dtd' [
 <!ENTITY % COMMON SYSTEM ".tools/bplate/common.ent">
 %COMMON;
 <!ENTITY % WG SYSTEM ".tools/bplate/netmod.ent">
@@ -585,13 +585,13 @@
             of the nodes
             <figure>
               <artwork><![CDATA[
-	      /rt:routing-state/rt:ribs/rt:rib/rt:routes/rt:route]]>
+    /rt:routing-state/rt:ribs/rt:rib/rt:routes/rt:route]]>
               </artwork>
             </figure>
             and
             <figure>
               <artwork><![CDATA[
-	      /rt:active-route/rt:output/rt:route,]]>
+    /rt:active-route/rt:output/rt:route,]]>
               </artwork>
             </figure>
             and possibly other places in the configuration, state
@@ -767,29 +767,29 @@
       IETF XML registry <xref target="RFC3688"/>:</t>
       <figure>
 	<artwork>
-	  ----------------------------------------------------------
-	  URI: urn:ietf:params:xml:ns:yang:ietf-routing
+----------------------------------------------------------
+URI: urn:ietf:params:xml:ns:yang:ietf-routing
 
-	  Registrant Contact: The IESG.
+Registrant Contact: The IESG.
 
-	  XML: N/A, the requested URI is an XML namespace.
-	  ----------------------------------------------------------
+XML: N/A, the requested URI is an XML namespace.
+----------------------------------------------------------
 
-	  ----------------------------------------------------------
-	  URI: urn:ietf:params:xml:ns:yang:ietf-ipv4-unicast-routing
+----------------------------------------------------------
+URI: urn:ietf:params:xml:ns:yang:ietf-ipv4-unicast-routing
 
-	  Registrant Contact: The IESG.
+Registrant Contact: The IESG.
 
-	  XML: N/A, the requested URI is an XML namespace.
-	  ----------------------------------------------------------
+XML: N/A, the requested URI is an XML namespace.
+----------------------------------------------------------
 
-	  ----------------------------------------------------------
-	  URI: urn:ietf:params:xml:ns:yang:ietf-ipv6-unicast-routing
+----------------------------------------------------------
+URI: urn:ietf:params:xml:ns:yang:ietf-ipv6-unicast-routing
 
-	  Registrant Contact: The IESG.
+Registrant Contact: The IESG.
 
-	  XML: N/A, the requested URI is an XML namespace.
-	  ----------------------------------------------------------
+XML: N/A, the requested URI is an XML namespace.
+----------------------------------------------------------
 	</artwork>
       </figure>
 
@@ -798,26 +798,26 @@
 
       <figure>
 	<artwork>
-	  -------------------------------------------------------------------
-	  name:         ietf-routing
-	  namespace:    urn:ietf:params:xml:ns:yang:ietf-routing
-	  prefix:       rt
-	  reference:    RFC XXXX
-	  -------------------------------------------------------------------
+-------------------------------------------------------------------
+name:         ietf-routing
+namespace:    urn:ietf:params:xml:ns:yang:ietf-routing
+prefix:       rt
+reference:    RFC XXXX
+-------------------------------------------------------------------
 
-	  -------------------------------------------------------------------
-	  name:         ietf-ipv4-unicast-routing
-	  namespace:    urn:ietf:params:xml:ns:yang:ietf-ipv4-unicast-routing
-	  prefix:       v4ur
-	  reference:    RFC XXXX
-	  -------------------------------------------------------------------
+-------------------------------------------------------------------
+name:         ietf-ipv4-unicast-routing
+namespace:    urn:ietf:params:xml:ns:yang:ietf-ipv4-unicast-routing
+prefix:       v4ur
+reference:    RFC XXXX
+-------------------------------------------------------------------
 
-	  -------------------------------------------------------------------
-	  name:         ietf-ipv6-unicast-routing
-	  namespace:    urn:ietf:params:xml:ns:yang:ietf-ipv6-unicast-routing
-	  prefix:       v6ur
-	  reference:    RFC XXXX
-	  -------------------------------------------------------------------
+-------------------------------------------------------------------
+name:         ietf-ipv6-unicast-routing
+namespace:    urn:ietf:params:xml:ns:yang:ietf-ipv6-unicast-routing
+prefix:       v6ur
+reference:    RFC XXXX
+-------------------------------------------------------------------
 	</artwork>
       </figure>
 
@@ -845,8 +845,7 @@
       <t>The vulnerable "config true" subtrees and data nodes are the
       following:
       <list style="hanging">
-	<t
-	    hangText="/routing/routing-instance/interfaces/interface:">This
+	<t hangText="/routing/routing-instance/interfaces/interface:">This
 	list assigns a network layer interface to a routing instance and
 	may also specify interface parameters related to routing.</t>
 
@@ -883,194 +882,21 @@
   <back>
 
     <references title="Normative References">
-
-      <reference anchor="RFC2119">
-	<front>
-          <title abbrev="RFC Key Words">Key words for use in RFCs to
-          Indicate Requirement Levels</title>
-          <author initials="S." surname="Bradner" fullname="S. Bradner">
-            <organization/>
-          </author>
-          <date year="1997" month="March" />
-	</front>
-        <seriesInfo name="BCP" value="14" />
-        <seriesInfo name="RFC" value="2119" />
-        <format type="TXT" octets="4723"
-                target="ftp://ftp.isi.edu/in-notes/rfc2119.txt" />
-      </reference>
-
-      <reference anchor="RFC3688">
-	<front>
-          <title>The IETF XML Registry</title>
-          <author initials="M." surname="Mealling" fullname="M. Mealling">
-          <organization/></author>
-          <date year="2004" month="January" />
-	</front>
-	<seriesInfo name="BCP" value="81" />
-	<seriesInfo name="RFC" value="3688" />
-	<format type="TXT" octets="17325"
-		target="ftp://ftp.isi.edu/in-notes/rfc3688.txt" />
-      </reference>
-
-      <reference anchor="RFC4861">
-	<front>
-          <title>Neighbor Discovery for IP version 6 (IPv6)</title>
-          <author initials="T" surname="Narten"
-                  fullname="T. Narten">
-            <organization>IBM</organization>
-          </author>
-          <author initials="E." surname="Nordmark"
-                  fullname="E. Nordmark">
-            <organization>Sun Microsystems</organization>
-          </author>
-          <author initials="W." surname="Simpson"
-                  fullname="W. Simpson">
-            <organization>Daydreamer</organization>
-          </author>
-          <author initials="H." surname="Soliman"
-                  fullname="H. Soliman">
-            <organization>Elevate Technologies</organization>
-          </author>
-          <date month="September" year="2007" />
-	</front>
-	<seriesInfo name="RFC" value="4861"/>
-	<format type="HTML"
-		target="http://tools.ietf.org/html/rfc4861" />
-      </reference>
-
-      <reference anchor="RFC6020">
-	<front>
-          <title>YANG - A Data Modeling Language for Network
-          Configuration Protocol (NETCONF)</title>
-          <author role="editor" initials="M" surname="Bjorklund"
-                  fullname="M. Bjorklund">
-            <organization>Tail-f Systems</organization>
-          </author>
-          <date month="September" year="2010" />
-	</front>
-	<seriesInfo name="RFC" value="6020"/>
-	<format type="HTML"
-		target="http://tools.ietf.org/html/rfc6020" />
-      </reference>
-
-      <reference anchor="RFC6991">
-	<front>
-          <title>Common YANG Data Types</title>
-          <author role="editor" initials="J." surname="Schoenwaelder"
-                  fullname="J. Schoenwaelder">
-            <organization />
-          </author>
-          <date month="July" year="2013" />
-	</front>
-	<seriesInfo name="RFC"
-                    value="6991" />
-	<format type="HTML"
-		target="http://tools.ietf.org/html/rfc6991"/>
-      </reference>
-
-      <reference anchor="RFC6241">
-	<front>
-          <title>NETCONF Configuration Protocol</title>
-          <author initials="R." surname="Enns" fullname="R. Enns">
-            <organization />
-          </author>
-          <author initials="M." surname="Bjorklund" fullname="M. Bjorklund">
-            <organization />
-          </author>
-          <author initials="J." surname="Schoenwaelder"
-                  fullname="J. Schoenwaelder">
-            <organization />
-          </author>
-          <author initials="A." surname="Bierman" fullname="A. Bierman">
-            <organization />
-          </author>
-          <date year="2011" month="June" />
-	</front>
-	<seriesInfo name="RFC" value="6241" />
-	<format type="HTML"
-		target="http://tools.ietf.org/html/rfc6241" />
-      </reference>
-
-      <reference anchor="RFC7223">
-	<front>
-          <title>A YANG Data Model for Interface Management</title>
-          <author initials="M." surname="Bjorklund"
-                  fullname="M. Bjorklund">
-            <organization />
-          </author>
-          <date month="May" year="2014" />
-	</front>
-	<seriesInfo name="RFC" value="7223" />
-	<format
-            type="HTML"
-            target="http://tools.ietf.org/html/rfc7223"/>
-      </reference>
-
-      <reference anchor="YANG-IP">
-	<front>
-          <title>A YANG Data Model for IP Management</title>
-          <author initials="M." surname="Bjorklund"
-                  fullname="M. Bjorklund">
-            <organization />
-          </author>
-          <date month="March" day="28" year="2014" />
-	</front>
-	<seriesInfo name="Internet-Draft"
-                    value="draft-ietf-netmod-ip-cfg-14" />
-	<format
-            type="HTML"
-            target="http://tools.ietf.org/html/draft-ietf-netmod-ip-cfg" />
-      </reference>
-
+      &RFC2119;
+      &RFC3688;
+      &RFC4861;
+      &RFC6020;
+      &RFC6991;
+      &RFC6241;
+      &RFC7223;
+      &RFC7277;
     </references>
 
     <references title="Informative References">
 
-      <reference anchor="RFC6087">
-	<front>
-          <title>Guidelines for Authors and Reviewers of YANG Data Model
-          Documents</title>
-          <author initials="A." surname="Bierman"
-                  fullname="Andy Bierman">
-            <organization />
-          </author>
-          <date month="January" year="2011" />
-	</front>
-	<seriesInfo name="RFC"
-                    value="6087" />
-	<format type="HTML"
-		target="http://tools.ietf.org/html/rfc6087"/>
-      </reference>
-
-      <reference anchor="RFC6242">
-	<front>
-          <title>Using the NETCONF Protocol over Secure Shell (SSH)</title>
-          <author initials="M." surname="Wasserman" fullname="M. Wasserman">
-            <organization />
-          </author>
-          <date year="2011" month="June" />
-	</front>
-	<seriesInfo name="RFC" value="6242" />
-	<format type="HTML"
-		target="http://tools.ietf.org/html/rfc6242" />
-      </reference>
-
-      <reference anchor="RFC6536">
-	<front>
-          <title>Network Configuration Protocol (NETCONF) Access Control
-	  Model</title>
-          <author initials="A." surname="Bierman" fullname="A. Bierman">
-            <organization />
-          </author>
-          <author initials="M." surname="Bjorklund" fullname="M. Bjorklund">
-            <organization />
-          </author>
-          <date year="2012" month="March" />
-	</front>
-	<seriesInfo name="RFC" value="6536" />
-	<format type="HTML"
-		target="http://tools.ietf.org/html/rfc6536" />
-      </reference>
+      &RFC6087;
+      &RFC6242;
+      &RFC6536;
 
     </references>
 
