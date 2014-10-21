@@ -217,13 +217,13 @@
       <figure
           anchor="fig.confdata"
           title="Configuration data hierarchy.">
-	&config-coll-tree;
+	&config-coll-tree.txt;
       </figure>
 
       <figure
           anchor="fig.statedata"
           title="Operational state data hierarchy.">
-	&state-coll-tree;
+	&state-coll-tree.txt;
       </figure>
 
       <t>As can be seen from Figures <xref target="fig.confdata"
@@ -239,7 +239,7 @@
 
       <figure anchor="fig.exsetup"
               title="Example setup of a routing system">
-	&diagram;
+	&diagram.txt;
       </figure>
 
       <t>The example in <xref target="fig.exsetup"/> shows a typical
@@ -563,7 +563,7 @@
 	  <figure
               anchor="fig.static-routes"
               title='Structure of "static-routes" subtree.'>
-	    &static-routes-tree;
+	    &static-routes-tree.txt;
 	  </figure>
 
 	</section>
@@ -1085,7 +1085,7 @@
       <section anchor="app.config-tree" title="Configuration Data">
 
 	<figure>
-	  &config-tree;
+	  &config-tree.txt;
 	</figure>
 
       </section>
@@ -1093,7 +1093,7 @@
       <section anchor="app.state-tree" title="Operational State Data">
 
 	<figure>
-	  &state-tree;
+	  &state-tree.txt;
 	</figure>
 
       </section>
@@ -1142,16 +1142,16 @@
     <section anchor="app.rip"
              title="Example: Adding a New Routing Protocol">
 
-      <t>This appendix demonstrates how the core routing data model can
-      be extended to support a new routing protocol. The YANG module
-      "example-rip" shown below is intended only as an illustration
-      rather than a real definition of a data model for the RIP routing
-      protocol. For the sake of brevity, we do not follow all the
-      guidelines specified in <xref target="RFC6087"/>. See also <xref
-      target="sec.newproto"/>.</t>
+      <t>This appendix demonstrates how the core routing data model
+      can be extended to support a new routing protocol. The YANG
+      module "example-rip" shown below is intended only as an
+      illustration rather than a real definition of a data model for
+      the RIP routing protocol. For the sake of brevity, this module
+      does not follow all the guidelines specified in <xref
+      target="RFC6087"/>. See also <xref target="sec.newproto"/>.</t>
 
       <figure>
-        &rip;
+        &example-rip.yang;
       </figure>
 
     </section>
@@ -1179,14 +1179,14 @@
 
       <figure anchor="fig.exnet"
               title="Example network configuration">
-	&example-net;
+	&example-net.txt;
       </figure>
 
       <t>A reply to the NETCONF &lt;get&gt; message sent by router "A"
       would then be as follows:</t>
 
       <figure>
-	&get-reply;
+	&example-get-reply.xml;
       </figure>
 
     </section>

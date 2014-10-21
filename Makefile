@@ -2,7 +2,8 @@ I_D = draft-ietf-netmod-routing-cfg
 REVNO = 16
 DATE ?= $(shell date +%F)
 MODULES = ietf-routing ietf-ipv4-unicast-routing ietf-ipv6-unicast-routing
-FIGURES = model.tree
+FIGURES = config-coll-tree.txt state-coll-tree.txt static-routes-tree.txt \
+	config-tree.txt state-tree.txt example-rip.yang diagram.txt example-net.txt
 EXAMPLE_BASE = example
 EXAMPLE_TYPE = get-reply
 baty = $(EXAMPLE_BASE)-$(EXAMPLE_TYPE)
@@ -97,6 +98,22 @@ validate: $(EXAMPLE_INST) $(schemas)
 model.tree: hello.xml
 	pyang $(PYANG_OPTS) -f tree -o $@ -L $<
 
+state-tree.txt: model.tree
+        awk -v yam=ietf-routing -v root=routing-state -v types=1 -f ../bin/tree.awk $< > $@
+
+config-tree.txt: model.tree
+        awk -v yam=ietf-routing -v root=routing -v types=1 -f ../bin/tree.awk $< > $@
+
+state-coll-tree.txt: model.tree
+        awk -v yam=ietf-routing -v root=routing-state -v depth=4 -f ../bin/tree.awk $< > $@
+
+config-coll-tree.txt: model.tree
+        awk -v yam=ietf-routing -v root=routing -v depth=4 -f ../bin/tree.awk $< > $@
+
+static-routes-tree.txt: model.tree
+        awk -v yam=ietf-routing \
+            -v root=routing/routing-instance*/routing-protocols/routing-protocol*/static-routes \
+            -f ../bin/tree.awk $< > $@
 clean:
-	@rm -rf *.rng *.rnc *.sch *.dsrl hello.xml model.tree \
+	@rm -rf *.rng *.rnc *.sch *.dsrl *.yang hello.xml model.tree \
 	        $(idrev).* $(artworks) figures.ent yang.ent
