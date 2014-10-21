@@ -1,4 +1,4 @@
-ietf-routing
+yang-routing
 ============
 
 Development of IETF core routing modules and the corresponding Internet-Draft.
