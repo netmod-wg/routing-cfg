@@ -14,12 +14,11 @@
   <import module="ietf-interfaces">
     <prefix value="if"/>
   </import>
-  <organization>
-    <text>IETF NETMOD (NETCONF Data Modeling Language) Working Group</text>
-  </organization>
+  <xi:include href=".tools/bplate/netmod-module.yinx"
+              xpointer="xpointer(id('org')/*)"/>
   <contact>
     <text>
-      <xi:include href="../templates/ietf-boilerplate.yinx"
+      <xi:include href=".tools/bplate/netmod-module.yinx"
                   xpointer="xpointer(id('contact')/*)"/>
       <h:p>
         Editor:   Ladislav Lhotka<h:br/>
@@ -33,7 +32,7 @@
         This YANG module defines essential components for the
 	management of a routing subsystem.
       </h:p>
-      <xi:include href="../templates/ietf-boilerplate.yinx"
+      <xi:include href=".tools/bplate/netmod-module.yinx"
                   xpointer="xpointer(id('desc')/*)"/>
     </text>
   </description>

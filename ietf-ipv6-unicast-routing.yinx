@@ -22,12 +22,11 @@
   <import module="ietf-ip">
     <prefix value="ip"/>
   </import>
-  <organization>
-    <text>IETF NETMOD (NETCONF Data Modeling Language) Working Group</text>
-  </organization>
+  <xi:include href=".tools/bplate/netmod-module.yinx"
+              xpointer="xpointer(id('org')/*)"/>
   <contact>
     <text>
-      <xi:include href="../templates/ietf-boilerplate.yinx"
+      <xi:include href=".tools/bplate/netmod-module.yinx"
                   xpointer="xpointer(id('contact')/*)"/>
       <h:p>
         Editor:   Ladislav Lhotka<h:br/>
@@ -40,7 +39,7 @@
       <h:p>This YANG module augments the 'ietf-routing' module with
       basic configuration and operational state data for IPv6 unicast
       routing.</h:p>
-      <xi:include href="../templates/ietf-boilerplate.yinx"
+      <xi:include href=".tools/bplate/netmod-module.yinx"
                   xpointer="xpointer(id('desc')/*)"/>
     </text>
   </description>
