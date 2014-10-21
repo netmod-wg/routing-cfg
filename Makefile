@@ -1,7 +1,7 @@
-I_D = # Name of the Internet-Draft (without revision)
-REVNO = # I-D revision number
+I_D = draft-ietf-netmod-routing-cfg
+REVNO = 16
 DATE ?= $(shell date +%F)
-MODULES =
+MODULES = ietf-routing ietf-ipv4-unicast-routing ietf-ipv6-unicast-routing
 FIGURES = model.tree
 EXAMPLE_BASE = example
 EXAMPLE_TYPE = get-reply
