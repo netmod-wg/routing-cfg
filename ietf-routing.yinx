@@ -1,0 +1,1285 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module name="ietf-routing"
+        xmlns="urn:ietf:params:xml:ns:yang:yin:1"
+        xmlns:rt="urn:ietf:params:xml:ns:yang:ietf-routing"
+        xmlns:if="urn:ietf:params:xml:ns:yang:ietf-interfaces"
+        xmlns:yang="urn:ietf:params:xml:ns:yang:ietf-yang-types"
+        xmlns:h="http://www.w3.org/1999/xhtml"
+        xmlns:xi="http://www.w3.org/2001/XInclude">
+  <namespace uri="urn:ietf:params:xml:ns:yang:ietf-routing"/>
+  <prefix value="rt"/>
+  <import module="ietf-yang-types">
+    <prefix value="yang"/>
+  </import>
+  <import module="ietf-interfaces">
+    <prefix value="if"/>
+  </import>
+  <organization>
+    <text>IETF NETMOD (NETCONF Data Modeling Language) Working Group</text>
+  </organization>
+  <contact>
+    <text>
+      <xi:include href="../templates/ietf-boilerplate.yinx"
+                  xpointer="xpointer(id('contact')/*)"/>
+      <h:p>
+        Editor:   Ladislav Lhotka<h:br/>
+                  &lt;mailto:lhotka@nic.cz&gt;
+      </h:p>
+    </text>
+  </contact>
+  <description>
+    <text>
+      <h:p>
+        This YANG module defines essential components for the
+	management of a routing subsystem.
+      </h:p>
+      <xi:include href="../templates/ietf-boilerplate.yinx"
+                  xpointer="xpointer(id('desc')/*)"/>
+    </text>
+  </description>
+
+  <revision date="2011-09-11">
+    <description>
+      <text>Initial revision.</text>
+    </description>
+    <reference>
+      <text>
+        RFC XXXX: A YANG Data Model for Routing Management
+      </text>
+    </reference>
+  </revision>
+
+  <!-- Features -->
+
+  <feature name="multiple-ribs">
+    <description>
+      <text>
+	<h:p>This feature indicates that the device supports multiple
+	RIBS per address family, and the framework for passing routes
+	between RIBs.
+	</h:p>
+	<h:p>Devices that do not support this feature MUST provide
+	exactly one system-controlled RIB per supported address
+	family. These RIBs then appear as entries of the list
+	/routing-state/ribs/rib.</h:p>
+    </text>
+    </description>
+  </feature>
+
+  <feature name="multipath-routes">
+    <description>
+      <text>This feature indicates that the device supports multipath
+      routes that have a list of next-hops.</text>
+    </description>
+  </feature>
+
+  <!-- Identities -->
+
+  <identity name="address-family">
+    <description>
+      <text>Base identity from which identities describing address
+      families are derived.</text>
+    </description>
+  </identity>
+
+  <identity name="ipv4">
+    <base name="address-family"/>
+    <description>
+      <text>This identity represents IPv4 address family.</text>
+    </description>
+  </identity>
+
+  <identity name="ipv6">
+    <base name="address-family"/>
+    <description>
+      <text>This identity represents IPv6 address family.</text>
+    </description>
+  </identity>
+
+  <identity name="routing-instance-type">
+    <description>
+      <text>
+        <h:p>Base identity from which identities describing routing
+        instance types are derived.</h:p>
+        <h:p>It is primarily intended for discriminating among
+        different types of logical routers or router
+        virtualization.</h:p>
+      </text>
+    </description>
+  </identity>
+
+  <identity name="standard-routing-instance">
+    <base name="routing-instance-type"/>
+    <description>
+      <text>This identity represents a default routing instance.</text>
+    </description>
+  </identity>
+
+  <identity name="routing-protocol">
+    <description>
+      <text>
+        Base identity from which routing protocol identities are
+        derived.
+      </text>
+    </description>
+  </identity>
+  <identity name="direct">
+    <base name="routing-protocol"/>
+    <description>
+      <text>
+        Routing pseudo-protocol which provides routes to directly
+        connected networks.
+      </text>
+    </description>
+  </identity>
+  <identity name="static">
+    <base name="routing-protocol"/>
+    <description>
+      <text>Static routing pseudo-protocol.</text>
+    </description>
+  </identity>
+
+  <identity name="route-filter">
+    <description>
+      <text>
+        Base identity from which all route filters are derived.
+      </text>
+    </description>
+  </identity>
+  <identity name="deny-all-route-filter">
+    <base name="route-filter"/>
+    <description>
+      <text>
+        Route filter that blocks all routes.
+      </text>
+    </description>
+  </identity>
+  <identity name="allow-all-route-filter">
+    <base name="route-filter"/>
+    <description>
+      <text>
+        Route filter that permits all routes.
+      </text>
+    </description>
+  </identity>
+
+  <!-- Type Definitions -->
+
+  <typedef name="routing-instance-ref">
+    <type name="leafref">
+      <path value="/rt:routing/rt:routing-instance/rt:name"/>
+    </type>
+    <description>
+      <text>
+        This type is used for leafs that reference a routing instance
+        configuration.
+      </text>
+    </description>
+  </typedef>
+
+  <typedef name="routing-instance-state-ref">
+    <type name="leafref">
+      <path value="/rt:routing-state/rt:routing-instance/rt:name"/>
+    </type>
+    <description>
+      <text>
+        This type is used for leafs that reference state data of a
+        routing instance.
+      </text>
+    </description>
+  </typedef>
+
+  <typedef name="rib-ref">
+    <type name="leafref">
+      <path value="/rt:routing/rt:ribs/rt:rib/rt:name"/>
+    </type>
+    <description>
+      <text>
+        This type is used for leafs that reference a RIB
+        configuration.
+      </text>
+    </description>
+  </typedef>
+
+  <typedef name="rib-state-ref">
+    <type name="leafref">
+      <path value="/rt:routing-state/rt:ribs/rt:rib/rt:name"/>
+    </type>
+    <description>
+      <text>
+        This type is used for leafs that reference a RIB in
+        state data.
+      </text>
+    </description>
+  </typedef>
+
+  <typedef name="route-filter-ref">
+    <type name="leafref">
+      <path value="/rt:routing/rt:route-filters/rt:route-filter/rt:name"/>
+    </type>
+    <description>
+      <text>
+        This type is used for leafs that reference a route filter
+        configuration.
+      </text>
+    </description>
+  </typedef>
+
+  <typedef name="route-filter-state-ref">
+    <type name="leafref">
+      <path value="/rt:routing-state/rt:route-filters/rt:route-filter/rt:name"/>
+    </type>
+    <description>
+      <text>
+        This type is used for leafs that reference a route filter in
+        state data.
+      </text>
+    </description>
+  </typedef>
+
+  <!-- Groupings -->
+
+  <grouping name="address-family">
+    <leaf name="address-family">
+      <type name="identityref">
+	<base name="address-family"/>
+      </type>
+      <mandatory value="true"/>
+      <description>
+        <text>
+          Address family.
+        </text>
+      </description>
+    </leaf>
+    <description>
+      <text>This grouping provides a leaf identifying an address
+      family.</text>
+    </description>
+  </grouping>
+
+  <grouping name="state-entry-id">
+    <leaf name="id">
+      <type name="uint64"/>
+      <description>
+	<text>
+	  <h:p>Unique numerical identifier of a list entry in
+	  operational state. It may be used by protocols or tools that
+	  inspect and/or manipulate operational state data and prefer
+	  fixed-size integers as list entry handles.</h:p>
+	  <h:p>These identifiers are always ephemeral, i.e., they may
+	  change after a reboot.</h:p>
+	</text>
+      </description>
+    </leaf>
+    <description>
+      <text>
+	This grouping defines a unique identifier for entries in
+	several operational state lists.
+      </text>
+    </description>
+  </grouping>
+
+  <grouping name="router-id">
+    <leaf name="router-id">
+      <type name="yang:dotted-quad"/>
+      <description>
+	<text>
+	  Router ID - 32-bit number in the form of a dotted quad. Some
+	  protocols use this parameter for identifying a router to its
+	  neighbors.
+	</text>
+      </description>
+    </leaf>
+    <description>
+      <text>
+	This grouping provides the definition of router ID.
+      </text>
+    </description>
+  </grouping>
+
+  <grouping name="outgoing-interface">
+    <description>
+      <text>This grouping defines the outgoing interface for use in
+      next-hops.</text>
+    </description>
+    <leaf name="outgoing-interface">
+      <type name="leafref">
+	<path value="/rt:routing-state/rt:routing-instance/rt:interfaces/rt:interface/rt:name"/>
+      </type>
+      <description>
+	<text>
+	  Name of the outgoing interface.
+	</text>
+      </description>
+    </leaf>
+  </grouping>
+
+  <grouping name="special-next-hop">
+    <description>
+      <text>This grouping provides the leaf for specifying special
+      next-hop options.</text>
+    </description>
+      <leaf name="special-next-hop">
+	<type name="enumeration">
+	  <enum name="blackhole">
+	    <description>
+	      <text>Silently discard the packet.</text>
+	    </description>
+	  </enum>
+	  <enum name="unreachable">
+	    <description>
+	      <text>Discard the packet and notify the sender with an
+	      error message indicating that the destination host is
+	      unreachable.</text>
+	    </description>
+	  </enum>
+	  <enum name="prohibit">
+	    <description>
+	      <text>Discard the packet and notify the sender with an
+	      error message indicating that the communication is
+	      administratively prohibited.</text>
+	    </description>
+	  </enum>
+	  <enum name="receive">
+	    <description>
+	      <text>The packet will be received by the local network
+	      device.</text>
+	    </description>
+	  </enum>
+	</type>
+	<description>
+	  <text>Special next-hop options.</text>
+	</description>
+      </leaf>
+  </grouping>
+
+  <grouping name="next-hop-classifiers">
+    <description>
+      <text>This grouping provides two next-hop classifiers.</text>
+    </description>
+    <leaf name="priority">
+      <type name="enumeration">
+	<enum name="primary">
+	  <value value="1"/>
+	  <description>
+	    <text>Primary next-hop.</text>
+	  </description>
+	</enum>
+	<enum name="backup">
+	  <value value="2"/>
+	  <description>
+	    <text>Backup next-hop.</text>
+	  </description>
+	</enum>
+      </type>
+      <description>
+	<text>
+	  <h:p>Simple priority for distinguishing between primary
+	  and backup next-hops.</h:p>
+	  <h:p>Backup next-hops are used if and only if no
+	  primary next-hops are reachable.</h:p>
+	</text>
+      </description>
+    </leaf>
+    <leaf name="weight">
+      <type name="uint8"/>
+      <must condition=". = 0 or not(../../next-hop/weight = 0)">
+	<error-message>
+	  <value>
+	    Illegal combination of zero and non-zero next-hop weights.
+	  </value>
+	</error-message>
+	<description>
+	  <text>Next-hop weights must be either all zero (equal
+	  load-balancing) or all non-zero.</text>
+	</description>
+      </must>
+      <description>
+	<text>
+	  <h:p>This parameter specifies the weight of the next-hop for
+	  load balancing. The number specifies the relative fraction
+	  of the traffic that will use the corresponding
+	  next-hop.</h:p>
+	  <h:p>A value of 0 represents equal load-balancing.</h:p>
+	  <h:p>If both primary and backup next-hops are present, then
+	  the weights for each priority level are used separately.</h:p>
+	</text>
+      </description>
+    </leaf>
+  </grouping>
+  
+  <grouping name="next-hop-content">
+    <description>
+      <text>Generic parameters of next-hops in routes.</text>
+    </description>
+    <choice name="next-hop-options">
+      <mandatory value="true"/>
+      <description>
+	<text>Options for expressing the next-hop in routes.</text>
+      </description>
+      <case name="special-next-hop">
+	<uses name="special-next-hop"/>
+      </case>
+      <case name="simple-next-hop">
+	<uses name="outgoing-interface"/>
+      </case>
+      <case name="next-hop-list">
+	<if-feature name="multipath-routes"/>
+	<container name="next-hop-list">
+	  <description>
+	    <text>Container for multiple next-hops.</text>
+	  </description>
+	  <list name="next-hop">
+	    <key value="id"/>
+	    <description>
+	      <text>An entry of a next-hop list.</text>
+	    </description>
+	    <uses name="state-entry-id"/>
+	    <uses name="outgoing-interface"/>
+	    <uses name="next-hop-classifiers"/>
+	  </list>
+	</container>
+      </case>
+    </choice>
+  </grouping>
+
+  <grouping name="route-metadata">
+    <description>
+      <text>Route metadata.</text>
+    </description>
+    <leaf name="source-protocol">
+      <type name="identityref">
+	<base name="routing-protocol"/>
+      </type>
+      <mandatory value="true"/>
+      <description>
+	<text>
+	  Type of the routing protocol from which the route
+	  originated.
+	</text>
+      </description>
+    </leaf>
+    <leaf name="last-updated">
+      <type name="yang:date-and-time"/>
+      <description>
+	<text>
+	  Time stamp of the last modification of the route.
+	  If the route was never modified, it is the time when
+	  the route was inserted into the RIB.
+	</text>
+      </description>
+    </leaf>
+  </grouping>
+
+  <!-- Operational state data -->
+
+  <container name="routing-state">
+    <description>
+      <text>Operational state of the routing subsystem.</text>
+    </description>
+    <config value="false"/>
+    <list name="routing-instance">
+      <key value="name"/>
+      <unique tag="id"/>
+      <description>
+        <text>
+          <h:p>Each list entry is a container for operational state
+          data of a routing instance.</h:p>
+	  <h:p>An implementation MAY create one or more
+	  system-controlled instances, other user-controlled instances
+	  MAY be created by configuration.</h:p>
+        </text>
+      </description>
+      <leaf name="name">
+        <type name="string"/>
+        <description>
+          <text>
+	    <h:p>The name of the routing instance.</h:p>
+	    <h:p>For system-controlled instances the name is
+	    persistent, i.e., it SHOULD NOT change across
+	    reboots.</h:p>
+	  </text>
+        </description>
+      </leaf>
+      <uses name="state-entry-id">
+	<refine target-node="id">
+	  <mandatory value="true"/>
+	</refine>
+      </uses>
+      <leaf name="type">
+        <type name="identityref">
+          <base name="routing-instance-type"/>
+        </type>
+        <description>
+          <text>
+            <h:p>The routing instance type, primarily intended for
+            discriminating among different types of logical routers,
+            route virtualization, master-slave arrangements etc.,
+            while keeping all routing instances in the same flat
+            list.</h:p>
+          </text>
+        </description>
+      </leaf>
+      <uses name="router-id">
+	<description>
+	  <text>
+            <h:p>Global router ID.</h:p>
+	    <h:p>An implementation may choose a value if none is configured.</h:p>
+            <h:p>Routing protocols that use router ID MAY override
+            this global parameter.</h:p>
+          </text>
+        </description>
+      </uses>
+      <container name="default-ribs">
+        <description>
+          <text>
+            Default RIBs used by the routing instance.
+          </text>
+        </description>
+        <list name="default-rib">
+          <key value="address-family"/>
+          <description>
+            <text>
+              <h:p>Each list entry specifies the default RIB
+              for one address family.</h:p>
+              <h:p>The default RIB is operationally connected to all
+              routing protocols for which a connected RIB has not been
+              explicitly configured.</h:p>
+              <h:p>The 'direct' pseudo-protocol is always connected to
+              the default RIBs.</h:p>
+            </text>
+          </description>
+          <uses name="address-family"/>
+          <leaf name="rib-name">
+	    <mandatory value="true"/>
+            <type name="rib-state-ref"/>
+            <description>
+              <text>Name of an existing RIB to be used as
+              the default RIB for the given routing instance and
+              address family.</text>
+            </description>
+          </leaf>
+        </list>
+      </container>
+      <container name="interfaces">
+        <description>
+          <text>
+            Network layer interfaces belonging to the routing instance.
+          </text>
+        </description>
+        <list name="interface">
+          <key value="name"/>
+          <description>
+            <text>
+              List of network layer interfaces assigned to the routing
+              instance.
+            </text>
+          </description>
+          <leaf name="name">
+            <type name="if:interface-state-ref"/>
+            <description>
+              <text>
+                A reference to the name of a configured network layer
+                interface.
+              </text>
+            </description>
+          </leaf>
+        </list>
+      </container>
+      <container name="routing-protocols">
+        <description>
+          <text>
+            Container for the list of routing protocol instances.
+          </text>
+        </description>
+        <list name="routing-protocol">
+          <key value="name"/>
+          <description>
+            <text>
+	      <h:p>Operational state of a routing protocol instance.</h:p>
+	      <h:p>An implementation MUST provide exactly one
+	      system-controlled instance of the type 'direct'. Other
+	      instances MAY be created by configuration.</h:p>
+	    </text>
+          </description>
+          <leaf name="name">
+            <type name="string"/>
+            <description>
+              <text>
+	      <h:p>The name of the routing protocol instance.</h:p>
+	      <h:p>For system-controlled instances this name is
+	      persistent, i.e., it SHOULD NOT change across
+	      reboots.</h:p>
+	      </text>
+            </description>
+          </leaf>
+          <leaf name="type">
+            <type name="identityref">
+              <base name="routing-protocol"/>
+            </type>
+            <mandatory value="true"/>
+            <description>
+              <text>
+                Type of the routing protocol.
+              </text>
+            </description>
+          </leaf>
+          <container name="connected-ribs">
+            <description>
+              <text>
+                <h:p>Container for connected RIBs.</h:p>
+              </text>
+            </description>
+            <list name="connected-rib">
+              <key value="rib-name"/>
+              <description>
+                <text>
+                  <h:p>List of RIBs to which the routing protocol
+                  instance is connected (at most one RIB per address
+                  family).</h:p>
+                </text>
+              </description>
+              <leaf name="rib-name">
+                <type name="rib-state-ref"/>
+                <description>
+                  <text>
+                    Name of an existing RIB.
+                  </text>
+                </description>
+              </leaf>
+              <leaf name="import-filter">
+                <type name="route-filter-state-ref"/>
+                <description>
+                  <text>
+                    <h:p>Reference to a route filter that is used for
+                    filtering routes passed from this routing protocol
+                    instance to the RIB specified by the
+                    'rib-name' sibling node.</h:p>
+                    <h:p>If this leaf is not present, the behavior is
+                    protocol-specific, but typically it means that all
+                    routes are accepted.</h:p>
+                  </text>
+                </description>
+              </leaf>
+              <leaf name="export-filter">
+                <type name="route-filter-state-ref"/>
+                <description>
+                  <text>
+                    <h:p>Reference to a route filter that is used for
+                    filtering routes passed from the RIB
+                    specified by the 'rib-name' sibling node to this
+                    routing protocol instance.</h:p>
+                    <h:p>If this leaf is not present, the behavior is
+                    protocol-specific - typically it means that all
+                    routes are accepted.</h:p>
+                    <h:p>The 'direct' and 'static' pseudo-protocols
+                    accept no routes from any RIB.</h:p>
+                  </text>
+                </description>
+              </leaf>
+            </list>
+          </container>
+        </list>
+      </container>
+    </list>
+    <container name="ribs">
+      <description>
+        <text>Container for RIBs.</text>
+      </description>
+      <list name="rib">
+        <key value="name"/>
+	<unique tag="id"/>
+        <description>
+          <text>
+            <h:p>Each entry represents a RIB identified by the
+            'name' key. All routes in a RIB MUST belong to the
+            same address family.</h:p>
+	    <h:p>The server MUST provide a system-controlled default
+	    RIB for each address family, and MAY provide other
+	    system-controlled RIBs. Additional RIBs MAY be created in
+	    the configuration.</h:p>
+          </text>
+        </description>
+        <leaf name="name">
+          <type name="string"/>
+          <description>
+            <text>The name of the RIB.</text>
+          </description>
+        </leaf>
+	<uses name="state-entry-id">
+	  <refine target-node="id">
+	    <mandatory value="true"/>
+	  </refine>
+	</uses>
+        <uses name="address-family"/>
+        <container name="routes">
+          <description>
+            <text>
+              Current contents of the RIB.
+            </text>
+          </description>
+          <list name="route">
+	    <key value="id"/>
+            <description>
+              <text>
+                A RIB route entry. This data node MUST be augmented
+                with information specific for routes of each address
+                family.
+              </text>
+            </description>
+	    <uses name="state-entry-id"/>
+	    <uses name="next-hop-content"/>
+	    <uses name="route-metadata"/>
+          </list>
+        </container>
+        <container name="recipient-ribs">
+	  <if-feature name="multiple-ribs"/>
+          <description>
+            <text>Container for recipient RIBs.</text>
+          </description>
+          <list name="recipient-rib">
+            <key value="rib-name"/>
+            <description>
+              <text>
+                List of RIBs that receive routes from this
+                RIB.
+              </text>
+            </description>
+            <leaf name="rib-name">
+              <type name="rib-state-ref"/>
+              <description>
+                <text>The name of the recipient RIB.</text>
+              </description>
+            </leaf>
+            <leaf name="filter">
+              <type name="route-filter-state-ref"/>
+              <description>
+                <text>
+                  A route filter which is applied to the routes
+                  passed to the recipient RIB.
+                </text>
+              </description>
+            </leaf>
+          </list>
+        </container>
+      </list>
+    </container>
+    <container name="route-filters">
+      <description>
+        <text>Container for route filters.</text>
+      </description>
+      <list name="route-filter">
+        <key value="name"/>
+        <description>
+          <text>
+            <h:p>Route filters are used for filtering and/or
+            manipulating routes that are passed between a routing
+            protocol and a RIB and vice versa, or between
+            two RIBs.</h:p>
+            <h:p>It is expected that other modules augment this list
+            with contents specific for a particular route filter
+            type.</h:p>
+          </text>
+        </description>
+        <leaf name="name">
+          <type name="string"/>
+          <description>
+            <text>The name of the route filter.</text>
+          </description>
+        </leaf>
+        <leaf name="type">
+          <type name="identityref">
+            <base name="route-filter"/>
+          </type>
+          <mandatory value="true"/>
+          <description>
+            <text>
+              Type of the route-filter - an identity derived from the
+              'route-filter' base identity.
+            </text>
+          </description>
+        </leaf>
+      </list>
+    </container>
+  </container>
+
+  <!-- Configuration Data -->
+
+  <container name="routing">
+    <description>
+      <text>Configuration parameters for the routing subsystem.</text>
+    </description>
+    <list name="routing-instance">
+      <key value="name"/>
+      <description>
+        <text>
+          <h:p>Configuration of a routing instance.</h:p>
+        </text>
+      </description>
+      <leaf name="name">
+        <type name="string"/>
+        <description>
+          <text>
+	    <h:p>The name of the routing instance.</h:p>
+	    <h:p>For system-controlled entries, the value of this leaf
+	    must be the same as the name of the corresponding entry in
+	    state data.</h:p>
+	    <h:p>For user-controlled entries, an arbitrary name can be
+	    used.</h:p>
+	  </text>
+        </description>
+      </leaf>
+      <leaf name="type">
+        <type name="identityref">
+          <base name="routing-instance-type"/>
+        </type>
+        <default value="rt:standard-routing-instance"/>
+        <description>
+          <text>The type of the routing instance.</text>
+        </description>
+      </leaf>
+      <leaf name="enabled">
+        <type name="boolean"/>
+        <default value="true"/>
+        <description>
+          <text>
+            <h:p>Enable/disable the routing instance.</h:p>
+            <h:p>If this parameter is false, the parent routing
+            instance is disabled and does not appear in operational
+	    state data, despite any other configuration that
+            might be present.</h:p>
+          </text>
+        </description>
+      </leaf>
+      <uses name="router-id">
+	<description>
+	  <text>Configuration of the global router ID.</text>
+	</description>
+      </uses>
+      <leaf name="description">
+        <type name="string"/>
+        <description>
+          <text>Textual description of the routing instance.</text>
+        </description>
+      </leaf>
+      <container name="default-ribs">
+	<if-feature name="multiple-ribs"/>
+        <description>
+          <text>
+            <h:p>Configuration of the default RIBs used by the
+            routing instance.</h:p>
+	    <h:p>The default RIB for an addressed family if
+	    by default connected to all routing protocol instances
+	    supporting that address family, and always receives direct
+	    routes.</h:p>
+          </text>
+        </description>
+        <list name="default-rib">
+          <must condition="address-family=/routing/ribs/rib[name=current()/rib-name]/address-family">
+            <error-message>
+              <value>Address family mismatch.</value>
+            </error-message>
+            <description>
+              <text>
+                The entry's address family MUST match that of the
+                referenced RIB.
+              </text>
+            </description>
+          </must>
+          <key value="address-family"/>
+          <description>
+            <text>
+              Each list entry configures the default RIB for
+              one address family.
+            </text>
+          </description>
+          <uses name="address-family"/>
+          <leaf name="rib-name">
+	    <mandatory value="true"/>
+            <type name="string"/>
+            <description>
+              <text>Name of an existing RIB to be used as
+              the default RIB for the given routing instance
+              and address family.</text>
+            </description>
+          </leaf>
+        </list>
+      </container>
+      <container name="interfaces">
+        <description>
+          <text>
+            Configuration of the routing instance's interfaces.
+          </text>
+        </description>
+        <list name="interface">
+          <key value="name"/>
+          <description>
+            <text>
+              List of network layer interfaces assigned to the routing
+              instance.
+            </text>
+          </description>
+          <leaf name="name">
+            <type name="if:interface-ref"/>
+            <description>
+              <text>
+                A reference to the name of a configured network layer
+                interface.
+              </text>
+            </description>
+          </leaf>
+        </list>
+      </container>
+      <container name="routing-protocols">
+        <description>
+          <text>
+            Configuration of routing protocol instances.
+          </text>
+        </description>
+        <list name="routing-protocol">
+          <key value="name"/>
+          <description>
+            <text>Each entry contains configuration of a routing protocol instance.</text>
+          </description>
+          <leaf name="name">
+            <type name="string"/>
+            <description>
+              <text>An arbitrary name of the routing protocol
+              instance.</text>
+            </description>
+          </leaf>
+          <leaf name="description">
+            <type name="string"/>
+            <description>
+              <text>
+                Textual description of the routing protocol instance.
+              </text>
+            </description>
+          </leaf>
+          <leaf name="enabled">
+            <type name="boolean"/>
+            <default value="true"/>
+            <description>
+              <text>
+                <h:p>Enable/disable the routing protocol
+                instance.</h:p>
+                <h:p>If this parameter is false, the parent routing
+                protocol instance is disabled and does not appear in
+                operational state data, despite any other
+                configuration that might be present.</h:p>
+              </text>
+            </description>
+          </leaf>
+          <leaf name="type">
+            <type name="identityref">
+              <base name="routing-protocol"/>
+            </type>
+            <mandatory value="true"/>
+            <description>
+              <text>
+                Type of the routing protocol - an identity derived
+                from the 'routing-protocol' base identity.
+              </text>
+            </description>
+          </leaf>
+          <container name="connected-ribs">
+            <description>
+              <text>
+                <h:p>Configuration of connected RIBs.</h:p>
+              </text>
+            </description>
+            <list name="connected-rib">
+              <must
+                  condition="not(/routing/ribs/rib[name=current()/preceding-sibling::connected-rib/rib-name and address-family=/routing/ribs/rib[name=current()/rib-name]/address-family])">
+                <error-message>
+                  <value>
+                    Duplicate address family for connected RIBs.
+                  </value>
+                </error-message>
+                <description>
+                  <text>
+                    For each address family, there MUST NOT be more than
+                    one connected RIB.
+                  </text>
+                </description>
+              </must>
+              <key value="rib-name"/>
+              <description>
+                <text>
+                  <h:p>List of RIBs to which the routing protocol
+                  instance is connected (at most one RIB per address
+                  family).</h:p>
+                  <h:p>If no connected RIB is configured for
+                  an address family, the routing protocol is connected
+                  to the default RIB for that address
+                  family.</h:p>
+                </text>
+              </description>
+              <leaf name="rib-name">
+                <type name="rib-ref"/>
+                <must
+                    condition="../../../type != 'rt:direct' or
+			       ../../../../../default-ribs/ default-rib/rib-name=.">
+                  <error-message>
+                    <value>The 'direct' protocol can be connected only
+                    to a default RIB.</value>
+                  </error-message>
+                  <description>
+                    <text>For the 'direct' pseudo-protocol, the
+                    connected RIB must always be a default
+                    RIB.</text>
+                  </description>
+                </must>
+                <description>
+                  <text>
+                    Name of an existing RIB.
+                  </text>
+                </description>
+              </leaf>
+              <leaf name="import-filter">
+                <type name="route-filter-ref"/>
+                <description>
+                  <text>Configuration of import filter.</text>
+                </description>
+              </leaf>
+              <leaf name="export-filter">
+                <type name="route-filter-ref"/>
+                <description>
+                  <text>Configuration of export filter.</text>
+                </description>
+              </leaf>
+            </list>
+          </container>
+          <container name="static-routes">
+            <when condition="../type='rt:static'">
+              <description>
+                <text>
+                  This container is only valid for the 'static'
+                  routing protocol.
+                </text>
+              </description>
+            </when>
+            <description>
+              <text>
+                <h:p>Configuration of the 'static'
+                pseudo-protocol.</h:p>
+                <h:p>Address family specific modules augment this node
+                with their lists of routes.</h:p>
+              </text>
+            </description>
+          </container>
+        </list>
+      </container>
+    </list>
+    <container name="ribs">
+      <description>
+        <text>Configured RIBs.</text>
+      </description>
+      <list name="rib">
+        <key value="name"/>
+        <description>
+          <text>
+            <h:p>Each entry represents a configured RIB identified by the
+	    'name' key.</h:p>
+	    <h:p>Entries having the same key as a system-controlled
+	    entry of the list /routing-state/ribs/rib are used for
+	    configuring parameters of that entry. Other entries define
+	    additional user-controlled RIBs.</h:p>
+          </text>
+        </description>
+        <leaf name="name">
+          <type name="string"/>
+          <description>
+            <text>
+	      <h:p>The name of the RIB.</h:p>
+	      <h:p>For system-controlled entries, the value of this
+	      leaf must be the same as the name of the corresponding
+	      entry in state data.</h:p>
+	      <h:p>For user-controlled entries, an arbitrary name can
+	      be used.</h:p>
+	    </text>
+          </description>
+        </leaf>
+        <uses name="address-family"/>
+        <leaf name="description">
+          <type name="string"/>
+          <description>
+            <text>Textual description of the RIB.</text>
+          </description>
+        </leaf>
+        <container name="recipient-ribs">
+	  <if-feature name="multiple-ribs"/>
+          <description>
+            <text>Configuration of recipient RIBs.</text>
+          </description>
+          <list name="recipient-rib">
+            <must condition="rib-name != ../../name">
+              <error-message>
+                <value>Source and recipient RIBs are identical.</value>
+              </error-message>
+              <description>
+                <text>A RIB MUST NOT appear among its
+                recipient RIBs.</text>
+              </description>
+            </must>
+            <must
+                condition="/routing/ribs/rib[name=current()/rib-name]/address-family=../../address-family">
+              <error-message>
+                <value>Address family mismatch.</value>
+              </error-message>
+              <description>
+                <text>Address family of the recipient RIB MUST match
+                that of the source RIB.</text>
+              </description>
+            </must>
+            <key value="rib-name"/>
+            <description>
+              <text>Each entry configures a recipient RIB.</text>
+            </description>
+            <leaf name="rib-name">
+              <type name="rib-ref"/>
+              <description>
+                <text>The name of the recipient RIB.</text>
+              </description>
+            </leaf>
+            <leaf name="filter">
+              <type name="route-filter-ref"/>
+              <description>
+                <text>
+                  A route filter which is applied to the routes
+                  passed to the recipient RIB.
+                </text>
+              </description>
+            </leaf>
+          </list>
+        </container>
+      </list>
+    </container>
+    <container name="route-filters">
+      <description>
+        <text>Configuration of route filters.</text>
+      </description>
+      <list name="route-filter">
+        <key value="name"/>
+        <description>
+          <text>Each entry configures a named route filter.</text>
+        </description>
+        <leaf name="name">
+          <type name="string"/>
+          <description>
+            <text>The name of the route filter.</text>
+          </description>
+        </leaf>
+        <leaf name="description">
+          <type name="string"/>
+          <description>
+            <text>Textual description of the route filter.</text>
+          </description>
+        </leaf>
+        <leaf name="type">
+          <type name="identityref">
+            <base name="route-filter"/>
+          </type>
+          <mandatory value="true"/>
+          <description>
+            <text>
+              Type of the route filter..
+            </text>
+          </description>
+        </leaf>
+      </list>
+    </container>
+  </container>
+
+  <!-- RPC methods -->
+
+  <rpc name="active-route">
+    <description>
+      <text>
+        <h:p>Return the active route that a routing-instance uses for
+	sending packets to a destination address.</h:p>
+      </text>
+    </description>
+    <input>
+      <leaf name="routing-instance-name">
+        <type name="routing-instance-state-ref"/>
+        <mandatory value="true"/>
+        <description>
+          <text>
+	    <h:p>Name of the routing instance whose forwarding
+	    information base is being queried.</h:p>
+	    <h:p>If the routing instance with name equal to
+	    the value of this parameter doesn't exist, then this operation
+	    SHALL fail with error-tag 'data-missing' and error-app-tag
+	    'routing-instance-not-found'.</h:p>
+          </text>
+        </description>
+      </leaf>
+      <container name="destination-address">
+        <uses name="address-family"/>
+        <description>
+          <text>
+            <h:p>
+              Network layer destination address.
+            </h:p>
+            <h:p>
+              Address family specific modules MUST augment this
+              container with a leaf named 'address'.
+            </h:p>
+          </text>
+        </description>
+      </container>
+    </input>
+    <output>
+      <container name="route">
+        <uses name="address-family"/>
+        <uses name="next-hop-content"/>
+	<uses name="route-metadata"/>
+        <description>
+          <text>
+            <h:p>The active route for the specified destination.</h:p>
+            <h:p>If the routing instance has no active route for the
+            destination address, no output is returned - the server
+            SHALL send an &lt;rpc-reply&gt; containing a single
+            element &lt;ok&gt;.</h:p>
+            <h:p>Address family specific modules MUST augment
+            this list with appropriate route contents.</h:p>
+          </text>
+        </description>
+      </container>
+    </output>
+  </rpc>
+
+  <rpc name="route-count">
+    <description>
+      <text>
+        <h:p>Return the current number of routes in a RIB.</h:p>
+      </text>
+    </description>
+    <input>
+      <leaf name="rib-name">
+        <type name="rib-state-ref"/>
+        <mandatory value="true"/>
+        <description>
+          <text>
+	  <h:p>Name of the RIB.</h:p>
+          <h:p>If the RIB with name equal to the value of this
+          parameter doesn't exist, then this operation SHALL fail with
+          error-tag 'data-missing' and error-app-tag
+          'rib-not-found'.</h:p>
+	  </text>
+        </description>
+      </leaf>
+    </input>
+    <output>
+      <leaf name="number-of-routes">
+        <type name="uint64"/>
+        <mandatory value="true"/>
+        <description>
+          <text>Number of routes in the RIB.</text>
+        </description>
+      </leaf>
+    </output>
+  </rpc>
+
+</module>
