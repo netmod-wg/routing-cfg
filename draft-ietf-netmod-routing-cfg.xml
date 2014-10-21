@@ -80,10 +80,7 @@
 
     <section anchor="sec.term-not" title="Terminology and Notation">
 
-      <t>The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL
-      NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL"
-      in this document are to be interpreted as described in <xref
-      target="RFC2119"/>.</t>
+      &kw-2119;
 
       <t>The following terms are defined in <xref target="RFC6241"/>:
       <list style="symbols">
@@ -731,12 +728,10 @@
     <section anchor="sec.mod-rt"
              title="Routing Management YANG Module">
 
-      <t>RFC Ed.: In this section, replace all occurrences of 'XXXX' with
-      the actual RFC number and all occurrences of the revision date
-      below with the date of RFC publication (and remove this note).</t>
+      &ed-hint-fill-in;
 
       <figure>
-	&routing;
+	&ietf-routing.yang;
       </figure>
 
     </section>
@@ -744,12 +739,10 @@
     <section anchor="sec.mod-v4ur"
              title="IPv4 Unicast Routing Management YANG Module">
 
-      <t>RFC Ed.: In this section, replace all occurrences of 'XXXX' with
-      the actual RFC number and all occurrences of the revision date
-      below with the date of RFC publication (and remove this note).</t>
+      &ed-hint-fill-in;
 
       <figure>
-	&ipv4-unicast;
+	&ietf-ipv4-unicast-routing.yang;
       </figure>
 
     </section>
@@ -757,12 +750,10 @@
     <section anchor="sec.mod-v6ur"
              title="IPv6 Unicast Routing Management YANG Module">
 
-      <t>RFC Ed.: In this section, replace all occurrences of 'XXXX' with
-      the actual RFC number and all occurrences of the revision date
-      below with the date of RFC publication (and remove this note).</t>
+      &ed-hint-fill-in;
 
       <figure>
-	&ipv6-unicast;
+	&ietf-ipv4-unicast-routing.yang;
       </figure>
 
     </section>
@@ -1202,7 +1193,15 @@
 
     <section anchor="change-log" title="Change Log">
 
-      <t>RFC Editor: remove this section upon publication as an RFC.</t>
+      &ed-hint-remove-sec;
+
+      <section title="Changes Between Versions -15 and -16">
+	<t>
+          <list style="symbols">
+	    <t>TBD</t>
+	  </list>
+	</t>
+      </section>
 
       <section title="Changes Between Versions -14 and -15">
 	<t>
