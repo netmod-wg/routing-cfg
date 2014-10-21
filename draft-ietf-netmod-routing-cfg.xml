@@ -163,7 +163,7 @@
           <ttcol>YANG module</ttcol>
           <ttcol>Reference</ttcol>
           <c>if</c><c>ietf-interfaces</c><c><xref target="RFC7223"/></c>
-          <c>ip</c><c>ietf-ip</c><c><xref target="YANG-IP"/></c>
+          <c>ip</c><c>ietf-ip</c><c><xref target="RFC7277"/></c>
           <c>rt</c><c>ietf-routing</c><c><xref target="sec.mod-rt"/></c>
           <c>v4ur</c><c>ietf-ipv4-unicast-routing</c>
           <c><xref target="sec.mod-v4ur"/></c>
@@ -406,7 +406,7 @@
           <t><list style="numbers">
             <t>The "IsRouter" flag, which is also required by <xref
             target="RFC4861"/>, is implemented in the "ietf-ip" module
-            <xref target="YANG-IP"/> (leaf "ip:forwarding").</t>
+            <xref target="RFC7277"/> (leaf "ip:forwarding").</t>
             <t>The original specification <xref target="RFC4861"/>
             allows the implementations to decide whether the
             "valid-lifetime" and "preferred-lifetime" parameters remain
@@ -681,7 +681,7 @@
 
       <section anchor="sec.ietf-ip" title='Module "ietf-ip"'>
 	<t>The following boolean switches are defined in the "ietf-ip"
-	YANG module <xref target="YANG-IP"/>:
+	YANG module <xref target="RFC7277"/>:
 	<list style="hanging">
           <t hangText="/if:interfaces/if:interface/ip:ipv4/ip:enabled">
             <vspace blankLines="1"/>
@@ -1165,7 +1165,7 @@
       following YANG modules:
       <list style="symbols">
 	<t>ietf-interfaces <xref target="RFC7223"/>,</t>
-	<t>ietf-ip <xref target="YANG-IP"/>,</t>
+	<t>ietf-ip <xref target="RFC7277"/>,</t>
 	<t>ietf-routing (<xref target="sec.mod-rt"/>),</t>
 	<t>ietf-ipv4-unicast-routing (<xref target="sec.mod-v4ur"/>),</t>
 	<t>ietf-ipv6-unicast-routing (<xref target="sec.mod-v6ur"/>).</t>
