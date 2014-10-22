@@ -36,13 +36,13 @@
     <abstract>
       <t>This document contains a specification of three YANG modules.
       Together they form the core routing data model which serves as a
-      framework for configuring and managing a routing subsystem. It is
-      expected that these modules will be augmented by additional YANG
-      modules defining data models for individual routing protocols and
-      other related functions. The core routing data model provides
-      common building blocks for such extensions - routing instances,
-      routes, routing information bases (RIB), routing protocols and
-      route filters.</t>
+      framework for configuring and managing a routing subsystem. It
+      is expected that these modules will be augmented by additional
+      YANG modules defining data models for routing protocols and
+      other functions. The core routing data model provides common
+      building blocks for such extensions - routing instances, routes,
+      routing information bases (RIB), routing protocols and route
+      filters.</t>
     </abstract>
   </front>
   <middle>
@@ -64,17 +64,17 @@
       </list></t>
 
       <t>These modules together define the so-called core routing data
-      model, which is proposed as a basis for the development of data
-      models for configuration and management of more sophisticated
-      routing systems. While these three modules can be directly used
-      for simple IP devices with static routing (see <xref
-      target="app.minimum"/>), their main purpose is to provide
-      essential building blocks for more complicated setups involving
-      multiple routing protocols, multicast routing, additional address
-      families, and advanced functions such as route filtering or policy
-      routing. To this end, it is expected that the core routing data
-      model will be augmented by numerous modules developed by other
-      IETF working groups.</t>
+      model, which is intended as a basis for future data model
+      development covering more sophisticated routing systems. While
+      these three modules can be directly used for simple IP devices
+      with static routing (see <xref target="app.minimum"/>), their
+      main purpose is to provide essential building blocks for more
+      complicated data models involving multiple routing protocols,
+      multicast routing, additional address families, and advanced
+      functions such as route filtering or policy routing. To this
+      end, it is expected that the core routing data model will be
+      augmented by numerous modules developed by other IETF working
+      groups.</t>
 
     </section>
 
@@ -118,35 +118,21 @@
           containing a list of routes together with other
           information. See <xref target="sec.rib"/> for details.</t>
           <t hangText="system-controlled entry:">An entry of a list in
-          operational state data ("config false") that is created by the
-          system independently of what has been explicitly
-          configured. See <xref target="sec.system-user"/> for details.</t>
+          state data ("config false") that is created by the system
+          independently of what has been explicitly configured. See
+          <xref target="sec.system-user"/> for details.</t>
           <t hangText="user-controlled entry:">An entry of a list in
-          operational state data ("config false") that is created and
-          deleted as a direct consequence of certain configuration
-          changes. See <xref target="sec.system-user"/> for details.</t>
+          state data ("config false") that is created and deleted as a
+          direct consequence of certain configuration changes. See
+          <xref target="sec.system-user"/> for details.</t>
 	</list></t>
       </section>
 
       <section anchor="sec.tree-symbols" title="Tree Diagrams">
 	<t>A simplified graphical representation of the complete data
 	tree is presented in <xref target="app.data-tree"/>, and similar
-	diagrams of its various subtrees appear in the main text. The
-	meaning of the symbols in these diagrams is as follows:
-	<list style="symbols">
-          <t>Brackets "[" and "]" enclose list keys.</t>
-          <t>Curly braces "{" and "}" contain names of optional features
-          that make the corresponding node conditional.</t>
-          <t>Abbreviations before data node names: "rw" means
-          configuration (read-write), and "ro" state data
-          (read-only).</t>
-          <t>Symbols after data node names: "?" means an optional node and "*"
-          denotes a "list" or "leaf-list".</t>
-          <t>Parentheses enclose choice and case nodes, and case nodes
-          are also marked with a colon (":").</t>
-          <t>Ellipsis ("...") stands for contents of subtrees that are
-          not shown.</t>
-	</list></t>
+	diagrams of its various subtrees appear in the main text.</t>
+	&treesym;
       </section>
 
       <section anchor="sec.prefixes" title="Prefixes in Data Node Names">
@@ -184,11 +170,11 @@
 	families, in particular IPv4 and IPv6, and for unicast and
 	multicast routing, as well as Multiprotocol Label Switching
 	(MPLS).</t>
-	<t>Simple routing setups, such as static routing, should be
+	<t>Simple routing set-ups, such as static routing, should be
 	configurable in a simple way, ideally without any need to develop
 	additional YANG modules.</t>
 	<t>On the other hand, the core routing framework must allow for
-	complicated setups involving multiple routing information bases
+	complicated set-ups involving multiple routing information bases
 	(RIB) and multiple routing protocols, as well as controlled
 	redistributions of routing information.</t>
 	<t>Device vendors will want to map the data models built on this
@@ -203,16 +189,17 @@
     <section anchor="sec.design"
              title="The Design of the Core Routing Data Model">
 
-      <t>The core routing data model consists of three YANG modules. The
-      first module, "ietf-routing", defines the generic components of a
-      routing system. The other two modules, "ietf-ipv4-unicast-routing"
-      and "ietf-ipv6-unicast-routing", augment the "ietf-routing" module
-      with additional data nodes that are needed for IPv4 and IPv6
-      unicast routing, respectively. Figures <xref target="fig.confdata"
+      <t>The core routing data model consists of three YANG
+      modules. The first module, "ietf-routing", defines the generic
+      components of a routing system. The other two modules,
+      "ietf-ipv4-unicast-routing" and "ietf-ipv6-unicast-routing",
+      augment the "ietf-routing" module with additional data nodes
+      that are needed for IPv4 and IPv6 unicast routing,
+      respectively. Figures <xref target="fig.confdata"
       format="counter"/> and <xref target="fig.statedata"
       format="counter"/> show abridged views of the configuration and
-      operational state data hierarchies. See <xref
-      target="app.data-tree"/> for the complete data trees.</t>
+      state data hierarchies. See <xref target="app.data-tree"/> for
+      the complete data trees.</t>
 
       <figure
           anchor="fig.confdata"
@@ -222,7 +209,7 @@
 
       <figure
           anchor="fig.statedata"
-          title="Operational state data hierarchy.">
+          title="State data hierarchy.">
 	&state-coll-tree.txt;
       </figure>
 
@@ -237,12 +224,12 @@
       augmenting them with appropriate contents defined in other
       modules, various routing systems can be realized.</t>
 
-      <figure anchor="fig.exsetup"
-              title="Example setup of a routing system">
+      <figure anchor="fig.exset-up"
+              title="Example set-up of a routing system">
 	&diagram.txt;
       </figure>
 
-      <t>The example in <xref target="fig.exsetup"/> shows a typical
+      <t>The example in <xref target="fig.exset-up"/> shows a typical
       (though certainly not the only possible) organization of a more
       complex routing subsystem for a single address family. Several of
       its features are worth mentioning:
@@ -257,7 +244,7 @@
 	in either direction (or both).</t>
 	<t>Route exchanges along all connections may be controlled by
 	means of route filters, denoted by "F" in <xref
-	target="fig.exsetup"/>.</t>
+	target="fig.exset-up"/>.</t>
       </list></t>
 
       <section anchor="sec.system-user"
@@ -267,21 +254,21 @@
 	populated with at least one entry in any properly functioning
 	device, and additional entries may be configured by the user.</t>
 	<t>In such a list, the server creates the required item as a
-	so-called system-controlled entry in operational state data,
-	i.e., inside the "routing-state" container.</t>
-	<t>Additional entries may be created in the configuration by the
-	user via the NETCONF protocol. These are so-called
+	so-called system-controlled entry in state data, i.e., inside
+	the "routing-state" container.</t>
+	<t>Additional entries may be created in the configuration by
+	the user, e.g., via the NETCONF protocol. These are so-called
 	user-controlled entries. If the server accepts a configured
 	user-controlled entry, then this entry also appears in the
-	operational state version of the list.</t>
+	state data version of the list.</t>
 	<t>Corresponding entries in both versions of the list (in
-	operational state data and configuration) have the same value of
-	the list key.</t>
+	state data and configuration) have the same value of the list
+	key.</t>
 	<t>The user may also provide supplemental configuration of
 	system-controlled entries. To do so, the user creates a new
 	entry in the configuration with the desired contents. In order
 	to bind this entry with the corresponding entry in the
-	operational state list, the key of the configuration entry has
+	state data list, the key of the configuration entry has
 	to be set to the same value as the key of the state entry.</t>
 	<t>An example can be seen in <xref target="app.get-reply"/>: the
 	"/routing-state/routing-instance" list has a single
@@ -291,10 +278,10 @@
 	also "rtr0".</t>
 	<t>Deleting a user-controlled entry from the configuration list
 	results in the removal of the corresponding entry in the
-	operational state list. In contrast, if a system-controlled
+	state data list. In contrast, if a system-controlled
 	entry is deleted from the configuration list, only the extra
 	configuration specified in that entry is removed but the
-	corresponding operational state entry remains in the list.</t>
+	corresponding state data entry remains in the list.</t>
       </section>
 
       <section anchor="sec.simple-advanced"
@@ -328,29 +315,29 @@
 
       <section anchor="sec.routing-instance" title="Routing Instance">
 
-	<t>Each routing instance in the core routing data model
-	represents a logical router. The exact semantics of this term are
-	left to implementations. For example, routing instances may be
-	completely isolated virtual routers or, alternatively, they may
-	internally share certain information.</t>
-	<t>A routing instance together with its operational state is
-	represented as an entry of the list
-	"/routing-state/routing-instance", and identified by a unique
-	name. Configuration of that router instance appears as an entry
-	of the list "/routing/routing-instance".</t>
-	<t>An implementation MAY support multiple types of logical
-	routers simultaneously. Instances of all routing instance types
-	are organized as entries of the same flat "routing-instance"
-	list. In order to discriminate routing instances belonging to
-	different types, the "type" leaf is defined as a child of the
-	"routing-instance" node.</t>
+	<t>The core routing data model supports one or more routing
+	instances appearing as entries of the "routing-instance"
+	list. Each routing instance has separate configuration and
+	state data under "/rt:routing/rt:routing-instance" and
+	"/rt:routing-state/rt:routing-instance", respectively.</t>
+	<t>The semantics of the term "routing instance" is
+	deliberately left undefined. It is expected that future YANG
+	modules will define data models for specific types of routing
+	instances, such as VRF (virtual routing and forwarding)
+	instances that are used for BGP/MPLS virtual private
+	networks <xref target="RFC4364"/>. For each type of routing
+	instance, an identity derived from "rt:routing-instance-type"
+	MUST be defined. This identity is then referred to by the
+	value of the "type" leaf (a child node of "routing-instance"
+	list).</t>
 	<t>An implementation MAY create one or more system-controlled
-	routing instances, and MAY also pose restrictions on allowed
-	routing instance types and on the number of supported instances
-	for each type. For example, a simple router implementation may
-	support only one system-controlled routing instance of the
-	default type "rt:standard-routing-instance" and may not allow
-	creation of any user-controlled instances.</t>
+	routing instances, and MAY also impose restrictions on types of
+	routing instances that can be configured, and on the maximum
+	number of supported instances for each type. For example, a
+	simple router implementation may support only one
+	system-controlled routing instance of the default type
+	"rt:default-routing-instance" and may not allow creation of
+	any user-controlled instances.</t>
 	<t>Each network layer interface has to be assigned to one or
 	more routing instances in order to be able to participate in
 	packet forwarding, routing protocols and other operations of
@@ -360,23 +347,20 @@
 	key of the list entry is the name of a configured network layer
 	interface, see the "ietf-interfaces" module <xref
 	target="RFC7223"/>.</t>
-	<t>In YANG terms, the list of routing instance interfaces is
-	modeled as a "list" node rather than "leaf-list" in order to
-	allow for adding, via augmentation, other configuration or state
-	data related to the corresponding interface.</t>
-	<t>Implementations MAY specify additional rules for the
-	assignment of interfaces to routing instances. For example, it may
-	be required that the sets of interfaces assigned to different
-	routing instances be disjoint.</t>
+	<t>A data model for a routing instance type MAY state
+	additional rules for the assignment of interfaces to routing
+	instances of that type. For example, it may be required that
+	the sets of interfaces assigned to different routing instances
+	of a certain type be disjoint.</t>
 
 	<section anchor="sec.4861"
 		 title="Parameters of IPv6 Routing Instance Interfaces">
 
           <t>The module "ietf-ipv6-unicast-routing" augments the
           definition of the data node "rt:interface", in both
-          configuration and operational state data, with definitions of
-          the following variables as required by <xref
-          target="RFC4861"/>, sec. 6.2.1:
+          configuration and state data, with definitions of the
+          following variables as required by <xref target="RFC4861"/>,
+          sec. 6.2.1:
           <list style="symbols">
             <t>send-advertisements,</t>
             <t>max-rtr-adv-interval,</t>
@@ -430,6 +414,10 @@
           <t>destination prefix: IP prefix specifying the set of
           destination addresses for which the route may be used. This
           attribute is mandatory.</t>
+	  <t>route preference: an integer value (also known as
+	  administrative distance) that is used for selecting a
+	  preferred route among routes with the same destination
+	  prefix. A lower value means a more preferred route.</t>
           <t>next-hop or action: outgoing interface, IP address of one
           or more adjacent routers to which a packet should be
           forwarded, or a special action such as discarding the
@@ -442,7 +430,7 @@
 	as metrics or preferences.</t>
 	<t>Routes and their attributes are used both in configuration
 	data, for example as manually configured static routes, and in
-	operational state data, for example as entries in RIBs.</t>
+	state data, for example as entries in RIBs.</t>
       </section>
 
       <section anchor="sec.rib" title="Routing Information Base (RIB)">
@@ -457,17 +445,17 @@
 	Each RIB MUST contain only routes of one address family. In the
 	data model, address family is represented with an identity
 	derived from the "rt:address-family" base identity.</t>
-	<t>In the core routing data model, RIBs are operational state
-	data represented as entries of the list
+	<t>In the core routing data model, RIBs are state data
+	represented as entries of the list
 	"/routing-state/ribs/rib". The contents of RIBs are controlled
-	and manipulated by routing protocol operations which may result
-	in route additions, removals and modifications. This also
-	includes manipulations via the "static" and/or "direct"
+	and manipulated by routing protocol operations which may
+	result in route additions, removals and modifications. This
+	also includes manipulations via the "static" and/or "direct"
 	pseudo-protocols, see <xref target="sec.pseudoproto"/>.</t>
-	<t>RIBs are global, which means that a RIB may be used by any or
-	all routing instances. However, an implementation MAY specify
-	rules and restrictions for sharing RIBs among routing
-	instances.</t>
+	<t>RIBs are global, which means that a RIB may be used by any
+	or all routing instances. However, a data model for a routing
+	instance type MAY state rules and restrictions for sharing
+	RIBs among routing instances of that type.</t>
 	<t>Each routing instance has, for every supported address
 	family, one RIB selected as the so-called default RIB. This
 	selection is recorded in the list "default-rib". The role of
@@ -504,14 +492,20 @@
 	"rt:routing-protocol" base identity. The core routing data model
 	defines two identities for the direct and static
 	pseudo-protocols (<xref target="sec.pseudoproto"/>).</t>
-	<t>Each routing protocol instance is connected to exactly one
-	RIB for each address family that the routing protocol instance
-	supports. Routes learned from the network by a routing protocol
-	are normally installed into the connected RIB(s) and,
-	conversely, routes from the connected RIB(s) are
-	normally injected into the routing protocol. However, routing
-	protocol implementations MAY specify rules that restrict this
-	exchange of routes in either direction (or both directions).</t>
+	<t>Each routing protocol instance can be connected to one or
+	more RIB for each address family that the routing protocol
+	instance supports. By default, the interaction of a routing
+	protocol instance with its connected RIBs is governed by the
+	following rules:
+	<list style="symbols">
+	  <t>Routes learned from the network are installed in all connected
+	RIB(s) with a matching address family.</t>
+	  <t>Conversely, routes from all connected RIB(s) are
+	injected into the routing protocol instance.</t>
+	</list>
+	However, a data model for a routing protocol MAY specific
+	rules for exchanging routes between routing protocol instances
+	and connected RIBs.</t>
 	<t>On devices supporting the "multiple-ribs" feature, any RIB
 	(system-controlled or user-controlled) may be connected to a
 	routing protocol instance by configuring a corresponding entry
@@ -623,10 +617,11 @@
 	connected RIB, or between a source and a recipient RIB. Route
 	filters may also manipulate routes, i.e., add, delete, or modify
 	their attributes.</t>
-	<t>Route filters are global, which means that a configured route
-	filter may be used by any or all routing instances. However, an
-	implementation MAY specify rules and restrictions for sharing
-	route filters among routing instances.</t>
+	<t>Route filters are global, which means that a configured
+	route filter may be used by any or all routing
+	instances. However, a data model for a routing instance type
+	MAY specify rules and restrictions for sharing route filters
+	among routing instances of that type.</t>
 	<t>By itself, the route filtering framework defined in this
 	document allows for applying only two extreme routing
 	policies which are represented by the following pre-defined
@@ -872,9 +867,10 @@ reference:    RFC XXXX
     <section anchor="acknowledgments" title="Acknowledgments">
       <t>The author wishes to thank Nitin Bahadur, Martin Bjorklund,
       Joel Halpern, Wes Hardaker, Sriganesh Kini, David Lamparter,
-      Andrew McGregor, Jan Medved, Xiang Li, Thomas Morin, Tom Petch,
-      Bruno Rijsman, Juergen Schoenwaelder, Phil Shafer, Dave Thaler and
-      Yi Yang for their helpful comments and suggestions.</t>
+      Andrew McGregor, Jan Medved, Xiang Li, Acee Lindem, Stephane
+      Litkowski, Thomas Morin, Tom Petch, Bruno Rijsman,
+      Juergen Schoenwaelder, Phil Shafer, Dave Thaler and Yi Yang for
+      their helpful comments and suggestions.</t>
     </section>
 
   </middle>
@@ -897,13 +893,14 @@ reference:    RFC XXXX
       &RFC6087;
       &RFC6242;
       &RFC6536;
+      &RFC4364;
 
     </references>
 
     <section anchor="app.data-tree" title="The Complete Data Trees">
 
       <t>This appendix presents the complete configuration and
-      operational state data trees of the core routing data model.</t>
+      state data trees of the core routing data model.</t>
       <t>See <xref target="sec.tree-symbols"/> for an explanation of the
       symbols used. Data type of every leaf node is shown near the right
       end of the corresponding line.</t>
@@ -916,7 +913,7 @@ reference:    RFC XXXX
 
       </section>
 
-      <section anchor="app.state-tree" title="Operational State Data">
+      <section anchor="app.state-tree" title="State Data">
 
 	<figure>
 	  &state-tree.txt;
@@ -944,8 +941,8 @@ reference:    RFC XXXX
 	<t>A single system-controlled RIB (routing table) is available
 	for each supported address family - IPv4, IPv6 or both. These
 	RIBs are the default RIBs, so they will also appear as
-	system-controlled entries of the "default-rib" list in
-	operational state data. No user-controlled RIBs are allowed.</t>
+	system-controlled entries of the "default-rib" list in state
+	data. No user-controlled RIBs are allowed.</t>
 	<t>Each route has no more than one "next-hop",
 	"outgoing-interface" or "special-next-hop".</t>
       </list></t>
@@ -997,7 +994,7 @@ reference:    RFC XXXX
 	<t>ietf-ipv6-unicast-routing (<xref target="sec.mod-v6ur"/>).</t>
       </list></t>
 
-      <t>We assume a simple network setup as shown in <xref
+      <t>We assume a simple network set-up as shown in <xref
       target="fig.exnet"/>: router "A" uses static default routes with
       the "ISP" router as the next-hop. IPv6 router advertisements are
       configured only on the "eth1" interface and disabled on the
@@ -1024,7 +1021,23 @@ reference:    RFC XXXX
       <section title="Changes Between Versions -15 and -16">
 	<t>
           <list style="symbols">
-	    <t>TBD</t>
+	    <t>Added 'type' as the second key component of
+	    'routing-protocol', both in configuration and state
+	    data.</t>
+	    <t>The restriction of no more than one connected RIB per
+	    address family was removed.</t>
+	    <t>Removed the 'id' key of routes in RIBs. This list has
+	    no keys anymore.</t>
+	    <t>Remove the 'id' key from static routes and make
+	    'destination-prefix' the only key.</t>
+	    <t>Added 'route-preference' as a new attribute of routes
+	    in RIB.</t>
+	    <t>Added 'preferred' as a new boolean attribute of routes
+	    in RIB.</t>
+	    <t>Added 'route-preference' as a new parameter of routing
+	    protocol instances, both in configuration and state data.</t>
+	    <t>Renamed identity 'rt:standard-routing-instance' to
+	    'rt:default-routing-instance'.</t>
 	  </list>
 	</t>
       </section>
@@ -1056,14 +1069,14 @@ reference:    RFC XXXX
           <list style="symbols">
 	    <t>Wrote appendix about minimum implementation.</t>
 	    <t>Remove "when" statement for IPv6 router interface
-	    operational state - it was dependent on a config value that
+	    state data - it was dependent on a config value that
 	    may not be present.</t>
 	    <t>Extra container for the next-hop list.</t>
 	    <t>Names rather than numeric ids are used for referring to
-	    list entries in operational state.</t>
+	    list entries in state data.</t>
 	    <t>Numeric ids are always declared as mandatory and
 	    unique. Their description states that they are ephemeral.</t>
-	    <t>Descriptions of "name" keys in operational state lists
+	    <t>Descriptions of "name" keys in state data lists
 	    are required to be persistent.</t>
 	    <t></t>
 	    <t>Removed "if-feature multiple-ribs;" from connected-ribs.</t>
@@ -1114,8 +1127,7 @@ reference:    RFC XXXX
       <section title="Changes Between Versions -09 and -10">
 	<t>
           <list style="symbols">
-            <t>Added subtree for operational state data
-            ("/routing-state").</t>
+            <t>Added subtree for state data ("/routing-state").</t>
             <t>Terms "system-controlled entry" and "user-controlled
             entry" defined and used.</t>
             <t>New feature "user-defined-routing-tables". Nodes that are

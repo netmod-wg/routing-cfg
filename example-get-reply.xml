@@ -130,22 +130,20 @@
     </rt:interfaces>
     <rt:routing-protocols>
      <rt:routing-protocol>
+      <rt:type>rt:static</rt:type>
       <rt:name>st0</rt:name>
       <rt:description>
        Static routing is used for the internal network.
       </rt:description>
-      <rt:type>rt:static</rt:type>
       <rt:static-routes>
        <v4ur:ipv4>
         <v4ur:route>
-         <v4ur:id>1</v4ur:id>
          <v4ur:destination-prefix>0.0.0.0/0</v4ur:destination-prefix>
          <v4ur:next-hop>192.0.2.2</v4ur:next-hop>
         </v4ur:route>
        </v4ur:ipv4>
        <v6ur:ipv6>
         <v6ur:route>
-         <v6ur:id>1</v6ur:id>
          <v6ur:destination-prefix>::/0</v6ur:destination-prefix>
          <v6ur:next-hop>2001:db8:0:1::2</v6ur:next-hop>
         </v6ur:route>
@@ -188,8 +186,9 @@
     </rt:interfaces>
     <rt:routing-protocols>
      <rt:routing-protocol>
-      <rt:name>st0</rt:name>
       <rt:type>rt:static</rt:type>
+      <rt:name>st0</rt:name>
+      <rt:route-preference>5</rt:route-preference>
      </rt:routing-protocol>
     </rt:routing-protocols>
    </rt:routing-instance>
@@ -200,23 +199,26 @@
      <rt:address-family>v4ur:ipv4-unicast</rt:address-family>
      <rt:routes>
       <rt:route>
-       <rt:id>626433832</rt:id>
        <v4ur:destination-prefix>192.0.2.1/24</v4ur:destination-prefix>
        <rt:outgoing-interface>eth0</rt:outgoing-interface>
+       <rt:route-preference>0</rt:route-preference>
+       <rt:preferred>true</rt:preferred>
        <rt:source-protocol>rt:direct</rt:source-protocol>
        <rt:last-updated>2013-07-02T17:11:27+01:00</rt:last-updated>
       </rt:route>
       <rt:route>
-       <rt:id>795028841</rt:id>
        <v4ur:destination-prefix>198.51.100.0/24</v4ur:destination-prefix>
        <rt:outgoing-interface>eth1</rt:outgoing-interface>
        <rt:source-protocol>rt:direct</rt:source-protocol>
+       <rt:route-preference>0</rt:route-preference>
+       <rt:preferred>true</rt:preferred>
        <rt:last-updated>2013-07-02T17:11:27+01:00</rt:last-updated>
       </rt:route>
       <rt:route>
-       <rt:id>971693993</rt:id>
        <v4ur:destination-prefix>0.0.0.0/0</v4ur:destination-prefix>
        <rt:source-protocol>rt:static</rt:source-protocol>
+       <rt:route-preference>5</rt:route-preference>
+       <rt:preferred>true</rt:preferred>
        <v4ur:next-hop>192.0.2.2</v4ur:next-hop>
        <rt:last-updated>2013-07-02T18:02:45+01:00</rt:last-updated>
       </rt:route>
@@ -228,24 +230,27 @@
      <rt:address-family>v6ur:ipv6-unicast</rt:address-family>
      <rt:routes>
       <rt:route>
-       <rt:id>749445923</rt:id>
        <v6ur:destination-prefix>2001:db8:0:1::/64</v6ur:destination-prefix>
        <rt:outgoing-interface>eth0</rt:outgoing-interface>
        <rt:source-protocol>rt:direct</rt:source-protocol>
+       <rt:route-preference>0</rt:route-preference>
        <rt:last-updated>2013-07-02T17:11:27+01:00</rt:last-updated>
+       <rt:preferred>true</rt:preferred>
       </rt:route>
       <rt:route>
-       <rt:id>78164062</rt:id>
        <v6ur:destination-prefix>2001:db8:0:2::/64</v6ur:destination-prefix>
        <rt:outgoing-interface>eth1</rt:outgoing-interface>
        <rt:source-protocol>rt:direct</rt:source-protocol>
+       <rt:route-preference>0</rt:route-preference>
+       <rt:preferred>true</rt:preferred>
        <rt:last-updated>2013-07-02T17:11:27+01:00</rt:last-updated>
       </rt:route>
       <rt:route>
-       <rt:id>862089986</rt:id>
        <v6ur:destination-prefix>::/0</v6ur:destination-prefix>
        <v6ur:next-hop>2001:db8:0:1::2</v6ur:next-hop>
        <rt:source-protocol>rt:static</rt:source-protocol>
+       <rt:route-preference>5</rt:route-preference>
+       <rt:preferred>true</rt:preferred>
        <rt:last-updated>2013-07-02T18:02:45+01:00</rt:last-updated>
       </rt:route>
      </rt:routes>

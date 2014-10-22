@@ -667,29 +667,11 @@
         </text>
       </description>
       <list name="route">
-        <key value="id"/>
+        <key value="destination-prefix"/>
         <ordered-by value="user"/>
         <description>
           <text>A user-ordered list of static routes.</text>
         </description>
-        <leaf name="id">
-          <type name="uint32">
-            <range value="1..max"/>
-          </type>
-          <description>
-            <text>
-              <h:p>Unique numeric identifier of the route.</h:p>
-              <h:p>This value is unrelated to system-assigned 'id'
-              parameters of routes in RIBs.</h:p>
-            </text>
-          </description>
-        </leaf>
-        <leaf name="description">
-          <type name="string"/>
-          <description>
-            <text>Textual description of the route.</text>
-          </description>
-        </leaf>
 	<leaf name="destination-prefix">
 	  <mandatory value="true"/>
 	  <type name="inet:ipv6-prefix"/>
@@ -697,6 +679,12 @@
 	    <text>IPv6 destination prefix.</text>
 	  </description>
 	</leaf>
+        <leaf name="description">
+          <type name="string"/>
+          <description>
+            <text>Textual description of the route.</text>
+          </description>
+        </leaf>
 	<choice name="next-hop-options">
 	  <mandatory value="true"/>
 	  <description>
