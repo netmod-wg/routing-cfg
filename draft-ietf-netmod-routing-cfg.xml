@@ -326,10 +326,9 @@
 	instances, such as VRF (virtual routing and forwarding)
 	instances that are used for BGP/MPLS virtual private
 	networks <xref target="RFC4364"/>. For each type of routing
-	instance, an identity derived from "rt:routing-instance-type"
-	MUST be defined. This identity is then referred to by the
-	value of the "type" leaf (a child node of "routing-instance"
-	list).</t>
+	instance, an identity derived from "rt:routing-instance" MUST
+	be defined. This identity is then referred to by the value of
+	the "type" leaf (a child node of "routing-instance" list).</t>
 	<t>An implementation MAY create one or more system-controlled
 	routing instances, and MAY also impose restrictions on types of
 	routing instances that can be configured, and on the maximum
@@ -439,6 +438,9 @@
 	<list style="symbols">
           <t>"source-protocol": type of the routing protocol from which
           the route was originally obtained.</t>
+	  <t>"preferred": an implementation can use this empty leaf to
+	  indicate that the route is preferred among all routes in the
+	  same RIB that have the same destination prefix.</t>
           <t>"last-updated": the date and time when the route was last
           updated, or inserted into the RIB.</t>
 	</list>
@@ -492,20 +494,22 @@
 	"rt:routing-protocol" base identity. The core routing data model
 	defines two identities for the direct and static
 	pseudo-protocols (<xref target="sec.pseudoproto"/>).</t>
+	<t>Multiple routing protocol instances of the same type are
+	permitted.</t>
 	<t>Each routing protocol instance can be connected to one or
-	more RIB for each address family that the routing protocol
+	more RIBs for each address family that the routing protocol
 	instance supports. By default, the interaction of a routing
 	protocol instance with its connected RIBs is governed by the
 	following rules:
 	<list style="symbols">
-	  <t>Routes learned from the network are installed in all connected
-	RIB(s) with a matching address family.</t>
-	  <t>Conversely, routes from all connected RIB(s) are
-	injected into the routing protocol instance.</t>
+	  <t>Routes learned from the network are installed in all
+	  connected RIBs with a matching address family.</t>
+	  <t>Conversely, routes from all connected RIBs are injected
+	  into the routing protocol instance.</t>
 	</list>
-	However, a data model for a routing protocol MAY specific
-	rules for exchanging routes between routing protocol instances
-	and connected RIBs.</t>
+	However, a data model for a routing protocol MAY impose
+	specific rules for exchanging routes between routing protocol
+	instances and connected RIBs.</t>
 	<t>On devices supporting the "multiple-ribs" feature, any RIB
 	(system-controlled or user-controlled) may be connected to a
 	routing protocol instance by configuring a corresponding entry
@@ -531,11 +535,11 @@
 
 	  <t>The core routing data model defines two special routing
 	  protocol types - "direct" and "static". Both are in fact
-	  pseudo-protocols, which means that they are confined to the
-	  local device and do not exchange any routing information with
+	  pseudo-protocols, which means they are confined to the local
+	  device and do not exchange any routing information with
 	  neighboring routers. Routes from both "direct" and "static"
-	  protocol instances are passed to the connected RIB (subject to
-	  route filters, if any), but an exchange in the opposite
+	  protocol instances are passed to the connected RIBs (subject
+	  to route filters, if any), but an exchange in the opposite
 	  direction is not allowed.</t>
 	  <t>Every routing instance MUST implement exactly one instance of
 	  the "direct" pseudo-protocol type. It is the source of direct
@@ -622,10 +626,9 @@
 	instances. However, a data model for a routing instance type
 	MAY specify rules and restrictions for sharing route filters
 	among routing instances of that type.</t>
-	<t>By itself, the route filtering framework defined in this
-	document allows for applying only two extreme routing
-	policies which are represented by the following pre-defined
-	route filter types:
+	<t>The core routing data model defines only two extreme route
+	filtering policies which are represented by the following
+	pre-defined route filter types:
 	<list style="symbols">
           <t>"deny-all-route-filter": all routes are blocked,</t>
           <t>"allow-all-route-filter": all routes are permitted.</t>
@@ -633,10 +636,8 @@
 	The latter type is equivalent to no route filter.</t>
 	<t>It is expected that more comprehensive route filtering
 	frameworks will be developed separately.</t>
-	<t>Each route filter is identified by a unique name. Its type
-	MUST be specified by the "type" identity reference - this opens
-	the space for multiple route filtering framework
-	implementations.</t>
+	<t>Each route filter entry is identified by a unique name. Its
+	type MUST be specified by the "type" identity reference.</t>
       </section>
 
       <section anchor="sec.rpcs" title="RPC Operations">
@@ -656,7 +657,7 @@
 
     <section anchor="sec.interactions"
              title="Interactions with Other YANG Modules">
-      <t>The semantics of the core routing data model also depend on
+      <t>The semantics of the core routing data model also depends on
       several configuration parameters that are defined in other YANG
       modules.</t>
 
@@ -748,7 +749,7 @@
       &ed-hint-fill-in;
 
       <figure>
-	&ietf-ipv4-unicast-routing.yang;
+	&ietf-ipv6-unicast-routing.yang;
       </figure>
 
     </section>
@@ -865,12 +866,13 @@ reference:    RFC XXXX
     </section>
 
     <section anchor="acknowledgments" title="Acknowledgments">
-      <t>The author wishes to thank Nitin Bahadur, Martin Bjorklund,
-      Joel Halpern, Wes Hardaker, Sriganesh Kini, David Lamparter,
-      Andrew McGregor, Jan Medved, Xiang Li, Acee Lindem, Stephane
-      Litkowski, Thomas Morin, Tom Petch, Bruno Rijsman,
-      Juergen Schoenwaelder, Phil Shafer, Dave Thaler and Yi Yang for
-      their helpful comments and suggestions.</t>
+      <t>The author wishes to thank Nitin Bahadur, Martin Bjorklund,
+      Dean Bogdanovic, Joel Halpern, Wes Hardaker, Sriganesh Kini,
+      David Lamparter, Andrew McGregor, Jan Medved, Xiang Li, Acee
+      Lindem, Stephane Litkowski, Thomas Morin, Tom Petch,
+      Bruno Rijsman, Juergen Schoenwaelder, Phil Shafer, Dave Thaler,
+      Yi Yang, Derek Man-Kit Yeung and Jeffrey Zhang for their helpful
+      comments and suggestions.</t>
     </section>
 
   </middle>
@@ -940,9 +942,9 @@ reference:    RFC XXXX
       <list style="symbols">
 	<t>A single system-controlled RIB (routing table) is available
 	for each supported address family - IPv4, IPv6 or both. These
-	RIBs are the default RIBs, so they will also appear as
-	system-controlled entries of the "default-rib" list in state
-	data. No user-controlled RIBs are allowed.</t>
+	RIBs are the default RIBs, so references to them will also
+	appear as system-controlled entries of the "default-rib" list
+	in state data. No user-controlled RIBs are allowed.</t>
 	<t>Each route has no more than one "next-hop",
 	"outgoing-interface" or "special-next-hop".</t>
       </list></t>
@@ -970,7 +972,7 @@ reference:    RFC XXXX
       module "example-rip" shown below is intended only as an
       illustration rather than a real definition of a data model for
       the RIP routing protocol. For the sake of brevity, this module
-      does not follow all the guidelines specified in <xref
+      does not obey all the guidelines specified in <xref
       target="RFC6087"/>. See also <xref target="sec.newproto"/>.</t>
 
       <figure>
@@ -1032,8 +1034,8 @@ reference:    RFC XXXX
 	    'destination-prefix' the only key.</t>
 	    <t>Added 'route-preference' as a new attribute of routes
 	    in RIB.</t>
-	    <t>Added 'preferred' as a new boolean attribute of routes
-	    in RIB.</t>
+	    <t>Added 'preferred' as a new attribute of routes in
+	    RIBs.</t>
 	    <t>Added 'route-preference' as a new parameter of routing
 	    protocol instances, both in configuration and state data.</t>
 	    <t>Renamed identity 'rt:standard-routing-instance' to

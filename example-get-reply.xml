@@ -66,7 +66,7 @@
     <if:phys-address>00:0C:42:E5:B1:E9</if:phys-address>
     <if:oper-status>up</if:oper-status>
     <if:statistics>
-     <if:discontinuity-time>2013-07-02T17:11:27+00:58</if:discontinuity-time>
+     <if:discontinuity-time>2014-10-24T17:11:27+00:58</if:discontinuity-time>
     </if:statistics>
     <ip:ipv4>
      <ip:forwarding>true</ip:forwarding>
@@ -91,7 +91,7 @@
     <if:oper-status>up</if:oper-status>
     <if:phys-address>00:0C:42:E5:B1:EA</if:phys-address>
     <if:statistics>
-     <if:discontinuity-time>2013-07-02T17:11:27+00:59</if:discontinuity-time>
+     <if:discontinuity-time>2014-10-24T17:11:27+00:59</if:discontinuity-time>
     </if:statistics>
     <ip:ipv4>
      <ip:forwarding>true</ip:forwarding>
@@ -202,25 +202,22 @@
        <v4ur:destination-prefix>192.0.2.1/24</v4ur:destination-prefix>
        <rt:outgoing-interface>eth0</rt:outgoing-interface>
        <rt:route-preference>0</rt:route-preference>
-       <rt:preferred>true</rt:preferred>
        <rt:source-protocol>rt:direct</rt:source-protocol>
-       <rt:last-updated>2013-07-02T17:11:27+01:00</rt:last-updated>
+       <rt:last-updated>2014-10-24T17:11:27+01:00</rt:last-updated>
       </rt:route>
       <rt:route>
        <v4ur:destination-prefix>198.51.100.0/24</v4ur:destination-prefix>
        <rt:outgoing-interface>eth1</rt:outgoing-interface>
        <rt:source-protocol>rt:direct</rt:source-protocol>
        <rt:route-preference>0</rt:route-preference>
-       <rt:preferred>true</rt:preferred>
-       <rt:last-updated>2013-07-02T17:11:27+01:00</rt:last-updated>
+       <rt:last-updated>2014-10-24T17:11:27+01:00</rt:last-updated>
       </rt:route>
       <rt:route>
        <v4ur:destination-prefix>0.0.0.0/0</v4ur:destination-prefix>
        <rt:source-protocol>rt:static</rt:source-protocol>
        <rt:route-preference>5</rt:route-preference>
-       <rt:preferred>true</rt:preferred>
        <v4ur:next-hop>192.0.2.2</v4ur:next-hop>
-       <rt:last-updated>2013-07-02T18:02:45+01:00</rt:last-updated>
+       <rt:last-updated>2014-10-24T18:02:45+01:00</rt:last-updated>
       </rt:route>
      </rt:routes>
     </rt:rib>
@@ -234,24 +231,21 @@
        <rt:outgoing-interface>eth0</rt:outgoing-interface>
        <rt:source-protocol>rt:direct</rt:source-protocol>
        <rt:route-preference>0</rt:route-preference>
-       <rt:last-updated>2013-07-02T17:11:27+01:00</rt:last-updated>
-       <rt:preferred>true</rt:preferred>
+       <rt:last-updated>2014-10-24T17:11:27+01:00</rt:last-updated>
       </rt:route>
       <rt:route>
        <v6ur:destination-prefix>2001:db8:0:2::/64</v6ur:destination-prefix>
        <rt:outgoing-interface>eth1</rt:outgoing-interface>
        <rt:source-protocol>rt:direct</rt:source-protocol>
        <rt:route-preference>0</rt:route-preference>
-       <rt:preferred>true</rt:preferred>
-       <rt:last-updated>2013-07-02T17:11:27+01:00</rt:last-updated>
+       <rt:last-updated>2014-10-24T17:11:27+01:00</rt:last-updated>
       </rt:route>
       <rt:route>
        <v6ur:destination-prefix>::/0</v6ur:destination-prefix>
        <v6ur:next-hop>2001:db8:0:1::2</v6ur:next-hop>
        <rt:source-protocol>rt:static</rt:source-protocol>
        <rt:route-preference>5</rt:route-preference>
-       <rt:preferred>true</rt:preferred>
-       <rt:last-updated>2013-07-02T18:02:45+01:00</rt:last-updated>
+       <rt:last-updated>2014-10-24T18:02:45+01:00</rt:last-updated>
       </rt:route>
      </rt:routes>
     </rt:rib>
