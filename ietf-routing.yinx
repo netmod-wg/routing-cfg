@@ -53,11 +53,11 @@
   <feature name="multiple-ribs">
     <description>
       <text>
-	<h:p>This feature indicates that the device supports
+	<h:p>This feature indicates that the server supports
 	user-defined RIBS and the framework for passing routes between
 	RIBs.
 	</h:p>
-	<h:p>Devices that do not support this feature MUST provide
+	<h:p>Servers that do not advertize this feature MUST provide
 	exactly one system-controlled RIB per supported address family
 	and make them also the default RIBs. These RIBs then appear as
 	entries of the list /routing-state/ribs/rib.</h:p>
@@ -67,8 +67,22 @@
 
   <feature name="multipath-routes">
     <description>
-      <text>This feature indicates that the device supports multipath
+      <text>This feature indicates that the server supports multipath
       routes that have a list of next-hops.</text>
+    </description>
+  </feature>
+
+  <feature name="router-id">
+    <description>
+      <text>
+	<h:p>This feature indicates that the server supports
+	configuration of an explicit 32-bit router ID that is used by
+	some routing protocols.</h:p>
+	<h:p>Servers that do not advertize this feature set a router
+	ID algorithmically, usually to one of configured IPv4
+	addresses. However, this algorithm is
+	implementation-specific.</h:p>
+      </text>
     </description>
   </feature>
 
@@ -289,11 +303,15 @@
       <type name="yang:dotted-quad"/>
       <description>
 	<text>
-	  Router ID - 32-bit number in the form of a dotted quad. Some
-	  protocols use this parameter for identifying a router to its
-	  neighbors.
+	  A 32-bit number in the form of a dotted quad that is used by
+	  some routing protocols identifying a router.
 	</text>
       </description>
+      <reference>
+	<text>
+	  RFC 2328: OSPF Version 2.
+	</text>
+      </reference>
     </leaf>
     <description>
       <text>
@@ -347,8 +365,8 @@
 	  </enum>
 	  <enum name="receive">
 	    <description>
-	      <text>The packet will be received by the local network
-	      device.</text>
+	      <text>The packet will be received by the local
+	      system.</text>
 	    </description>
 	  </enum>
 	</type>
@@ -532,16 +550,6 @@
           </text>
         </description>
       </leaf>
-      <uses name="router-id">
-	<description>
-	  <text>
-            <h:p>Global router ID.</h:p>
-	    <h:p>An implementation may choose a value if none is configured.</h:p>
-            <h:p>Routing protocols that use router ID MAY override
-            this global parameter.</h:p>
-          </text>
-        </description>
-      </uses>
       <container name="default-ribs">
         <description>
           <text>
@@ -889,8 +897,12 @@
         </description>
       </leaf>
       <uses name="router-id">
+	<if-feature name="router-id"/>
 	<description>
-	  <text>Configuration of the global router ID.</text>
+	  <text>
+	    Configuration of the global router ID. Routing protocols
+	    that use router ID can use this parameter or override it
+	    with another value.</text>
 	</description>
       </uses>
       <leaf name="description">

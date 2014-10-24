@@ -352,8 +352,10 @@
           </text>
         </description>
         <reference>
-          <text>RFC 4861: Neighbor Discovery for IP version 6 (IPv6) -
-          AdvSendAdvertisements.</text>
+          <text>
+	    RFC 4861: Neighbor Discovery for IP version 6 (IPv6) -
+	    AdvSendAdvertisements.
+	  </text>
         </reference>
       </leaf>
       <leaf name="max-rtr-adv-interval">
@@ -369,8 +371,10 @@
           </text>
         </description>
         <reference>
-          <text>RFC 4861: Neighbor Discovery for IP version 6 (IPv6) -
-          MaxRtrAdvInterval.</text>
+          <text>
+	    RFC 4861: Neighbor Discovery for IP version 6 (IPv6) -
+            MaxRtrAdvInterval.
+	  </text>
         </reference>
       </leaf>
       <leaf name="min-rtr-adv-interval">
@@ -398,8 +402,10 @@
           </text>
         </description>
         <reference>
-          <text>RFC 4861: Neighbor Discovery for IP version 6 (IPv6) -
-          MinRtrAdvInterval.</text>
+          <text>
+	    RFC 4861: Neighbor Discovery for IP version 6 (IPv6) -
+            MinRtrAdvInterval.
+	  </text>
         </reference>
       </leaf>
       <leaf name="managed-flag">
@@ -412,8 +418,10 @@
           </text>
         </description>
         <reference>
-          <text>RFC 4861: Neighbor Discovery for IP version 6 (IPv6) -
-          AdvManagedFlag.</text>
+          <text>
+	    RFC 4861: Neighbor Discovery for IP version 6 (IPv6) -
+            AdvManagedFlag.
+	  </text>
         </reference>
       </leaf>
       <leaf name="other-config-flag">
@@ -426,8 +434,10 @@
           </text>
         </description>
         <reference>
-          <text>RFC 4861: Neighbor Discovery for IP version 6 (IPv6) -
-          AdvOtherConfigFlag.</text>
+          <text>
+	    RFC 4861: Neighbor Discovery for IP version 6 (IPv6) -
+            AdvOtherConfigFlag.
+	  </text>
         </reference>
       </leaf>
       <leaf name="link-mtu">
@@ -440,8 +450,10 @@
           </text>
         </description>
         <reference>
-          <text>RFC 4861: Neighbor Discovery for IP version 6 (IPv6) -
-          AdvLinkMTU.</text>
+          <text>
+	    RFC 4861: Neighbor Discovery for IP version 6 (IPv6) -
+            AdvLinkMTU.
+	  </text>
         </reference>
       </leaf>
       <leaf name="reachable-time">
@@ -458,8 +470,10 @@
           </text>
         </description>
         <reference>
-          <text>RFC 4861: Neighbor Discovery for IP version 6 (IPv6) -
-          AdvReachableTime.</text>
+          <text>
+	    RFC 4861: Neighbor Discovery for IP version 6 (IPv6) -
+            AdvReachableTime.
+	  </text>
         </reference>
       </leaf>
       <leaf name="retrans-timer">
@@ -474,8 +488,10 @@
           </text>
         </description>
         <reference>
-          <text>RFC 4861: Neighbor Discovery for IP version 6 (IPv6) -
-          AdvRetransTimer.</text>
+          <text>
+	    RFC 4861: Neighbor Discovery for IP version 6 (IPv6) -
+            AdvRetransTimer.
+	  </text>
         </reference>
       </leaf>
       <leaf name="cur-hop-limit">
@@ -519,8 +535,10 @@
           </text>
         </description>
         <reference>
-          <text>RFC 4861: Neighbor Discovery for IP version 6 (IPv6) -
-          AdvDefaultLifeTime.</text>
+          <text>
+	    RFC 4861: Neighbor Discovery for IP version 6 (IPv6) -
+            AdvDefaultLifeTime.
+	  </text>
         </reference>
       </leaf>
       <container name="prefix-list">
@@ -538,8 +556,10 @@
           </text>
         </description>
         <reference>
-          <text>RFC 4861: Neighbor Discovery for IP version 6 (IPv6) -
-          AdvPrefixList.</text>
+          <text>
+	    RFC 4861: Neighbor Discovery for IP version 6 (IPv6) -
+            AdvPrefixList.
+	  </text>
         </reference>
         <list name="prefix">
           <key value="prefix-spec"/>
@@ -588,8 +608,10 @@
                   </text>
                 </description>
 		<reference>
-		  <text>RFC 4861: Neighbor Discovery for IP version 6
-		  (IPv6) - AdvValidLifetime.</text>
+		  <text>
+		    RFC 4861: Neighbor Discovery for IP version 6
+		    (IPv6) - AdvValidLifetime.
+		  </text>
 		</reference>
               </leaf>
               <leaf name="on-link-flag">
@@ -602,8 +624,10 @@
                   </text>
                 </description>
 		<reference>
-		  <text>RFC 4861: Neighbor Discovery for IP version 6
-		  (IPv6) - AdvOnLinkFlag.</text>
+		  <text>
+		    RFC 4861: Neighbor Discovery for IP version 6
+		    (IPv6) - AdvOnLinkFlag.
+		  </text>
 		</reference>
               </leaf>
               <leaf name="preferred-lifetime">
@@ -626,8 +650,10 @@
                   </text>
                 </description>
 		<reference>
-		  <text>RFC 4861: Neighbor Discovery for IP version 6
-		  (IPv6) - AdvPreferredLifetime.</text>
+		  <text>
+		    RFC 4861: Neighbor Discovery for IP version 6
+		    (IPv6) - AdvPreferredLifetime.
+		  </text>
 		</reference>
               </leaf>
               <leaf name="autonomous-flag">
@@ -640,8 +666,10 @@
                   </text>
                 </description>
 		<reference>
-		  <text>RFC 4861: Neighbor Discovery for IP version 6
-		  (IPv6) - AdvAutonomousFlag.</text>
+		  <text>
+		    RFC 4861: Neighbor Discovery for IP version 6
+		    (IPv6) - AdvAutonomousFlag.
+		  </text>
 		</reference>
               </leaf>
             </case>
