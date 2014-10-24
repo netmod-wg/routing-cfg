@@ -1,20 +1,20 @@
 <?xml version="1.0"?>
 <rpc-reply
-  message-id="101"
-  xmlns="urn:ietf:params:xml:ns:netconf:base:1.0"
-  xmlns:v4ur="urn:ietf:params:xml:ns:yang:ietf-ipv4-unicast-routing"
-  xmlns:v6ur="urn:ietf:params:xml:ns:yang:ietf-ipv6-unicast-routing"
-  xmlns:if="urn:ietf:params:xml:ns:yang:ietf-interfaces"
-  xmlns:ianaift="urn:ietf:params:xml:ns:yang:iana-if-type"
-  xmlns:ip="urn:ietf:params:xml:ns:yang:ietf-ip"
-  xmlns:rt="urn:ietf:params:xml:ns:yang:ietf-routing">
+    message-id="101"
+    xmlns="urn:ietf:params:xml:ns:netconf:base:1.0"
+    xmlns:v4ur="urn:ietf:params:xml:ns:yang:ietf-ipv4-unicast-routing"
+    xmlns:v6ur="urn:ietf:params:xml:ns:yang:ietf-ipv6-unicast-routing"
+    xmlns:if="urn:ietf:params:xml:ns:yang:ietf-interfaces"
+    xmlns:ianaift="urn:ietf:params:xml:ns:yang:iana-if-type"
+    xmlns:ip="urn:ietf:params:xml:ns:yang:ietf-ip"
+    xmlns:rt="urn:ietf:params:xml:ns:yang:ietf-routing">
  <data>
   <if:interfaces>
    <if:interface>
     <if:name>eth0</if:name>
     <if:type>ianaift:ethernetCsmacd</if:type>
     <if:description>
-      Uplink to ISP.
+     Uplink to ISP.
     </if:description>
     <ip:ipv4>
      <ip:address>
@@ -38,7 +38,7 @@
     <if:name>eth1</if:name>
     <if:type>ianaift:ethernetCsmacd</if:type>
     <if:description>
-      Interface to the internal network.
+     Interface to the internal network.
     </if:description>
     <ip:ipv4>
      <ip:address>
@@ -139,13 +139,17 @@
        <v4ur:ipv4>
         <v4ur:route>
          <v4ur:destination-prefix>0.0.0.0/0</v4ur:destination-prefix>
-         <v4ur:next-hop>192.0.2.2</v4ur:next-hop>
+         <v4ur:next-hop>
+	  <v4ur:next-hop-address>192.0.2.2</v4ur:next-hop-address>
+	 </v4ur:next-hop>
         </v4ur:route>
        </v4ur:ipv4>
        <v6ur:ipv6>
         <v6ur:route>
          <v6ur:destination-prefix>::/0</v6ur:destination-prefix>
-         <v6ur:next-hop>2001:db8:0:1::2</v6ur:next-hop>
+         <v6ur:next-hop>
+	  <v6ur:next-hop-address>2001:db8:0:1::2</v6ur:next-hop-address>
+	 </v6ur:next-hop>
         </v6ur:route>
        </v6ur:ipv6>
       </rt:static-routes>
@@ -157,7 +161,6 @@
    <rt:routing-instance>
     <rt:name>rtr0</rt:name>
     <rt:id>2718281828</rt:id>
-    <rt:router-id>192.0.2.1</rt:router-id>
     <rt:default-ribs>
      <rt:default-rib>
       <rt:address-family>v4ur:ipv4-unicast</rt:address-family>
@@ -200,14 +203,18 @@
      <rt:routes>
       <rt:route>
        <v4ur:destination-prefix>192.0.2.1/24</v4ur:destination-prefix>
-       <rt:outgoing-interface>eth0</rt:outgoing-interface>
+       <rt:next-hop>
+	<rt:outgoing-interface>eth0</rt:outgoing-interface>
+       </rt:next-hop>
        <rt:route-preference>0</rt:route-preference>
        <rt:source-protocol>rt:direct</rt:source-protocol>
        <rt:last-updated>2014-10-24T17:11:27+01:00</rt:last-updated>
       </rt:route>
       <rt:route>
        <v4ur:destination-prefix>198.51.100.0/24</v4ur:destination-prefix>
-       <rt:outgoing-interface>eth1</rt:outgoing-interface>
+       <rt:next-hop>
+	<rt:outgoing-interface>eth1</rt:outgoing-interface>
+       </rt:next-hop>
        <rt:source-protocol>rt:direct</rt:source-protocol>
        <rt:route-preference>0</rt:route-preference>
        <rt:last-updated>2014-10-24T17:11:27+01:00</rt:last-updated>
@@ -216,7 +223,9 @@
        <v4ur:destination-prefix>0.0.0.0/0</v4ur:destination-prefix>
        <rt:source-protocol>rt:static</rt:source-protocol>
        <rt:route-preference>5</rt:route-preference>
-       <v4ur:next-hop>192.0.2.2</v4ur:next-hop>
+       <rt:next-hop>
+	<v4ur:next-hop-address>192.0.2.2</v4ur:next-hop-address>
+       </rt:next-hop>
        <rt:last-updated>2014-10-24T18:02:45+01:00</rt:last-updated>
       </rt:route>
      </rt:routes>
@@ -228,21 +237,27 @@
      <rt:routes>
       <rt:route>
        <v6ur:destination-prefix>2001:db8:0:1::/64</v6ur:destination-prefix>
-       <rt:outgoing-interface>eth0</rt:outgoing-interface>
+       <rt:next-hop>
+	<rt:outgoing-interface>eth0</rt:outgoing-interface>
+       </rt:next-hop>
        <rt:source-protocol>rt:direct</rt:source-protocol>
        <rt:route-preference>0</rt:route-preference>
        <rt:last-updated>2014-10-24T17:11:27+01:00</rt:last-updated>
       </rt:route>
       <rt:route>
        <v6ur:destination-prefix>2001:db8:0:2::/64</v6ur:destination-prefix>
-       <rt:outgoing-interface>eth1</rt:outgoing-interface>
+       <rt:next-hop>
+	<rt:outgoing-interface>eth1</rt:outgoing-interface>
+       </rt:next-hop>
        <rt:source-protocol>rt:direct</rt:source-protocol>
        <rt:route-preference>0</rt:route-preference>
        <rt:last-updated>2014-10-24T17:11:27+01:00</rt:last-updated>
       </rt:route>
       <rt:route>
        <v6ur:destination-prefix>::/0</v6ur:destination-prefix>
-       <v6ur:next-hop>2001:db8:0:1::2</v6ur:next-hop>
+       <rt:next-hop>
+	<v6ur:next-hop>2001:db8:0:1::2</v6ur:next-hop>
+       </rt:next-hop>
        <rt:source-protocol>rt:static</rt:source-protocol>
        <rt:route-preference>5</rt:route-preference>
        <rt:last-updated>2014-10-24T18:02:45+01:00</rt:last-updated>

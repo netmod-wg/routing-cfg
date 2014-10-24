@@ -79,9 +79,9 @@
   </augment>
 
   <augment
-      target-node="/rt:routing-state/rt:ribs/rt:rib/rt:routes/rt:route/rt:next-hop-options/rt:simple-next-hop">
+      target-node="/rt:routing-state/rt:ribs/rt:rib/rt:routes/rt:route/rt:next-hop/rt:next-hop-options/rt:simple-next-hop">
     <when
-        condition="../../rt:address-family = 'v4ur:ipv4-unicast'">
+        condition="../../../rt:address-family = 'v4ur:ipv4-unicast'">
       <description>
         <text>This augment is valid only for IPv4 unicast.</text>
       </description>
@@ -90,7 +90,7 @@
       <text>This leaf augments the 'simple-next-hop' case of IPv4
       unicast routes.</text>
     </description>
-    <leaf name="next-hop">
+    <leaf name="next-hop-address">
       <type name="inet:ipv4-address"/>
       <description>
         <text>IPv4 address of the next-hop.</text>
@@ -99,19 +99,20 @@
   </augment>
 
   <augment
-      target-node="/rt:routing-state/rt:ribs/rt:rib/rt:routes/rt:route/rt:next-hop-options/rt:next-hop-list/rt:next-hop-list/rt:next-hop">
-    <if-feature name="rt:multipath-routes"/>
+      target-node="/rt:routing-state/rt:next-hop-lists/rt:next-hop-list/rt:next-hop/rt:next-hop-options/rt:simple-next-hop">
     <when
-        condition="../../../../rt:address-family = 'v4ur:ipv4-unicast'">
+        condition="../rt:address-family = 'v4ur:ipv4-unicast'">
       <description>
         <text>This augment is valid only for IPv4 unicast.</text>
       </description>
     </when>
     <description>
-      <text>This leaf augments the 'next-hop-list' case of IPv4 unicast
-      routes.</text>
+      <text>
+	This leaf augments next-hop list with IPv4 next-hop address.
+	routes.
+      </text>
     </description>
-    <leaf name="address">
+    <leaf name="next-hop-address">
       <type name="inet:ipv4-address"/>
       <description>
         <text>IPv4 address of the next-hop.</text>
@@ -155,86 +156,56 @@
             <text>Textual description of the route.</text>
           </description>
         </leaf>
-	<choice name="next-hop-options">
-	  <mandatory value="true"/>
-	  <description>
-	    <text>Options for defining next-hop(s) in static
-	    routes.</text>
-	  </description>
-	  <case name="special-next-hop">
-	    <uses name="rt:special-next-hop"/>
-	  </case>
-	  <case name="simple-next-hop">
-	    <leaf name="next-hop">
-	      <type name="inet:ipv4-address"/>
-	      <description>
-		<text>IPv4 address of the next-hop.</text>
-	      </description>
-	    </leaf>
-	    <leaf name="outgoing-interface">
-	      <type name="leafref">
-		<path value="../../../../../../rt:interfaces/rt:interface/rt:name"/>
-	      </type>
-	      <description>
-		<text>
-		  <h:p>Name of the outgoing interface.</h:p>
-		  <h:p>Only interfaces configured for the ancestor
-		  routing instance can be given.</h:p>
-		</text>
-	      </description>
-	    </leaf>
-	  </case>
-	  <case name="next-hop-list">
-	    <if-feature name="rt:multipath-routes"/>
-	    <container name="next-hop-list">
-	      <description>
-		<text>Configuration of multiple next-hops.</text>
-	      </description>
-	      <list name="next-hop">
-		<key value="id"/>
+	<container name="next-hop">
+	  <grouping name="next-hop-content">
+	    <uses name="rt:next-hop-content">
+	      <augment target-node="next-hop-options">
 		<description>
-		  <text>An entry of a next-hop list.</text>
+		  <text>Add next-hop address case.</text>
 		</description>
-		<leaf name="id">
-		  <type name="uint32"/>
-		  <description>
-		    <text>
-		      <h:p>Unique numeric identifier of the entry.</h:p>
-		      <h:p>This value is unrelated to system-assigned
-		      'id' parameters of next-hops in RIBs.</h:p>
-		    </text>
-		  </description>
-		</leaf>
-		<leaf name="address">
+		<leaf name="next-hop-address">
 		  <type name="inet:ipv4-address"/>
 		  <description>
 		    <text>IPv4 address of the next-hop.</text>
 		  </description>
 		</leaf>
-		<leaf name="outgoing-interface">
-		  <type name="leafref">
-		    <path value="../../../../../../../../rt:interfaces/rt:interface/rt:name"/>
-		  </type>
-		  <description>
-		    <text>
-		      <h:p>Name of the outgoing interface.</h:p>
-		      <h:p>Only interfaces configured for the ancestor
-		      routing instance can be given.</h:p>
-		    </text>
-		  </description>
-		</leaf>
-		<uses name="rt:next-hop-classifiers">
-		  <refine target-node="priority">
-		    <default value="primary"/>
-		  </refine>
-		  <refine target-node="weight">
-		    <default value="0"/>
-		  </refine>
-		</uses>
-	      </list>
-	    </container>
-	  </case>
-	</choice>
+	      </augment>
+	    </uses>
+	    <description>
+	      <text>
+		Next-hop content for IPv4 unicast static routes.
+	      </text>
+	    </description>
+	  </grouping>
+	  <choice name="simple-or-list">
+	    <description>
+	      <text>Options for next-hops.</text>
+	    </description>
+	    <case name="simple-next-hop">
+	      <uses name="next-hop-content"/>
+	    </case>
+	    <list name="multi-path-entry">
+	      <description>
+		<text>List of alternative next-hops.</text>
+	      </description>
+	      <if-feature name="rt:multipath-routes"/>
+	      <key value="name"/>
+	      <leaf name="name">
+		<type name="string"/>
+		<description>
+		  <text>
+		    A unique identifier of the next-hop entry.
+		  </text>
+		</description>
+	      </leaf>
+	      <uses name="next-hop-content"/>
+	      <uses name="rt:next-hop-classifiers"/>
+	    </list>
+	  </choice>
+	  <description>
+	    <text>Configuration of next-hop.</text>
+	  </description>
+	</container>
       </list>
     </container>
   </augment>
@@ -279,8 +250,8 @@
   </augment>
 
   <augment
-      target-node="/rt:active-route/rt:output/rt:route/rt:next-hop-options/rt:simple-next-hop">
-    <when condition="rt:address-family='v4ur:ipv4-unicast'">
+      target-node="/rt:active-route/rt:output/rt:route/rt:next-hop/rt:next-hop-options/rt:simple-next-hop">
+    <when condition="../rt:address-family='v4ur:ipv4-unicast'">
       <description>
 	<text>This augment is valid only for IPv4 unicast.</text>
       </description>
@@ -289,27 +260,7 @@
       <text>This leaf augments the 'simple-next-hop' case in the reply
       to the 'rt:active-route' operation.</text>
     </description>
-    <leaf name="next-hop">
-      <type name="inet:ipv4-address"/>
-      <description>
-        <text>IPv4 address of the next-hop.</text>
-      </description>
-    </leaf>
-  </augment>
-
-  <augment
-      target-node="/rt:active-route/rt:output/rt:route/rt:next-hop-options/rt:next-hop-list/rt:next-hop-list/rt:next-hop">
-    <if-feature name="rt:multipath-routes"/>
-    <when condition="../../rt:address-family='v4ur:ipv4-unicast'">
-      <description>
-        <text>This augment is valid only for IPv4 unicast.</text>
-      </description>
-    </when>
-    <description>
-      <text>This leaf augments the 'next-hop-list' case in the reply to
-      the 'rt:active-route' operation.</text>
-    </description>
-    <leaf name="address">
+    <leaf name="next-hop-address">
       <type name="inet:ipv4-address"/>
       <description>
         <text>IPv4 address of the next-hop.</text>

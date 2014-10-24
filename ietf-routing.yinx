@@ -225,6 +225,18 @@
     </description>
   </typedef>
 
+  <typedef name="next-hop-list-ref">
+    <type name="leafref">
+      <path value="/rt:routing-state/rt:next-hop-lists/rt:next-hop-list/rt:id"/>
+    </type>
+    <description>
+      <text>
+	This type is used for leafs that reference a next-hop list (in
+	state data). 
+      </text>
+    </description>
+  </typedef>
+
   <typedef name="route-filter-ref">
     <type name="leafref">
       <path value="/rt:routing/rt:route-filters/rt:route-filter/rt:name"/>
@@ -320,62 +332,6 @@
     </description>
   </grouping>
 
-  <grouping name="outgoing-interface">
-    <description>
-      <text>This grouping provides a leaf with the outgoing interface
-      (for use in next-hops).</text>
-    </description>
-    <leaf name="outgoing-interface">
-      <type name="leafref">
-	<path value="/rt:routing-state/rt:routing-instance/rt:interfaces/rt:interface/rt:name"/>
-      </type>
-      <description>
-	<text>
-	  Name of the outgoing interface.
-	</text>
-      </description>
-    </leaf>
-  </grouping>
-
-  <grouping name="special-next-hop">
-    <description>
-      <text>This grouping provides a leaf for specifying special
-      next-hop options.</text>
-    </description>
-      <leaf name="special-next-hop">
-	<type name="enumeration">
-	  <enum name="blackhole">
-	    <description>
-	      <text>Silently discard the packet.</text>
-	    </description>
-	  </enum>
-	  <enum name="unreachable">
-	    <description>
-	      <text>Discard the packet and notify the sender with an
-	      error message indicating that the destination host is
-	      unreachable.</text>
-	    </description>
-	  </enum>
-	  <enum name="prohibit">
-	    <description>
-	      <text>Discard the packet and notify the sender with an
-	      error message indicating that the communication is
-	      administratively prohibited.</text>
-	    </description>
-	  </enum>
-	  <enum name="receive">
-	    <description>
-	      <text>The packet will be received by the local
-	      system.</text>
-	    </description>
-	  </enum>
-	</type>
-	<description>
-	  <text>Special next-hop options.</text>
-	</description>
-      </leaf>
-  </grouping>
-
   <grouping name="next-hop-classifiers">
     <description>
       <text>This grouping provides two next-hop classifiers.</text>
@@ -430,42 +386,137 @@
       </description>
     </leaf>
   </grouping>
+
+  <grouping name="special-next-hop">
+    <description>
+      <text>
+	This grouping provides a leaf with enumeration of special
+	next-hops.
+      </text>
+    </description>
+    <leaf name="special-next-hop">
+      <type name="enumeration">
+	<enum name="blackhole">
+	  <description>
+	    <text>Silently discard the packet.</text>
+	  </description>
+	</enum>
+	<enum name="unreachable">
+	  <description>
+	    <text>Discard the packet and notify the sender with an
+	    error message indicating that the destination host is
+	    unreachable.</text>
+	  </description>
+	</enum>
+	<enum name="prohibit">
+	  <description>
+	    <text>Discard the packet and notify the sender with an
+	    error message indicating that the communication is
+	    administratively prohibited.</text>
+	  </description>
+	</enum>
+	<enum name="receive">
+	  <description>
+	    <text>The packet will be received by the local
+	    system.</text>
+	  </description>
+	</enum>
+      </type>
+      <description>
+	<text>Special next-hop options.</text>
+      </description>
+    </leaf>
+  </grouping>
   
   <grouping name="next-hop-content">
     <description>
-      <text>Generic parameters of next-hops in routes.</text>
+      <text>Generic parameters of next-hops in static routes.</text>
     </description>
     <choice name="next-hop-options">
       <mandatory value="true"/>
       <description>
-	<text>Options for expressing the next-hop in routes.</text>
+	<text>Options for next-hops in static routes.</text>
       </description>
+      <case name="simple-next-hop">
+	<leaf name="outgoing-interface">
+	  <type name="leafref">
+	    <path value="/rt:routing/rt:routing-instance/rt:interfaces/rt:interface/rt:name"/>
+	  </type>
+	  <description>
+	    <text>
+	      Name of the outgoing interface.
+	    </text>
+	  </description>
+	</leaf>
+	<description>
+	  <text>
+	    <h:p>Simple next-hop is specified as an outgoing interface,
+	    next-hop address or both.</h:p>
+	    <h:p>Address-family-specific modules are expected to
+	    provide 'next-hop-address' leaf via augmentation.</h:p>
+	  </text>
+	</description>
+      </case>
       <case name="special-next-hop">
 	<uses name="special-next-hop"/>
-      </case>
-      <case name="simple-next-hop">
-	<uses name="outgoing-interface"/>
-      </case>
-      <case name="next-hop-list">
-	<if-feature name="multipath-routes"/>
-	<container name="next-hop-list">
-	  <description>
-	    <text>Container for multiple next-hops.</text>
-	  </description>
-	  <list name="next-hop">
-	    <key value="id"/>
-	    <description>
-	      <text>An entry of a next-hop list.</text>
-	    </description>
-	    <uses name="state-entry-id"/>
-	    <uses name="outgoing-interface"/>
-	    <uses name="next-hop-classifiers"/>
-	  </list>
-	</container>
       </case>
     </choice>
   </grouping>
 
+  <grouping name="next-hop-state-content">
+    <description>
+      <text>Generic parameters of next-hops in state data.</text>
+    </description>
+    <choice name="next-hop-options">
+      <mandatory value="true"/>
+      <description>
+	<text>Options for next-hops in state data.</text>
+      </description>
+      <case name="simple-next-hop">
+	<leaf name="outgoing-interface">
+	  <type name="leafref">
+	    <path value="/rt:routing-state/rt:routing-instance/rt:interfaces/rt:interface/rt:name"/>
+	  </type>
+	  <description>
+	    <text>
+	      Name of the outgoing interface.
+	    </text>
+	  </description>
+	</leaf>
+	<description>
+	  <text>
+	    <h:p>Simple next-hop is specified as an outgoing interface,
+	    next-hop address or both.</h:p>
+	    <h:p>Address-family-specific modules are expected to
+	    provide 'next-hop-address' leaf via augmentation.</h:p>
+	  </text>
+	</description>
+      </case>
+      <case name="special-next-hop">
+	<uses name="special-next-hop"/>
+      </case>
+      <leaf name="next-hop-list">
+	<if-feature name="multipath-routes"/>
+	<type name="next-hop-list-ref"/>
+	<description>
+	  <text>
+	    Reference to a next-hop list.
+	  </text>
+	</description>
+      </leaf>
+      <leaf name="use-rib">
+	<if-feature name="multiple-ribs"/>
+	<type name="rib-state-ref"/>
+	<description>
+	  <text>
+	    Reference to a RIB in which a new look-up is to be
+	    performed.
+	  </text>
+	</description>
+      </leaf>
+    </choice>
+  </grouping>
+  
   <grouping name="route-metadata">
     <description>
       <text>Route metadata.</text>
@@ -718,6 +769,27 @@
         </list>
       </container>
     </list>
+    <container name="next-hop-lists">
+      <description>
+	<text>Container for next-hop lists.</text>
+      </description>
+      <if-feature name="rt:multipath-routes"/>
+      <list name="next-hop-list">
+	<key value="id"/>
+	<uses name="state-entry-id"/>
+        <uses name="address-family"/>
+	<list name="next-hop">
+	  <description>
+	    <text>Entry in a next-hop list.</text>
+	  </description>
+	  <uses name="next-hop-state-content"/>
+	  <uses name="next-hop-classifiers"/>
+	</list>
+	<description>
+	  <text>Next-hop list.</text>
+	</description>
+      </list>
+    </container>
     <container name="ribs">
       <description>
         <text>Container for RIBs.</text>
@@ -751,7 +823,7 @@
         <container name="routes">
           <description>
             <text>
-              Current contents of the RIB.
+              Current content of the RIB.
             </text>
           </description>
           <list name="route">
@@ -773,7 +845,12 @@
 		</text>
 	      </description>
 	    </leaf>
-	    <uses name="next-hop-content"/>
+	    <container name="next-hop">
+	      <uses name="next-hop-state-content"/>
+	      <description>
+		<text>Route's next-hop attribute.</text>
+	      </description>
+	    </container>
 	    <uses name="route-metadata"/>
           </list>
         </container>
@@ -1276,7 +1353,12 @@
     <output>
       <container name="route">
         <uses name="address-family"/>
-        <uses name="next-hop-content"/>
+	<container name="next-hop">
+          <uses name="next-hop-state-content"/>
+	  <description>
+	    <text>Route's next-hop attribute.</text>
+	  </description>
+	</container>
 	<uses name="route-metadata"/>
         <description>
           <text>
