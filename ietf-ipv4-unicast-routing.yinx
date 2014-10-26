@@ -184,7 +184,7 @@
 	    <case name="simple-next-hop">
 	      <uses name="next-hop-content"/>
 	    </case>
-	    <list name="multi-path-entry">
+	    <list name="multipath-entry">
 	      <description>
 		<text>List of alternative next-hops.</text>
 	      </description>
@@ -213,7 +213,7 @@
   <!-- RPC methods -->
 
   <augment
-      target-node="/rt:active-route/rt:input/rt:destination-address">
+      target-node="/rt:fib-route/rt:input/rt:destination-address">
     <when condition="rt:address-family='v4ur:ipv4-unicast'">
       <description>
         <text>This augment is valid only for IPv4 unicast.</text>
@@ -221,7 +221,7 @@
     </when>
     <description>
       <text>This leaf augments the 'rt:destination-address' parameter
-      of the 'rt:active-route' operation.</text>
+      of the 'rt:fib-route' operation.</text>
     </description>
     <leaf name="address">
       <type name="inet:ipv4-address"/>
@@ -231,14 +231,14 @@
     </leaf>
   </augment>
 
-  <augment target-node="/rt:active-route/rt:output/rt:route">
+  <augment target-node="/rt:fib-route/rt:output/rt:route">
     <when condition="rt:address-family='v4ur:ipv4-unicast'">
       <description>
 	<text>This augment is valid only for IPv4 unicast.</text>
       </description>
     </when>
     <description>
-      <text>This leaf augments the reply to the 'rt:active-route'
+      <text>This leaf augments the reply to the 'rt:fib-route'
       operation.</text>
     </description>
     <leaf name="destination-prefix">
@@ -250,7 +250,7 @@
   </augment>
 
   <augment
-      target-node="/rt:active-route/rt:output/rt:route/rt:next-hop/rt:next-hop-options/rt:simple-next-hop">
+      target-node="/rt:fib-route/rt:output/rt:route/rt:next-hop/rt:next-hop-options/rt:simple-next-hop">
     <when condition="../rt:address-family='v4ur:ipv4-unicast'">
       <description>
 	<text>This augment is valid only for IPv4 unicast.</text>
@@ -258,7 +258,7 @@
     </when>
     <description>
       <text>This leaf augments the 'simple-next-hop' case in the reply
-      to the 'rt:active-route' operation.</text>
+      to the 'rt:fib-route' operation.</text>
     </description>
     <leaf name="next-hop-address">
       <type name="inet:ipv4-address"/>

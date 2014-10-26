@@ -287,19 +287,20 @@
       <section anchor="sec.simple-advanced"
                title="Features of Advanced Routers">
 
-	<t>The core routing data model attempts to address devices with
-	elementary routing functions as well as advanced routers. For
-	simple devices, some parts and options of the data model are not
-	needed and would represent unnecessary complications for the
-	implementation. Therefore, the core routing data model makes the
-	advanced functionality optional by means of two YANG features:
+	<t>The core routing data model attempts to address devices
+	with elementary routing functions as well as advanced
+	routers. For simple devices, some parts and options of the
+	data model are not needed and would represent unnecessary
+	complications for the implementation. Therefore, the core
+	routing data model makes the configuration of some advanced
+	functions optional to implement by means of two YANG features:
 	<list style="symbols">
           <t>"multiple-ribs" - indicates that the device supports
-          multiple RIBs per address family, routing protocols connected
-          to non-default RIBs, and RIBs configured as receivers of
-          routes from other RIBs.</t>
+          configuration of user-defined RIBs, routing protocols
+          connected to non-default RIBs, and RIBs configured as
+          receivers of routes from other RIBs.</t>
           <t>"multipath-routes" - indicates that the device supports
-          routes with multiple next-hops.</t>
+          configuration of routes with multiple next-hops.</t>
 	</list></t>
 	<t>See the "ietf-routing" module for details.</t>
 
@@ -410,26 +411,46 @@
 	system. The core routing data model defines only the following
 	minimal set of route attributes:
 	<list style="symbols">
-          <t>destination prefix: IP prefix specifying the set of
+          <t>"destination-prefix": IP prefix specifying the set of
           destination addresses for which the route may be used. This
           attribute is mandatory.</t>
-	  <t>route preference: an integer value (also known as
+	  <t>"route-preference": an integer value (also known as
 	  administrative distance) that is used for selecting a
 	  preferred route among routes with the same destination
 	  prefix. A lower value means a more preferred route.</t>
-          <t>next-hop or action: outgoing interface, IP address of one
-          or more adjacent routers to which a packet should be
-          forwarded, or a special action such as discarding the
-          packet.</t>
+          <t>"next-hop": determines the action to be performed with a
+	  packet. See below for details.</t>
 	</list>
 	</t>
-	<t>The above list of route attributes suffices for a simple
-	static routing configuration. It is expected that future modules
-	defining routing protocols will add other route attributes such
-	as metrics or preferences.</t>
-	<t>Routes and their attributes are used both in configuration
-	data, for example as manually configured static routes, and in
-	state data, for example as entries in RIBs.</t>
+	<t>The choice of next-hops comprises the following cases:
+	<list style="symbols">
+	  <t>simple next-hop - IP address of the next-hop router,
+	  outgoing interface, or both.</t>
+	  <t>special next-hop - a keyword indicating special packet
+	  handling, one of:
+	  <list>
+	    <t>"blackhole" - silently discard the packet;</t>
+	    <t>"unreachable" - discard the packet and notify the
+	    sender with a "destination unreachable" error message;</t>
+	    <t>"prohibit" - discard the packet notify the sender with
+	    an "administratively prohibited" error message.</t>
+	  </list>
+	  </t>
+	  <t>next-hop list reference - each next-hop list is a set of
+	  next-hops that may also contain a reference to another
+	  next-hop list.</t>
+	  <t>RIB reference - a new look-up is to be performed in the
+	  specified RIB.</t>
+	</list>
+	</t>
+	<t>It is expected that future modules defining routing
+	protocols will add other route attributes such as metrics or
+	preferences.</t>
+	<t>Routes are primarily state data that appear as entries of
+	RIBs (<xref target="sec.rib"/>) but they may be also found in
+	configuration data, for example as manually configured static
+	routes. In the latter case, configurable route attributes are
+	generally a subset of route attributes described above.</t>
       </section>
 
       <section anchor="sec.rib" title="Routing Information Base (RIB)">
@@ -537,7 +558,7 @@
 	  protocol types - "direct" and "static". Both are in fact
 	  pseudo-protocols, which means they are confined to the local
 	  device and do not exchange any routing information with
-	  neighboring routers. Routes from both "direct" and "static"
+	  adjacent routers. Routes from both "direct" and "static"
 	  protocol instances are passed to the connected RIBs (subject
 	  to route filters, if any), but an exchange in the opposite
 	  direction is not allowed.</t>
@@ -564,6 +585,16 @@
 	    &static-routes-tree.txt;
 	  </figure>
 
+	  <t>A next-hop in static routes may be configured as a simple
+	  next-hop (IP address, outgoing interface or both), special
+	  next-hop or a list of multi-path next-hop entries that is
+	  used either for backup routes of for equal-cost multi-path
+	  (ECMP) routing. The last option is available only on devices
+	  that advertise the feature "rt:multipath-routes". Moreover,
+	  unlike next-hop lists in state data, a list of next-hop
+	  entries in a static route cannot be recursive, i.e., each
+	  entry of that list can only be a simple or special
+	  next-hop.</t>
 	</section>
 
 	<section anchor="sec.newproto"
@@ -589,7 +620,7 @@
             and
             <figure>
               <artwork><![CDATA[
-    /rt:active-route/rt:output/rt:route,]]>
+    /rt:fib-route/rt:output/rt:route,]]>
               </artwork>
             </figure>
             and possibly other places in the configuration, state
@@ -644,9 +675,11 @@
 
 	<t>The "ietf-routing" module defines two RPC operations:
 	<list style="symbols">
-          <t>active-route: query a routing instance for the active route
-          that is currently used for sending datagrams to a destination
-          host whose address is passed as an input parameter.</t>
+          <t>fib-route: query a routing instance for the active route
+          in the Forwarding Information Base (FIB). It is the route
+          that is currently used for sending datagrams to a
+          destination host whose address is passed as an input
+          parameter.</t>
           <t>route-count: retrieve the total number of entries in a
           RIB.</t>
 	</list></t>
@@ -1034,12 +1067,18 @@ reference:    RFC XXXX
 	    'destination-prefix' the only key.</t>
 	    <t>Added 'route-preference' as a new attribute of routes
 	    in RIB.</t>
-	    <t>Added 'preferred' as a new attribute of routes in
+	    <t>Added 'active' as a new attribute of routes in
 	    RIBs.</t>
+	    <t>Renamed RPC operation 'active-route' to 'fib-route.</t>
 	    <t>Added 'route-preference' as a new parameter of routing
 	    protocol instances, both in configuration and state data.</t>
 	    <t>Renamed identity 'rt:standard-routing-instance' to
 	    'rt:default-routing-instance'.</t>
+	    <t>Added next-hop lists to state data.</t>
+	    <t>Added two cases for specifying next-hops indirectly -
+	    via a new RIB or a recursive list of next-hops.</t>
+	    <t>Reorganized next-hop in static routes.</t>
+	    <t>Removed all 'if-feature' statements from state data.</t>
 	  </list>
 	</t>
       </section>

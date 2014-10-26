@@ -496,7 +496,6 @@
 	<uses name="special-next-hop"/>
       </case>
       <leaf name="next-hop-list">
-	<if-feature name="multipath-routes"/>
 	<type name="next-hop-list-ref"/>
 	<description>
 	  <text>
@@ -505,7 +504,6 @@
 	</description>
       </leaf>
       <leaf name="use-rib">
-	<if-feature name="multiple-ribs"/>
 	<type name="rib-state-ref"/>
 	<description>
 	  <text>
@@ -533,7 +531,7 @@
 	</text>
       </description>
     </leaf>
-    <leaf name="preferred">
+    <leaf name="active">
       <type name="empty"/>
       <description>
 	<text>
@@ -773,7 +771,6 @@
       <description>
 	<text>Container for next-hop lists.</text>
       </description>
-      <if-feature name="rt:multipath-routes"/>
       <list name="next-hop-list">
 	<key value="id"/>
 	<uses name="state-entry-id"/>
@@ -855,7 +852,6 @@
           </list>
         </container>
         <container name="recipient-ribs">
-	  <if-feature name="multiple-ribs"/>
           <description>
             <text>Container for recipient RIBs.</text>
           </description>
@@ -1313,11 +1309,11 @@
 
   <!-- RPC methods -->
 
-  <rpc name="active-route">
+  <rpc name="fib-route">
     <description>
       <text>
-        <h:p>Return the active route that a routing-instance uses for
-	sending packets to a destination address.</h:p>
+        <h:p>Return the active FIB route that a routing-instance uses
+        for sending packets to a destination address.</h:p>
       </text>
     </description>
     <input>
