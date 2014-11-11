@@ -290,7 +290,7 @@
       <text>This leaf augments the 'simple-next-hop' case of IPv6
       unicast routes.</text>
     </description>
-    <leaf name="next-hop">
+    <leaf name="next-hop-address">
       <type name="inet:ipv6-address"/>
       <description>
         <text>IPv6 address of the next-hop.</text>
