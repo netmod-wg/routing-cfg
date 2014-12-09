@@ -809,7 +809,7 @@
 
   <augment
       target-node="/rt:fib-route/rt:output/rt:route/rt:next-hop/rt:next-hop-options/rt:simple-next-hop">
-    <when condition="../rt:address-family='v4ur:ipv6-unicast'">
+    <when condition="../rt:address-family='v6ur:ipv6-unicast'">
       <description>
 	<text>This augment is valid only for IPv6 unicast.</text>
       </description>
