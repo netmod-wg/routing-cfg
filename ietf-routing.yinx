@@ -151,30 +151,6 @@
     </description>
   </identity>
 
-  <identity name="route-filter">
-    <description>
-      <text>
-        Base identity from which all route filters are derived.
-      </text>
-    </description>
-  </identity>
-  <identity name="deny-all-route-filter">
-    <base name="route-filter"/>
-    <description>
-      <text>
-        Route filter that blocks all routes.
-      </text>
-    </description>
-  </identity>
-  <identity name="allow-all-route-filter">
-    <base name="route-filter"/>
-    <description>
-      <text>
-        Route filter that permits all routes.
-      </text>
-    </description>
-  </identity>
-
   <!-- Type Definitions -->
 
   <typedef name="routing-instance-ref">
@@ -233,30 +209,6 @@
       <text>
 	This type is used for leafs that reference a next-hop list (in
 	state data). 
-      </text>
-    </description>
-  </typedef>
-
-  <typedef name="route-filter-ref">
-    <type name="leafref">
-      <path value="/rt:routing/rt:route-filters/rt:route-filter/rt:name"/>
-    </type>
-    <description>
-      <text>
-        This type is used for leafs that reference a route filter
-        configuration.
-      </text>
-    </description>
-  </typedef>
-
-  <typedef name="route-filter-state-ref">
-    <type name="leafref">
-      <path value="/rt:routing-state/rt:route-filters/rt:route-filter/rt:name"/>
-    </type>
-    <description>
-      <text>
-        This type is used for leafs that reference state data of a
-        route filter.
       </text>
     </description>
   </typedef>
@@ -732,36 +684,6 @@
                   </text>
                 </description>
               </leaf>
-              <leaf name="import-filter">
-                <type name="route-filter-state-ref"/>
-                <description>
-                  <text>
-                    <h:p>Reference to a route filter that is used for
-                    filtering routes passed from this routing protocol
-                    instance to the RIB specified by the
-                    'rib-name' sibling node.</h:p>
-                    <h:p>If this leaf is not present, the behavior is
-                    protocol-specific, but typically it means that all
-                    routes are accepted.</h:p>
-                  </text>
-                </description>
-              </leaf>
-              <leaf name="export-filter">
-                <type name="route-filter-state-ref"/>
-                <description>
-                  <text>
-                    <h:p>Reference to a route filter that is used for
-                    filtering routes passed from the RIB
-                    specified by the 'rib-name' sibling node to this
-                    routing protocol instance.</h:p>
-                    <h:p>If this leaf is not present, the behavior is
-                    protocol-specific - typically it means that all
-                    routes are accepted.</h:p>
-                    <h:p>The 'direct' and 'static' pseudo-protocols
-                    accept no routes from any RIB.</h:p>
-                  </text>
-                </description>
-              </leaf>
             </list>
           </container>
         </list>
@@ -869,54 +791,8 @@
                 <text>The name of the recipient RIB.</text>
               </description>
             </leaf>
-            <leaf name="filter">
-              <type name="route-filter-state-ref"/>
-              <description>
-                <text>
-                  A route filter which is applied to the routes
-                  passed to the recipient RIB.
-                </text>
-              </description>
-            </leaf>
           </list>
         </container>
-      </list>
-    </container>
-    <container name="route-filters">
-      <description>
-        <text>Container for route filters.</text>
-      </description>
-      <list name="route-filter">
-        <key value="name"/>
-        <description>
-          <text>
-            <h:p>Route filters are used for filtering and/or
-            manipulating routes that are passed between a routing
-            protocol and a RIB and vice versa, or between
-            two RIBs.</h:p>
-            <h:p>It is expected that other modules augment this list
-            with contents specific for a particular route filter
-            type.</h:p>
-          </text>
-        </description>
-        <leaf name="name">
-          <type name="string"/>
-          <description>
-            <text>The name of the route filter.</text>
-          </description>
-        </leaf>
-        <leaf name="type">
-          <type name="identityref">
-            <base name="route-filter"/>
-          </type>
-          <mandatory value="true"/>
-          <description>
-            <text>
-              Type of the route-filter - an identity derived from the
-              'route-filter' base identity.
-            </text>
-          </description>
-        </leaf>
       </list>
     </container>
   </container>
@@ -1152,18 +1028,6 @@
                   </text>
                 </description>
               </leaf>
-              <leaf name="import-filter">
-                <type name="route-filter-ref"/>
-                <description>
-                  <text>Configuration of import filter.</text>
-                </description>
-              </leaf>
-              <leaf name="export-filter">
-                <type name="route-filter-ref"/>
-                <description>
-                  <text>Configuration of export filter.</text>
-                </description>
-              </leaf>
             </list>
           </container>
           <container name="static-routes">
@@ -1258,51 +1122,8 @@
                 <text>The name of the recipient RIB.</text>
               </description>
             </leaf>
-            <leaf name="filter">
-              <type name="route-filter-ref"/>
-              <description>
-                <text>
-                  A route filter which is applied to the routes
-                  passed to the recipient RIB.
-                </text>
-              </description>
-            </leaf>
           </list>
         </container>
-      </list>
-    </container>
-    <container name="route-filters">
-      <description>
-        <text>Configuration of route filters.</text>
-      </description>
-      <list name="route-filter">
-        <key value="name"/>
-        <description>
-          <text>Each entry configures a named route filter.</text>
-        </description>
-        <leaf name="name">
-          <type name="string"/>
-          <description>
-            <text>The name of the route filter.</text>
-          </description>
-        </leaf>
-        <leaf name="description">
-          <type name="string"/>
-          <description>
-            <text>Textual description of the route filter.</text>
-          </description>
-        </leaf>
-        <leaf name="type">
-          <type name="identityref">
-            <base name="route-filter"/>
-          </type>
-          <mandatory value="true"/>
-          <description>
-            <text>
-              Type of the route filter..
-            </text>
-          </description>
-        </leaf>
       </list>
     </container>
   </container>
