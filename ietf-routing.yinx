@@ -240,28 +240,6 @@
     </description>
   </grouping>
 
-  <grouping name="state-entry-id">
-    <leaf name="id">
-      <type name="uint64"/>
-      <description>
-	<text>
-	  <h:p>Unique numerical identifier of a list entry in
-	  operational state. It may be used by protocols or tools that
-	  inspect and/or manipulate operational state data and prefer
-	  fixed-size integers as list entry handles.</h:p>
-	  <h:p>These identifiers are always ephemeral, i.e., they may
-	  change after a reboot.</h:p>
-	</text>
-      </description>
-    </leaf>
-    <description>
-      <text>
-	This grouping provides a unique identifier for entries in
-	several operational state lists.
-      </text>
-    </description>
-  </grouping>
-
   <grouping name="router-id">
     <leaf name="router-id">
       <type name="yang:dotted-quad"/>
@@ -515,7 +493,6 @@
     <list name="routing-instance">
       <min-elements value="1"/>
       <key value="name"/>
-      <unique tag="id"/>
       <description>
         <text>
           <h:p>Each list entry is a container for operational state
@@ -536,11 +513,6 @@
 	  </text>
         </description>
       </leaf>
-      <uses name="state-entry-id">
-	<refine target-node="id">
-	  <mandatory value="true"/>
-	</refine>
-      </uses>
       <leaf name="type">
         <type name="identityref">
           <base name="routing-instance"/>
@@ -695,7 +667,14 @@
       </description>
       <list name="next-hop-list">
 	<key value="id"/>
-	<uses name="state-entry-id"/>
+	<leaf name="id">
+	  <type name="uint64"/>
+	  <description>
+	    <text>
+	      Unique numerical identifier of a next-hop-list entry.
+	    </text>
+	  </description>
+	</leaf>
         <uses name="address-family"/>
 	<list name="next-hop">
 	  <description>
@@ -715,7 +694,6 @@
       </description>
       <list name="rib">
         <key value="name"/>
-	<unique tag="id"/>
         <description>
           <text>
             <h:p>Each entry represents a RIB identified by the
@@ -733,11 +711,6 @@
             <text>The name of the RIB.</text>
           </description>
         </leaf>
-	<uses name="state-entry-id">
-	  <refine target-node="id">
-	    <mandatory value="true"/>
-	  </refine>
-	</uses>
         <uses name="address-family"/>
         <container name="routes">
           <description>

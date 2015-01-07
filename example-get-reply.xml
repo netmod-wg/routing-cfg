@@ -160,7 +160,6 @@
   <rt:routing-state>
    <rt:routing-instance>
     <rt:name>rtr0</rt:name>
-    <rt:id>2718281828</rt:id>
     <rt:default-ribs>
      <rt:default-rib>
       <rt:address-family>v4ur:ipv4-unicast</rt:address-family>
@@ -198,7 +197,6 @@
    <rt:ribs>
     <rt:rib>
      <rt:name>ipv4-master</rt:name>
-     <rt:id>897932384</rt:id>
      <rt:address-family>v4ur:ipv4-unicast</rt:address-family>
      <rt:routes>
       <rt:route>
@@ -232,7 +230,6 @@
     </rt:rib>
     <rt:rib>
      <rt:name>ipv6-master</rt:name>
-     <rt:id>751058209</rt:id>
      <rt:address-family>v6ur:ipv6-unicast</rt:address-family>
      <rt:routes>
       <rt:route>
