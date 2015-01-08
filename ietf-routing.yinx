@@ -65,13 +65,6 @@
     </description>
   </feature>
 
-  <feature name="multipath-routes">
-    <description>
-      <text>This feature indicates that the server supports multipath
-      routes that have a list of next-hops.</text>
-    </description>
-  </feature>
-
   <feature name="router-id">
     <description>
       <text>
@@ -201,18 +194,6 @@
     </description>
   </typedef>
 
-  <typedef name="next-hop-list-ref">
-    <type name="leafref">
-      <path value="/rt:routing-state/rt:next-hop-lists/rt:next-hop-list/rt:id"/>
-    </type>
-    <description>
-      <text>
-	This type is used for leafs that reference a next-hop list (in
-	state data). 
-      </text>
-    </description>
-  </typedef>
-
   <typedef name="route-preference">
     <type name="uint32"/>
     <description>
@@ -262,60 +243,6 @@
     </description>
   </grouping>
 
-  <grouping name="next-hop-classifiers">
-    <description>
-      <text>This grouping provides two next-hop classifiers.</text>
-    </description>
-    <leaf name="priority">
-      <type name="enumeration">
-	<enum name="primary">
-	  <value value="1"/>
-	  <description>
-	    <text>Primary next-hop.</text>
-	  </description>
-	</enum>
-	<enum name="backup">
-	  <value value="2"/>
-	  <description>
-	    <text>Backup next-hop.</text>
-	  </description>
-	</enum>
-      </type>
-      <description>
-	<text>
-	  <h:p>Simple priority for distinguishing between primary
-	  and backup next-hops.</h:p>
-	  <h:p>Backup next-hops are used if and only if no
-	  primary next-hops are reachable.</h:p>
-	</text>
-      </description>
-    </leaf>
-    <leaf name="weight">
-      <type name="uint8"/>
-      <must condition=". = 0 or not(../../next-hop/weight = 0)">
-	<error-message>
-	  <value>
-	    Illegal combination of zero and non-zero next-hop weights.
-	  </value>
-	</error-message>
-	<description>
-	  <text>Next-hop weights must be either all zero (equal
-	  load-balancing) or all non-zero.</text>
-	</description>
-      </must>
-      <description>
-	<text>
-	  <h:p>This parameter specifies the weight of the next-hop for
-	  load balancing. The number specifies the relative fraction
-	  of the traffic that will use the corresponding
-	  next-hop.</h:p>
-	  <h:p>A value of 0 represents equal load-balancing.</h:p>
-	  <h:p>If both primary and backup next-hops are present, then
-	  the weights for each priority level are used separately.</h:p>
-	</text>
-      </description>
-    </leaf>
-  </grouping>
 
   <grouping name="special-next-hop">
     <description>
@@ -425,23 +352,6 @@
       <case name="special-next-hop">
 	<uses name="special-next-hop"/>
       </case>
-      <leaf name="next-hop-list">
-	<type name="next-hop-list-ref"/>
-	<description>
-	  <text>
-	    Reference to a next-hop list.
-	  </text>
-	</description>
-      </leaf>
-      <leaf name="use-rib">
-	<type name="rib-state-ref"/>
-	<description>
-	  <text>
-	    Reference to a RIB in which a new look-up is to be
-	    performed.
-	  </text>
-	</description>
-      </leaf>
     </choice>
   </grouping>
   
@@ -661,33 +571,6 @@
         </list>
       </container>
     </list>
-    <container name="next-hop-lists">
-      <description>
-	<text>Container for next-hop lists.</text>
-      </description>
-      <list name="next-hop-list">
-	<key value="id"/>
-	<leaf name="id">
-	  <type name="uint64"/>
-	  <description>
-	    <text>
-	      Unique numerical identifier of a next-hop-list entry.
-	    </text>
-	  </description>
-	</leaf>
-        <uses name="address-family"/>
-	<list name="next-hop">
-	  <description>
-	    <text>Entry in a next-hop list.</text>
-	  </description>
-	  <uses name="next-hop-state-content"/>
-	  <uses name="next-hop-classifiers"/>
-	</list>
-	<description>
-	  <text>Next-hop list.</text>
-	</description>
-      </list>
-    </container>
     <container name="ribs">
       <description>
         <text>Container for RIBs.</text>

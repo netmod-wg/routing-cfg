@@ -1009,8 +1009,11 @@ reference:    RFC XXXX
         <t>
           <list style="symbols">
             <t>Added Acee as a co-author.</t>
-            <t>Remove all traces of route filters.</t>
-	    <t>Remove numeric IDs of list entries in state data.</t>
+            <t>Removed all traces of route filters.</t>
+	    <t>Removed numeric IDs of list entries in state data.</t>
+	    <t>Removed all next-hop cases except "simple-next-hop" and
+	    "special-next-hop".</t>
+	    <t>Removed feature "multipath-routes".</t>
           </list>
         </t>
       </section>

@@ -298,28 +298,6 @@
     </leaf>
   </augment>
 
-  <augment
-      target-node="/rt:routing-state/rt:next-hop-lists/rt:next-hop-list/rt:next-hop/rt:next-hop-options/rt:simple-next-hop">
-    <when
-        condition="../rt:address-family = 'v6ur:ipv6-unicast'">
-      <description>
-        <text>This augment is valid only for IPv6 unicast.</text>
-      </description>
-    </when>
-    <description>
-      <text>
-	This leaf augments next-hop list with IPv6 next-hop address.
-	routes.
-      </text>
-    </description>
-    <leaf name="next-hop-address">
-      <type name="inet:ipv6-address"/>
-      <description>
-        <text>IPv6 address of the next-hop.</text>
-      </description>
-    </leaf>
-  </augment>
-
   <!-- Configuration data -->
 
   <augment
@@ -715,51 +693,19 @@
           </description>
         </leaf>
 	<container name="next-hop">
-	  <grouping name="next-hop-content">
-	    <uses name="rt:next-hop-content">
-	      <augment target-node="next-hop-options">
-		<description>
-		  <text>Add next-hop address case.</text>
-		</description>
-		<leaf name="next-hop-address">
-		  <type name="inet:ipv6-address"/>
-		  <description>
-		    <text>IPv6 address of the next-hop.</text>
-		  </description>
-		</leaf>
-	      </augment>
-	    </uses>
-	    <description>
-	      <text>
-		Next-hop content for IPv6 unicast static routes.
-	      </text>
-	    </description>
-	  </grouping>
-	  <choice name="simple-or-list">
-	    <description>
-	      <text>Options for next-hops.</text>
-	    </description>
-	    <case name="simple-next-hop">
-	      <uses name="next-hop-content"/>
-	    </case>
-	    <list name="multipath-entry">
+	  <uses name="rt:next-hop-content">
+	    <augment target-node="next-hop-options">
 	      <description>
-		<text>List of alternative next-hops.</text>
+		<text>Add next-hop address case.</text>
 	      </description>
-	      <if-feature name="rt:multipath-routes"/>
-	      <key value="name"/>
-	      <leaf name="name">
-		<type name="string"/>
+	      <leaf name="next-hop-address">
+		<type name="inet:ipv6-address"/>
 		<description>
-		  <text>
-		    A unique identifier of the next-hop entry.
-		  </text>
+		  <text>IPv6 address of the next-hop.</text>
 		</description>
 	      </leaf>
-	      <uses name="next-hop-content"/>
-	      <uses name="rt:next-hop-classifiers"/>
-	    </list>
-	  </choice>
+	    </augment>
+	  </uses>
 	  <description>
 	    <text>Configuration of next-hop.</text>
 	  </description>
