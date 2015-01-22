@@ -393,7 +393,7 @@
     </leaf>
   </grouping>
 
-  <!-- Operational state data -->
+  <!-- State data -->
 
   <augment target-node="/if:interfaces-state/if:interface">
     <description>
@@ -435,7 +435,7 @@
 
   <container name="routing-state">
     <description>
-      <text>Operational state of the routing subsystem.</text>
+      <text>State data of the routing subsystem.</text>
     </description>
     <config value="false"/>
     <list name="routing-instance">
@@ -443,7 +443,7 @@
       <key value="name"/>
       <description>
         <text>
-          <h:p>Each list entry is a container for operational state
+          <h:p>Each list entry is a container for state
           data of a routing instance.</h:p>
 	  <h:p>An implementation MAY create one or more
 	  system-controlled instances, other user-controlled instances
@@ -537,7 +537,7 @@
           <key value="type name"/>
           <description>
             <text>
-	      <h:p>Operational state of a routing protocol instance.</h:p>
+	      <h:p>State data of a routing protocol instance.</h:p>
 	      <h:p>An implementation MUST provide exactly one
 	      system-controlled instance of the type 'direct'. Other
 	      instances MAY be created by configuration.</h:p>
@@ -733,7 +733,7 @@
           <text>
             <h:p>Enable/disable the routing instance.</h:p>
             <h:p>If this parameter is false, the parent routing
-            instance is disabled and does not appear in operational
+            instance is disabled and does not appear in
 	    state data, despite any other configuration that
             might be present.</h:p>
           </text>
@@ -868,7 +868,7 @@
                 instance.</h:p>
                 <h:p>If this parameter is false, the parent routing
                 protocol instance is disabled and does not appear in
-                operational state data, despite any other
+                state data, despite any other
                 configuration that might be present.</h:p>
               </text>
             </description>

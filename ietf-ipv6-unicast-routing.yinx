@@ -37,7 +37,7 @@
   <description>
     <text>
       <h:p>This YANG module augments the 'ietf-routing' module with
-      basic configuration and operational state data for IPv6 unicast
+      basic configuration and state data for IPv6 unicast
       routing.</h:p>
       <xi:include href=".tools/bplate/netmod-module.yinx"
                   xpointer="xpointer(id('desc')/*)"/>
@@ -65,7 +65,7 @@
     </description>
   </identity>
 
-  <!-- Operational state data -->
+  <!-- State data -->
 
   <augment
       target-node="/rt:routing-state/rt:routing-instance/rt:interfaces/rt:interface">
