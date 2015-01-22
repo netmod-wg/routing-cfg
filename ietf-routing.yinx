@@ -395,6 +395,44 @@
 
   <!-- Operational state data -->
 
+  <augment target-node="/if:interfaces-state/if:interface">
+    <description>
+      <text>
+	This augment adds a wrapped leaf-list to interface state data.
+      </text>
+    </description>
+    <container name="routing-instances">
+      <description>
+	<text>
+	  <h:p>The enclosed leaf-list provides references to all
+	  routing instances to which the parent interface is
+	  assigned.</h:p>
+	  <h:p>The assignments are configured as a part of
+	  routing-instance configuration (module ietf-routing).</h:p>
+	</text>
+      </description>
+      <leaf-list name="routing-instance">
+	<type name="routing-instance-state-ref"/>
+	<description>
+	  <text>Reference to a routing instance.</text>
+	</description>
+	<must condition="../../if:name=/rt:routing-state/rt:routing-instance[rt:name=current()]/rt:interfaces/rt:interface/rt:name">
+	  <description>
+	    <text>
+	      The reference must mirror a corresponding assignment
+	      under routing-instance.
+	    </text>
+	  </description>
+	  <error-message>
+	    <value>
+	      The interface is not assigned to the routing instance.
+	    </value>
+	  </error-message>
+	</must>
+      </leaf-list>
+    </container>
+  </augment>
+
   <container name="routing-state">
     <description>
       <text>Operational state of the routing subsystem.</text>
