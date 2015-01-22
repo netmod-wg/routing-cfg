@@ -82,6 +82,7 @@
       </description>
       <leaf name="send-advertisements">
         <type name="boolean"/>
+	<default value="false"/>
         <description>
           <text>
             A flag indicating whether or not the router sends periodic
