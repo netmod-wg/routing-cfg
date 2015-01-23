@@ -57,7 +57,7 @@
 	user-defined RIBS and the framework for passing routes between
 	RIBs.
 	</h:p>
-	<h:p>Servers that do not advertize this feature MUST provide
+	<h:p>Servers that do not advertise this feature MUST provide
 	exactly one system-controlled RIB per supported address family
 	and make them also the default RIBs. These RIBs then appear as
 	entries of the list /routing-state/ribs/rib.</h:p>
@@ -71,7 +71,7 @@
 	<h:p>This feature indicates that the server supports
 	configuration of an explicit 32-bit router ID that is used by
 	some routing protocols.</h:p>
-	<h:p>Servers that do not advertize this feature set a router
+	<h:p>Servers that do not advertise this feature set a router
 	ID algorithmically, usually to one of configured IPv4
 	addresses. However, this algorithm is
 	implementation-specific.</h:p>
@@ -132,7 +132,7 @@
     <base name="routing-protocol"/>
     <description>
       <text>
-        Routing pseudo-protocol which provides routes to directly
+        Routing pseudo-protocol that provides routes to directly
         connected networks.
       </text>
     </description>
@@ -247,7 +247,7 @@
   <grouping name="special-next-hop">
     <description>
       <text>
-	This grouping provides a leaf with enumeration of special
+	This grouping provides a leaf with an enumeration of special
 	next-hops.
       </text>
     </description>
@@ -357,7 +357,7 @@
   
   <grouping name="route-metadata">
     <description>
-      <text>Route metadata.</text>
+      <text>Common route metadata.</text>
     </description>
     <leaf name="source-protocol">
       <type name="identityref">
@@ -621,9 +621,9 @@
             'name' key. All routes in a RIB MUST belong to the
             same address family.</h:p>
 	    <h:p>The server MUST provide a system-controlled default
-	    RIB for each address family, and MAY provide other
-	    system-controlled RIBs. Additional RIBs MAY be created in
-	    the configuration.</h:p>
+	    RIB for each supported address family, and MAY provide
+	    other system-controlled RIBs. Additional RIBs MAY be
+	    created in the configuration.</h:p>
           </text>
         </description>
         <leaf name="name">
@@ -1022,7 +1022,7 @@
     </container>
   </container>
 
-  <!-- RPC methods -->
+  <!-- RPC operations -->
 
   <rpc name="fib-route">
     <description>
@@ -1073,8 +1073,8 @@
 	<uses name="route-metadata"/>
         <description>
           <text>
-            <h:p>The active route for the specified destination.</h:p>
-            <h:p>If the routing instance has no active route for the
+            <h:p>The active FIB route for the specified destination.</h:p>
+            <h:p>If the routing instance has no active FIB route for the
             destination address, no output is returned - the server
             SHALL send an &lt;rpc-reply&gt; containing a single
             element &lt;ok&gt;.</h:p>

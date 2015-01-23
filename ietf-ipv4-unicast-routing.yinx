@@ -156,7 +156,7 @@
     </container>
   </augment>
 
-  <!-- RPC methods -->
+  <!-- RPC operations -->
 
   <augment
       target-node="/rt:fib-route/rt:input/rt:destination-address">

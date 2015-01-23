@@ -2,7 +2,7 @@
 <!DOCTYPE rfc SYSTEM '.tools/schema/rfc2629.dtd' [
 <!ENTITY % COMMON SYSTEM ".tools/bplate/common.ent">
 %COMMON;
-<!ENTITY % WG SYSTEM ".tools/bplate/netmod.ent">
+<!ENTITY % WG SYSTEM ".tools/bplate/ietf-wg.ent">
 %WG;
 <!ENTITY % stdrefs SYSTEM "stdrefs.ent">
 %stdrefs;
@@ -38,7 +38,7 @@
       </address>
     </author>
     <date day="21" month="October" year="2014"/>
-    &wg;
+    &netmod-wg;
     <abstract>
       <t>This document contains a specification of three YANG modules.
       Together they form the core routing data model which serves as a
@@ -110,10 +110,6 @@
 
       <section anchor="sec.new-terms" title="Glossary of New Terms">
         <t><list style="hanging">
-          <t hangText="active route:">a route that is actually used for
-          sending packets. If there are multiple candidate routes with a
-          matching destination prefix, then it is up to the routing
-          algorithm to select the active route.</t>
           <t hangText="core routing data model:"> YANG data model
           comprising "ietf-routing", "ietf-ipv4-unicast-routing" and
           "ietf-ipv6-unicast-routing" modules.</t>
@@ -141,7 +137,7 @@
       </section>
 
       <section anchor="sec.prefixes" title="Prefixes in Data Node Names">
-        <t>In this document, names of data nodes, RPC methods and other
+        <t>In this document, names of data nodes, RPC operations and other
         data model objects are often used without a prefix, as long as
         it is clear from the context in which YANG module each name is
         defined. Otherwise, names are prefixed using the standard prefix
@@ -242,7 +238,7 @@
         <t>Along with the default RIB, which is always present, an
         additional RIB is configured.</t>
         <t>Each routing protocol instance, including the "static" and
-        "direct" pseudo-protocols, is connected to exactly one RIB with
+        "direct" pseudo-protocols, is connected to one or more RIBs with
         which it can exchange routes (in both directions, except for the
         "static" and "direct" pseudo-protocols).</t>
         <t>RIBs may also be connected to each other and exchange routes
@@ -284,28 +280,6 @@
         entry is deleted from the configuration list, only the extra
         configuration specified in that entry is removed but the
         corresponding state data entry remains in the list.</t>
-      </section>
-
-      <section anchor="sec.simple-advanced"
-               title="Features of Advanced Routers">
-
-        <t>The core routing data model attempts to address devices
-        with elementary routing functions as well as advanced
-        routers. For simple devices, some parts and options of the
-        data model are not needed and would represent unnecessary
-        complications for the implementation. Therefore, the core
-        routing data model makes the configuration of some advanced
-        functions optional to implement by means of two YANG features:
-        <list style="symbols">
-          <t>"multiple-ribs" - indicates that the device supports
-          configuration of user-defined RIBs, routing protocols
-          connected to non-default RIBs, and RIBs configured as
-          receivers of routes from other RIBs.</t>
-          <t>"multipath-routes" - indicates that the device supports
-          configuration of routes with multiple next-hops.</t>
-        </list></t>
-        <t>See the "ietf-routing" module for details.</t>
-
       </section>
 
     </section>
@@ -438,18 +412,13 @@
             an "administratively prohibited" error message.</t>
           </list>
           </t>
-          <t>next-hop list reference - each next-hop list is a set of
-          next-hops that may also contain a reference to another
-          next-hop list.</t>
-          <t>RIB reference - a new look-up is to be performed in the
-          specified RIB.</t>
         </list>
         </t>
-        <t>It is expected that future modules defining routing
-        protocols will add other route attributes such as metrics or
-        preferences.</t>
+        <t>It is expected that future YANG modules defining will
+        augment routes with more complex next-hop types, or additional
+        attributes such as metrics.</t>
         <t>Routes are primarily state data that appear as entries of
-        RIBs (<xref target="sec.rib"/>) but they may be also found in
+        RIBs (<xref target="sec.rib"/>) but they may also be found in
         configuration data, for example as manually configured static
         routes. In the latter case, configurable route attributes are
         generally a subset of route attributes described above.</t>
@@ -461,15 +430,15 @@
         <list style="symbols">
           <t>"source-protocol": type of the routing protocol from which
           the route was originally obtained.</t>
-          <t>"preferred": an implementation can use this empty leaf to
+          <t>"active": an implementation can use this empty leaf to
           indicate that the route is preferred among all routes in the
           same RIB that have the same destination prefix.</t>
           <t>"last-updated": the date and time when the route was last
           updated, or inserted into the RIB.</t>
         </list>
-        Each RIB MUST contain only routes of one address family. In the
-        data model, address family is represented with an identity
-        derived from the "rt:address-family" base identity.</t>
+        Each RIB MUST contain only routes of one address family. An
+        address family is represented by an identity derived from the
+        "rt:address-family" base identity.</t>
         <t>In the core routing data model, RIBs are state data
         represented as entries of the list
         "/routing-state/ribs/rib". The contents of RIBs are controlled
@@ -514,8 +483,8 @@
         "rt:routing-protocol" base identity. The core routing data model
         defines two identities for the direct and static
         pseudo-protocols (<xref target="sec.pseudoproto"/>).</t>
-        <t>Multiple routing protocol instances of the same type are
-        permitted.</t>
+        <t>Multiple routing protocol instances of the same type MAY be
+	configured within the same routing instance.</t>
         <t>Each routing protocol instance can be connected to one or
         more RIBs for each address family that the routing protocol
         instance supports. By default, the interaction of a routing
@@ -560,25 +529,6 @@
           routes manually. It MAY be configured in zero or multiple
           instances, although a typical configuration will have exactly
           one instance per routing instance.</t>
-          <t>Static routes are configured within the "static-routes"
-          container, see <xref target="fig.static-routes"/>.</t>
-
-          <figure
-              anchor="fig.static-routes"
-              title='Structure of "static-routes" subtree.'>
-            &static-routes-tree.txt;
-          </figure>
-
-          <t>A next-hop in static routes may be configured as a simple
-          next-hop (IP address, outgoing interface or both), special
-          next-hop or a list of multi-path next-hop entries that is
-          used either for backup routes of for equal-cost multi-path
-          (ECMP) routing. The last option is available only on devices
-          that advertise the feature "rt:multipath-routes". Moreover,
-          unlike next-hop lists in state data, a list of next-hop
-          entries in a static route cannot be recursive, i.e., each
-          entry of that list can only be a simple or special
-          next-hop.</t>
         </section>
 
         <section anchor="sec.newproto"
@@ -608,7 +558,7 @@
               </artwork>
             </figure>
             and possibly other places in the configuration, state
-            data and RPC input or output.</t>
+            data, notifications, and RPC input or output.</t>
             <t>Configuration parameters and/or state data for the new
             protocol can be defined by augmenting the
             "routing-protocol" data node under both "/routing" and "/routing-state".</t>
@@ -852,7 +802,7 @@ reference:    RFC XXXX
     </section>
 
     <section anchor="acknowledgments" title="Acknowledgments">
-      <t>The author wishes to thank Nitin Bahadur, Martin Bjorklund,
+      <t>The authors wish to thank Nitin Bahadur, Martin Bjorklund,
       Dean Bogdanovic, Jeff Haas, Joel Halpern, Wes Hardaker,
       Sriganesh Kini, David Lamparter, Andrew McGregor, Jan Medved,
       Xiang Li, Stephane Litkowski, Thomas Morin, Tom Petch,
@@ -922,18 +872,13 @@ reference:    RFC XXXX
       <t>A minimum implementation will provide a single
       system-controlled routing instance, and will not allow clients to
       create any user-controlled instances.</t>
-      <t>Typically, neither of the features defined in the
-      "ietf-routing" module ("multiple-ribs" and
-      "multipath-routes") will be supported. This means that:
-      <list style="symbols">
-        <t>A single system-controlled RIB (routing table) is available
-        for each supported address family - IPv4, IPv6 or both. These
-        RIBs are the default RIBs, so references to them will also
-        appear as system-controlled entries of the "default-rib" list
-        in state data. No user-controlled RIBs are allowed.</t>
-        <t>Each route has no more than one "next-hop",
-        "outgoing-interface" or "special-next-hop".</t>
-      </list></t>
+      <t>Typically, the feature "multiple-ribs" will not be
+      supported. This means that a single system-controlled RIB is
+      available for each supported address family - IPv4, IPv6 or
+      both. These RIBs must be the default RIBs, so references to them
+      will also appear as system-controlled entries of the
+      "default-rib" list in state data. No user-controlled RIBs are
+      allowed.</t>
       <t>In addition to the mandatory instance of the "direct"
       pseudo-protocol, a minimum implementation should support
       configured instance(s) of the "static" pseudo-protocol. Even
@@ -1014,6 +959,10 @@ reference:    RFC XXXX
 	    <t>Removed all next-hop cases except "simple-next-hop" and
 	    "special-next-hop".</t>
 	    <t>Removed feature "multipath-routes".</t>
+	    <t>Augmented "ietf-interfaces" module with a leaf-list of
+	    leafrefs pointing form state data of an interface entry to
+	    the routing instance(s) to which the interface is
+	    assigned.</t>
           </list>
         </t>
       </section>
@@ -1034,7 +983,7 @@ reference:    RFC XXXX
             in RIB.</t>
             <t>Added 'active' as a new attribute of routes in
             RIBs.</t>
-            <t>Renamed RPC operation 'active-route' to 'fib-route.</t>
+            <t>Renamed RPC operation 'active-route' to 'fib-route'.</t>
             <t>Added 'route-preference' as a new parameter of routing
             protocol instances, both in configuration and state data.</t>
             <t>Renamed identity 'rt:standard-routing-instance' to
@@ -1238,7 +1187,7 @@ reference:    RFC XXXX
       <section title="Changes Between Versions -03 and -04">
         <t>
           <list style="symbols">
-            <t>Changed "error-tag" for both RPC methods from "missing
+            <t>Changed "error-tag" for both RPC operations from "missing
             element" to "data-missing".</t>
             <t>Removed the decrementing behavior for advertised IPv6
             prefix parameters "valid-lifetime" and
