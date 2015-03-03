@@ -292,7 +292,11 @@
     <choice name="next-hop-options">
       <mandatory value="true"/>
       <description>
-	<text>Options for next-hops in static routes.</text>
+	<text>
+	  <h:p>Options for next-hops in static routes.</h:p>
+	  <h:p>It is expected that other cases will be added through
+	  augments from other modules, e.g., for ECMP.</h:p>
+	</text>
       </description>
       <case name="simple-next-hop">
 	<leaf name="outgoing-interface">
@@ -327,7 +331,12 @@
     <choice name="next-hop-options">
       <mandatory value="true"/>
       <description>
-	<text>Options for next-hops in state data.</text>
+	<text>
+	  <h:p>Options for next-hops in state data.</h:p>
+	  <h:p>It is expected that other cases will be added through
+	  augments from other modules, e.g., for ECMP or recursive
+	  next-hops.</h:p>
+	</text>
       </description>
       <case name="simple-next-hop">
 	<leaf name="outgoing-interface">
