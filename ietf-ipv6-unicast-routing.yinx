@@ -260,7 +260,7 @@
   </augment>
 
   <augment
-      target-node="/rt:routing-state/rt:ribs/rt:rib/rt:routes/rt:route">
+      target-node="/rt:routing-state/rt:routing-instance/rt:ribs/rt:rib/rt:routes/rt:route">
     <when
         condition="../../rt:address-family = 'v6ur:ipv6-unicast'">
       <description>
@@ -279,7 +279,7 @@
   </augment>
 
   <augment
-      target-node="/rt:routing-state/rt:ribs/rt:rib/rt:routes/rt:route/rt:next-hop/rt:next-hop-options/rt:simple-next-hop">
+      target-node="/rt:routing-state/rt:routing-instance/rt:ribs/rt:rib/rt:routes/rt:route/rt:next-hop/rt:next-hop-options/rt:simple-next-hop">
     <when
         condition="../../../rt:address-family = 'v6ur:ipv6-unicast'">
       <description>

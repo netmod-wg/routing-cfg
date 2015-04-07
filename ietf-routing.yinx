@@ -54,13 +54,13 @@
     <description>
       <text>
 	<h:p>This feature indicates that the server supports
-	user-defined RIBS and the framework for passing routes between
-	RIBs.
+	user-defined RIBs.
 	</h:p>
 	<h:p>Servers that do not advertise this feature MUST provide
-	exactly one system-controlled RIB per supported address family
-	and make them also the default RIBs. These RIBs then appear as
-	entries of the list /routing-state/ribs/rib.</h:p>
+	exactly one system-controlled RIB per routing-instance and
+	supported address family and make them also the default
+	RIBs. These RIBs then appear as entries of the list
+	/routing-state/routing-instance/ribs/rib.</h:p>
     </text>
     </description>
   </feature>
@@ -166,30 +166,6 @@
       <text>
         This type is used for leafs that reference state data of a
         routing instance.
-      </text>
-    </description>
-  </typedef>
-
-  <typedef name="rib-ref">
-    <type name="leafref">
-      <path value="/rt:routing/rt:ribs/rt:rib/rt:name"/>
-    </type>
-    <description>
-      <text>
-        This type is used for leafs that reference a RIB
-        configuration.
-      </text>
-    </description>
-  </typedef>
-
-  <typedef name="rib-state-ref">
-    <type name="leafref">
-      <path value="/rt:routing-state/rt:ribs/rt:rib/rt:name"/>
-    </type>
-    <description>
-      <text>
-        This type is used for leafs that reference a RIB in
-        state data.
       </text>
     </description>
   </typedef>
@@ -492,17 +468,20 @@
             <text>
               <h:p>Each list entry specifies the default RIB
               for one address family.</h:p>
-              <h:p>The default RIB is operationally connected to all
-              routing protocols for which a connected RIB has not been
-              explicitly configured.</h:p>
-              <h:p>The 'direct' pseudo-protocol is always connected to
-              the default RIBs.</h:p>
+              <h:p>The routes of the 'direct' pseudo-protocol are
+              always installed in the default RIBs.</h:p>
+	      <h:p>Routes originating from protocols other than
+	      'direct' are by default installed in the default RIBs
+	      but this may be changed in routing protocol
+	      configuration.</h:p>
             </text>
           </description>
           <uses name="address-family"/>
           <leaf name="rib-name">
 	    <mandatory value="true"/>
-            <type name="rib-state-ref"/>
+            <type name="leafref">
+	      <path value="../../../ribs/rib/name"/>
+	    </type>
             <description>
               <text>Name of an existing RIB to be used as
               the default RIB for the given routing instance and
@@ -585,119 +564,69 @@
 	      </text>
 	    </description>
 	  </leaf>
-          <container name="connected-ribs">
-            <description>
-              <text>
-                <h:p>Container for connected RIBs.</h:p>
-              </text>
-            </description>
-            <list name="connected-rib">
-              <key value="rib-name"/>
-              <description>
-                <text>
-                  <h:p>List of RIBs to which the routing protocol
-                  instance is connected.</h:p>
-		  <h:p>By default, routes learned by the routing
-		  protocol instance are installed in all connected
-		  RIBs of the matching address family, and,
-		  conversely, all routes from connected RIBs are
-		  installed in the routing protocol instance. However,
-		  routing protocols may specify other rules.</h:p>
-                </text>
-              </description>
-              <leaf name="rib-name">
-                <type name="rib-state-ref"/>
-                <description>
-                  <text>
-                    Name of an existing RIB.
-                  </text>
-                </description>
-              </leaf>
-            </list>
-          </container>
         </list>
       </container>
-    </list>
-    <container name="ribs">
-      <description>
-        <text>Container for RIBs.</text>
-      </description>
-      <list name="rib">
-        <key value="name"/>
-        <description>
-          <text>
-            <h:p>Each entry represents a RIB identified by the
-            'name' key. All routes in a RIB MUST belong to the
-            same address family.</h:p>
-	    <h:p>The server MUST provide a system-controlled default
-	    RIB for each supported address family, and MAY provide
-	    other system-controlled RIBs. Additional RIBs MAY be
-	    created in the configuration.</h:p>
-          </text>
-        </description>
-        <leaf name="name">
-          <type name="string"/>
-          <description>
-            <text>The name of the RIB.</text>
-          </description>
-        </leaf>
-        <uses name="address-family"/>
-        <container name="routes">
+      <container name="ribs">
+	<description>
+          <text>Container for RIBs.</text>
+	</description>
+	<list name="rib">
+          <key value="name"/>
           <description>
             <text>
-              Current content of the RIB.
+              <h:p>Each entry represents a RIB identified by the
+              'name' key. All routes in a RIB MUST belong to the
+              same address family.</h:p>
+	      <h:p>The server MUST provide a system-controlled default
+	      RIB for each supported address family, and MAY provide
+	      other system-controlled RIBs. Additional RIBs MAY be
+	      created in the configuration.</h:p>
             </text>
           </description>
-          <list name="route">
+          <leaf name="name">
+            <type name="string"/>
+            <description>
+              <text>The name of the RIB.</text>
+            </description>
+          </leaf>
+          <uses name="address-family"/>
+          <container name="routes">
             <description>
               <text>
-                A RIB route entry. This data node MUST be augmented
-                with information specific for routes of each address
-                family.
+		Current content of the RIB.
               </text>
             </description>
-	    <leaf name="route-preference">
-	      <type name="route-preference"/>
-	      <description>
-		<text>
-		  This route attribute, also known as administrative
-		  distance, allows for selecting the preferred route
-		  among routes with the same destination prefix. A
-		  smaller value means a more preferred route.
-		</text>
-	      </description>
-	    </leaf>
-	    <container name="next-hop">
-	      <uses name="next-hop-state-content"/>
-	      <description>
-		<text>Route's next-hop attribute.</text>
-	      </description>
-	    </container>
-	    <uses name="route-metadata"/>
-          </list>
-        </container>
-        <container name="recipient-ribs">
-          <description>
-            <text>Container for recipient RIBs.</text>
-          </description>
-          <list name="recipient-rib">
-            <key value="rib-name"/>
-            <description>
-              <text>
-                List of RIBs that receive routes from this
-                RIB.
-              </text>
-            </description>
-            <leaf name="rib-name">
-              <type name="rib-state-ref"/>
+            <list name="route">
               <description>
-                <text>The name of the recipient RIB.</text>
+		<text>
+                  A RIB route entry. This data node MUST be augmented
+                  with information specific for routes of each address
+                  family.
+		</text>
               </description>
-            </leaf>
-          </list>
-        </container>
-      </list>
-    </container>
+	      <leaf name="route-preference">
+		<type name="route-preference"/>
+		<description>
+		  <text>
+		    This route attribute, also known as administrative
+		    distance, allows for selecting the preferred route
+		    among routes with the same destination prefix. A
+		    smaller value means a more preferred route.
+		  </text>
+		</description>
+	      </leaf>
+	      <container name="next-hop">
+		<uses name="next-hop-state-content"/>
+		<description>
+		  <text>Route's next-hop attribute.</text>
+		</description>
+	      </container>
+	      <uses name="route-metadata"/>
+            </list>
+          </container>
+	</list>
+      </container>
+    </list>
   </container>
 
   <!-- Configuration Data -->
@@ -769,14 +698,10 @@
           <text>
             <h:p>Configuration of the default RIBs used by the
             routing instance.</h:p>
-	    <h:p>The default RIB for an addressed family if
-	    by default connected to all routing protocol instances
-	    supporting that address family, and always receives direct
-	    routes.</h:p>
           </text>
         </description>
         <list name="default-rib">
-          <must condition="address-family=/routing/ribs/rib[name=current()/rib-name]/address-family">
+          <must condition="address-family=../../ribs/rib[name=current()/rib-name]/address-family">
             <error-message>
               <value>Address family mismatch.</value>
             </error-message>
@@ -797,7 +722,9 @@
           <uses name="address-family"/>
           <leaf name="rib-name">
 	    <mandatory value="true"/>
-            <type name="string"/>
+            <type name="leafref">
+	      <path value="../../../ribs/rib/name"/>
+	    </type>
             <description>
               <text>Name of an existing RIB to be used as
               the default RIB for the given routing instance
@@ -893,46 +820,6 @@
 	      </text>
 	    </description>
 	  </leaf>
-          <container name="connected-ribs">
-            <description>
-              <text>
-                <h:p>Configuration of connected RIBs.</h:p>
-              </text>
-            </description>
-            <list name="connected-rib">
-              <key value="rib-name"/>
-              <description>
-                <text>
-                  <h:p>Each entry configures a RIB to which the
-                  routing protocol instance is connected.</h:p>
-                  <h:p>If no connected RIB is configured for an
-                  address family, the routing protocol is connected to
-                  the default RIB for that address family.</h:p>
-                </text>
-              </description>
-              <leaf name="rib-name">
-                <type name="rib-ref"/>
-                <must
-                    condition="../../../type != 'rt:direct' or
-			       ../../../../../default-ribs/ default-rib/rib-name=.">
-                  <error-message>
-                    <value>The 'direct' protocol can be connected only
-                    to a default RIB.</value>
-                  </error-message>
-                  <description>
-                    <text>For the 'direct' pseudo-protocol, the
-                    connected RIB must always be a default
-                    RIB.</text>
-                  </description>
-                </must>
-                <description>
-                  <text>
-                    Name of an existing RIB.
-                  </text>
-                </description>
-              </leaf>
-            </list>
-          </container>
           <container name="static-routes">
             <when condition="../type='rt:static'">
               <description>
@@ -953,82 +840,45 @@
           </container>
         </list>
       </container>
-    </list>
-    <container name="ribs">
-      <description>
-        <text>Configuration of RIBs.</text>
-      </description>
-      <list name="rib">
-        <key value="name"/>
-        <description>
-          <text>
-            <h:p>Each entry represents a configured RIB identified by the
-	    'name' key.</h:p>
-	    <h:p>Entries having the same key as a system-controlled
-	    entry of the list /routing-state/ribs/rib are used for
-	    configuring parameters of that entry. Other entries define
-	    additional user-controlled RIBs.</h:p>
-          </text>
-        </description>
-        <leaf name="name">
-          <type name="string"/>
+      <container name="ribs">
+	<description>
+          <text>Configuration of RIBs.</text>
+	</description>
+	<list name="rib">
+          <key value="name"/>
           <description>
             <text>
-	      <h:p>The name of the RIB.</h:p>
-	      <h:p>For system-controlled entries, the value of this
-	      leaf must be the same as the name of the corresponding
-	      entry in state data.</h:p>
-	      <h:p>For user-controlled entries, an arbitrary name can
-	      be used.</h:p>
-	    </text>
+              <h:p>Each entry represents a configured RIB identified by the
+	      'name' key.</h:p>
+	      <h:p>Entries having the same key as a system-controlled
+	      entry of the list /routing-state/ribs/rib are used for
+	      configuring parameters of that entry. Other entries define
+	      additional user-controlled RIBs.</h:p>
+            </text>
           </description>
-        </leaf>
-        <uses name="address-family"/>
-        <leaf name="description">
-          <type name="string"/>
-          <description>
-            <text>Textual description of the RIB.</text>
-          </description>
-        </leaf>
-        <container name="recipient-ribs">
-	  <if-feature name="multiple-ribs"/>
-          <description>
-            <text>Configuration of recipient RIBs.</text>
-          </description>
-          <list name="recipient-rib">
-            <must condition="rib-name != ../../name">
-              <error-message>
-                <value>Source and recipient RIBs are identical.</value>
-              </error-message>
-              <description>
-                <text>A RIB MUST NOT appear among its
-                recipient RIBs.</text>
-              </description>
-            </must>
-            <must
-                condition="/routing/ribs/rib[name=current()/rib-name]/address-family=../../address-family">
-              <error-message>
-                <value>Address family mismatch.</value>
-              </error-message>
-              <description>
-                <text>Address family of the recipient RIB MUST match
-                that of the source RIB.</text>
-              </description>
-            </must>
-            <key value="rib-name"/>
+          <leaf name="name">
+            <type name="string"/>
             <description>
-              <text>Each entry configures a recipient RIB.</text>
+              <text>
+		<h:p>The name of the RIB.</h:p>
+		<h:p>For system-controlled entries, the value of this
+		leaf must be the same as the name of the corresponding
+		entry in state data.</h:p>
+		<h:p>For user-controlled entries, an arbitrary name can
+		be used.</h:p>
+	      </text>
             </description>
-            <leaf name="rib-name">
-              <type name="rib-ref"/>
-              <description>
-                <text>The name of the recipient RIB.</text>
-              </description>
-            </leaf>
-          </list>
-        </container>
-      </list>
-    </container>
+          </leaf>
+          <uses name="address-family"/>
+          <leaf name="description">
+            <type name="string"/>
+            <description>
+              <text>Textual description of the RIB.</text>
+            </description>
+          </leaf>
+	</list>
+      </container>
+    </list>
   </container>
 
   <!-- RPC operations -->
@@ -1103,7 +953,7 @@
     </description>
     <input>
       <leaf name="rib-name">
-        <type name="rib-state-ref"/>
+        <type name="string"/>
         <mandatory value="true"/>
         <description>
           <text>
