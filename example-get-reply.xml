@@ -83,6 +83,14 @@
       <ip:ip>2001:0db8:0:1::1</ip:ip>
       <ip:prefix-length>64</ip:prefix-length>
      </ip:address>
+     <v6ur:ipv6-router-advertisements>
+      <v6ur:send-advertisements>true</v6ur:send-advertisements>
+      <v6ur:prefix-list>
+       <v6ur:prefix>
+        <v6ur:prefix-spec>2001:db8:0:2::/64</v6ur:prefix-spec>
+       </v6ur:prefix>
+      </v6ur:prefix-list>
+     </v6ur:ipv6-router-advertisements>
     </ip:ipv6>
    </if:interface>
    <if:interface>
@@ -108,6 +116,14 @@
       <ip:ip>2001:0db8:0:2::1</ip:ip>
       <ip:prefix-length>64</ip:prefix-length>
      </ip:address>
+     <v6ur:ipv6-router-advertisements>
+      <v6ur:send-advertisements>true</v6ur:send-advertisements>
+      <v6ur:prefix-list>
+       <v6ur:prefix>
+        <v6ur:prefix-spec>2001:db8:0:2::/64</v6ur:prefix-spec>
+       </v6ur:prefix>
+      </v6ur:prefix-list>
+     </v6ur:ipv6-router-advertisements>
     </ip:ipv6>
    </if:interface>
   </if:interfaces-state>
@@ -118,14 +134,6 @@
     <rt:interfaces>
      <rt:interface>
       <rt:name>eth1</rt:name>
-      <v6ur:ipv6-router-advertisements>
-       <v6ur:send-advertisements>true</v6ur:send-advertisements>
-       <v6ur:prefix-list>
-        <v6ur:prefix>
-         <v6ur:prefix-spec>2001:db8:0:2::/64</v6ur:prefix-spec>
-        </v6ur:prefix>
-       </v6ur:prefix-list>
-      </v6ur:ipv6-router-advertisements>
      </rt:interface>
     </rt:interfaces>
     <rt:routing-protocols>
@@ -176,14 +184,6 @@
      </rt:interface>
      <rt:interface>
       <rt:name>eth1</rt:name>
-      <v6ur:ipv6-router-advertisements>
-       <v6ur:send-advertisements>true</v6ur:send-advertisements>
-       <v6ur:prefix-list>
-        <v6ur:prefix>
-         <v6ur:prefix-spec>2001:db8:0:2::/64</v6ur:prefix-spec>
-        </v6ur:prefix>
-       </v6ur:prefix-list>
-      </v6ur:ipv6-router-advertisements>
      </rt:interface>
     </rt:interfaces>
     <rt:routing-protocols>

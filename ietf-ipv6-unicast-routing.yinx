@@ -68,10 +68,11 @@
   <!-- State data -->
 
   <augment
-      target-node="/rt:routing-state/rt:routing-instance/rt:interfaces/rt:interface">
+      target-node="/if:interfaces-state/if:interface/ip:ipv6">
     <description>
       <text>
-        IPv6-specific parameters of router interfaces.
+        Augment interface state data with IPv6-specific parameters of
+        router interfaces.
       </text>
     </description>
     <container name="ipv6-router-advertisements">
@@ -300,18 +301,11 @@
 
   <!-- Configuration data -->
 
-  <augment
-      target-node="/rt:routing/rt:routing-instance/rt:interfaces/rt:interface">
-    <when
-        condition="/if:interfaces/if:interface[if:name=current()/rt:name]/ip:ipv6/ip:enabled='true'">
-      <description>
-        <text>This augment is only valid for router interfaces with
-        enabled IPv6.</text>
-      </description>
-    </when>
+  <augment target-node="/if:interfaces/if:interface/ip:ipv6">
     <description>
       <text>
-        Configuration of IPv6-specific parameters of router interfaces.
+        Augment interface configuration with IPv6-specific parameters
+        of router interfaces.
       </text>
     </description>
     <container name="ipv6-router-advertisements">
