@@ -277,7 +277,7 @@
       <case name="simple-next-hop">
 	<leaf name="outgoing-interface">
 	  <type name="leafref">
-	    <path value="/rt:routing/rt:routing-instance/rt:interfaces/rt:interface/rt:name"/>
+	    <path value="/rt:routing/rt:routing-instance/rt:interfaces/rt:interface"/>
 	  </type>
 	  <description>
 	    <text>
@@ -317,7 +317,7 @@
       <case name="simple-next-hop">
 	<leaf name="outgoing-interface">
 	  <type name="leafref">
-	    <path value="/rt:routing-state/rt:routing-instance/rt:interfaces/rt:interface/rt:name"/>
+	    <path value="/rt:routing-state/rt:routing-instance/rt:interfaces/rt:interface"/>
 	  </type>
 	  <description>
 	    <text>
@@ -386,36 +386,28 @@
 	This augment adds a wrapped leaf-list to interface state data.
       </text>
     </description>
-    <container name="routing-instances">
+    <leaf name="routing-instance">
+      <type name="routing-instance-state-ref"/>
       <description>
 	<text>
-	  <h:p>The enclosed leaf-list provides references to all
-	  routing instances to which the parent interface is
-	  assigned.</h:p>
-	  <h:p>The assignments are configured as a part of
-	  routing-instance configuration (module ietf-routing).</h:p>
+	  The name of the routing instance to which the interface is
+	  assigned.
 	</text>
       </description>
-      <leaf-list name="routing-instance">
-	<type name="routing-instance-state-ref"/>
+      <must condition="../if:name=/rt:routing-state/rt:routing-instance[rt:name=current()]/rt:interfaces/rt:interface">
 	<description>
-	  <text>Reference to a routing instance.</text>
+	  <text>
+	    The reference must mirror a corresponding assignment
+	    under routing-instance.
+	  </text>
 	</description>
-	<must condition="../../if:name=/rt:routing-state/rt:routing-instance[rt:name=current()]/rt:interfaces/rt:interface/rt:name">
-	  <description>
-	    <text>
-	      The reference must mirror a corresponding assignment
-	      under routing-instance.
-	    </text>
-	  </description>
-	  <error-message>
-	    <value>
-	      The interface is not assigned to the routing instance.
-	    </value>
-	  </error-message>
-	</must>
-      </leaf-list>
-    </container>
+	<error-message>
+	  <value>
+	    The interface is not assigned to the routing instance.
+	  </value>
+	</error-message>
+      </must>
+    </leaf>
   </augment>
 
   <container name="routing-state">
@@ -456,64 +448,21 @@
           </text>
         </description>
       </leaf>
-      <container name="default-ribs">
-        <description>
-          <text>
-            Default RIBs used by the routing instance.
-          </text>
-        </description>
-        <list name="default-rib">
-          <key value="address-family"/>
-          <description>
-            <text>
-              <h:p>Each list entry specifies the default RIB
-              for one address family.</h:p>
-              <h:p>The routes of the 'direct' pseudo-protocol are
-              always installed in the default RIBs.</h:p>
-	      <h:p>Routes originating from protocols other than
-	      'direct' are by default installed in the default RIBs
-	      but this may be changed in routing protocol
-	      configuration.</h:p>
-            </text>
-          </description>
-          <uses name="address-family"/>
-          <leaf name="rib-name">
-	    <mandatory value="true"/>
-            <type name="leafref">
-	      <path value="../../../ribs/rib/name"/>
-	    </type>
-            <description>
-              <text>Name of an existing RIB to be used as
-              the default RIB for the given routing instance and
-              address family.</text>
-            </description>
-          </leaf>
-        </list>
-      </container>
       <container name="interfaces">
         <description>
           <text>
             Network layer interfaces belonging to the routing instance.
           </text>
         </description>
-        <list name="interface">
-          <key value="name"/>
+        <leaf-list name="interface">
           <description>
             <text>
-              List of network layer interfaces assigned to the routing
-              instance.
-            </text>
+	      Each entry is a reference to the name of a configured
+	      network layer interface.
+	    </text>
           </description>
-          <leaf name="name">
-            <type name="if:interface-state-ref"/>
-            <description>
-              <text>
-                A reference to the name of a configured network layer
-                interface.
-              </text>
-            </description>
-          </leaf>
-        </list>
+          <type name="if:interface-state-ref"/>
+	</leaf-list>
       </container>
       <container name="routing-protocols">
         <description>
@@ -590,6 +539,20 @@
             </description>
           </leaf>
           <uses name="address-family"/>
+	  <leaf name="default-rib">
+	    <if-feature name="multiple-ribs"/>
+	    <type name="boolean"/>
+	    <description>
+	      <text>
+		<h:p>This flag has the value of 'true' if and only if
+		the RIB is the default RIB for the given address
+		family.</h:p>
+		<h:p>A default RIB always receives direct routes. By
+		default it also receives routes from all routing
+		protocols.</h:p>
+	      </text>
+	    </description>
+	  </leaf>
           <container name="routes">
             <description>
               <text>
@@ -692,71 +655,21 @@
           <text>Textual description of the routing instance.</text>
         </description>
       </leaf>
-      <container name="default-ribs">
-	<if-feature name="multiple-ribs"/>
-        <description>
-          <text>
-            <h:p>Configuration of the default RIBs used by the
-            routing instance.</h:p>
-          </text>
-        </description>
-        <list name="default-rib">
-          <must condition="address-family=../../ribs/rib[name=current()/rib-name]/address-family">
-            <error-message>
-              <value>Address family mismatch.</value>
-            </error-message>
-            <description>
-              <text>
-                The entry's address family MUST match that of the
-                referenced RIB.
-              </text>
-            </description>
-          </must>
-          <key value="address-family"/>
-          <description>
-            <text>
-              Each list entry configures the default RIB for
-              one address family.
-            </text>
-          </description>
-          <uses name="address-family"/>
-          <leaf name="rib-name">
-	    <mandatory value="true"/>
-            <type name="leafref">
-	      <path value="../../../ribs/rib/name"/>
-	    </type>
-            <description>
-              <text>Name of an existing RIB to be used as
-              the default RIB for the given routing instance
-              and address family.</text>
-            </description>
-          </leaf>
-        </list>
-      </container>
       <container name="interfaces">
         <description>
           <text>
-            Configuration of the routing instance's interfaces.
+            Assignment of the routing instance's interfaces.
           </text>
         </description>
-        <list name="interface">
-          <key value="name"/>
+        <leaf-list name="interface">
           <description>
             <text>
-              List of network layer interfaces assigned to the routing
-              instance.
+              The name of a configured network layer interface that is
+              assigned to the routing-instance.
             </text>
           </description>
-          <leaf name="name">
-            <type name="if:interface-ref"/>
-            <description>
-              <text>
-                A reference to the name of a configured network layer
-                interface.
-              </text>
-            </description>
-          </leaf>
-        </list>
+          <type name="if:interface-ref"/>
+	</leaf-list>
       </container>
       <container name="routing-protocols">
         <description>
@@ -876,6 +789,30 @@
               <text>Textual description of the RIB.</text>
             </description>
           </leaf>
+	  <leaf name="default-rib">
+	    <if-feature name="multiple-ribs"/>
+	    <must condition=". = 'false' or not(../preceding-sibling::rib[default-rib = 'true' and address-family = current()/../address-family])">
+	      <error-message>
+		<value>
+		  Duplicate default RIB.
+		</value>
+	      </error-message>
+	      <description>
+		<text>
+		  For each address family there can be no more than
+		  one default RIB.
+		</text>
+	      </description>
+	    </must>
+	    <type name="boolean"/>
+	    <default value="false"/>
+	    <description>
+	      <text>
+		This flag determines whether the RIB is the default
+		RIB for the given address family.
+	      </text>
+	    </description>
+	  </leaf>
 	</list>
       </container>
     </list>
@@ -942,38 +879,6 @@
           </text>
         </description>
       </container>
-    </output>
-  </rpc>
-
-  <rpc name="route-count">
-    <description>
-      <text>
-        <h:p>Return the current number of routes in a RIB.</h:p>
-      </text>
-    </description>
-    <input>
-      <leaf name="rib-name">
-        <type name="string"/>
-        <mandatory value="true"/>
-        <description>
-          <text>
-	  <h:p>Name of the RIB.</h:p>
-          <h:p>If the RIB with name equal to the value of this
-          parameter doesn't exist, then this operation SHALL fail with
-          error-tag 'data-missing' and error-app-tag
-          'rib-not-found'.</h:p>
-	  </text>
-        </description>
-      </leaf>
-    </input>
-    <output>
-      <leaf name="number-of-routes">
-        <type name="uint64"/>
-        <mandatory value="true"/>
-        <description>
-          <text>Number of routes in the RIB.</text>
-        </description>
-      </leaf>
     </output>
   </rpc>
 
