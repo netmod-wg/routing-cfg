@@ -132,9 +132,7 @@
     <rt:name>rtr0</rt:name>
     <rt:description>Router A</rt:description>
     <rt:interfaces>
-     <rt:interface>
-      <rt:name>eth1</rt:name>
-     </rt:interface>
+     <rt:interface>eth1</rt:interface>
     </rt:interfaces>
     <rt:routing-protocols>
      <rt:routing-protocol>
@@ -168,23 +166,9 @@
   <rt:routing-state>
    <rt:routing-instance>
     <rt:name>rtr0</rt:name>
-    <rt:default-ribs>
-     <rt:default-rib>
-      <rt:address-family>v4ur:ipv4-unicast</rt:address-family>
-      <rt:rib-name>ipv4-master</rt:rib-name>
-     </rt:default-rib>
-     <rt:default-rib>
-      <rt:address-family>v6ur:ipv6-unicast</rt:address-family>
-      <rt:rib-name>ipv6-master</rt:rib-name>
-     </rt:default-rib>
-    </rt:default-ribs>
     <rt:interfaces>
-     <rt:interface>
-      <rt:name>eth0</rt:name>
-     </rt:interface>
-     <rt:interface>
-      <rt:name>eth1</rt:name>
-     </rt:interface>
+     <rt:interface>eth0</rt:interface>
+     <rt:interface>eth1</rt:interface>
     </rt:interfaces>
     <rt:routing-protocols>
      <rt:routing-protocol>
