@@ -224,6 +224,9 @@
 		<h:p>The value that is placed in the Valid Lifetime in
 		the Prefix Information option. The designated value
 		of all 1's (0xffffffff) represents infinity.</h:p>
+		<h:p>An implementation SHOULD keep this value constant
+		in consecutive advertisements except when it is
+		explicitly changed in configuration.</h:p>
 	      </text>
 	    </description>
 	  </leaf>
@@ -241,10 +244,13 @@
 	    <units name="seconds"/>
 	    <description>
 	      <text>
-		The value that is placed in the Preferred Lifetime in
+		<h:p>The value that is placed in the Preferred Lifetime in
 		the Prefix Information option, in seconds. The
 		designated value of all 1's (0xffffffff) represents
-		infinity.
+		infinity.</h:p>
+		<h:p>An implementation SHOULD keep this value constant
+		in consecutive advertisements except when it is
+		explicitly changed in configuration.</h:p>
 	      </text>
 	    </description>
 	  </leaf>

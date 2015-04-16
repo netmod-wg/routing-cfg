@@ -44,10 +44,11 @@
       Together they form the core routing data model which serves as a
       framework for configuring and managing a routing subsystem. It
       is expected that these modules will be augmented by additional
-      YANG modules defining data models for routing protocols and
-      other functions. The core routing data model provides common
-      building blocks for such extensions - routing instances, routes,
-      routing information bases (RIB), and routing protocols.</t>
+      YANG modules defining data models for routing protocols, route
+      filters and other functions. The core routing data model
+      provides common building blocks for such extensions - routing
+      instances, routes, routing information bases (RIB), and routing
+      protocols.</t>
     </abstract>
   </front>
   <middle>
@@ -89,23 +90,24 @@
 
       <t>The following terms are defined in <xref target="RFC6241"/>:
       <list style="symbols">
-        <t>client</t>
-        <t>message</t>
-        <t>protocol operation</t>
-        <t>server</t>
+        <t>client,</t>
+        <t>message,</t>
+        <t>protocol operation,</t>
+        <t>server.</t>
       </list></t>
 
       <t>The following terms are defined in <xref target="RFC6020"/>:
       <list style="symbols">
-        <t>augment</t>
-        <t>configuration data</t>
-        <t>data model</t>
-        <t>data node</t>
-        <t>feature</t>
-        <t>mandatory node</t>
-        <t>module</t>
-        <t>state data</t>
-        <t>RPC operation</t>
+        <t>augment,</t>
+        <t>configuration data,</t>
+        <t>data model,</t>
+        <t>data node,</t>
+        <t>feature,</t>
+        <t>mandatory node,</t>
+        <t>module,</t>
+	<t>schema tree,</t>
+        <t>state data,</t>
+        <t>RPC operation.</t>
       </list></t>
 
       <section anchor="sec.new-terms" title="Glossary of New Terms">
@@ -221,41 +223,19 @@
       instances, RIBs containing lists of routes, and routing
       protocols. The following subsections describe these components
       in more detail.</t>
-      <t>By combining the components in various ways, and possibly
-      augmenting them with appropriate contents defined in other
-      modules, various routing systems can be realized.</t>
-
-      <figure anchor="fig.exset-up"
-              title="Example set-up of a routing system">
-        &diagram.txt;
-      </figure>
-
-      <t>The example in <xref target="fig.exset-up"/> shows a typical
-      (though certainly not the only possible) organization of a more
-      complex routing subsystem for a single address family. Several of
-      its features are worth mentioning:
-      <list style="symbols">
-        <t>Along with the default RIB, which is always present, an
-        additional RIB is configured.</t>
-        <t>Each routing protocol instance, including the "static" and
-        "direct" pseudo-protocols, is connected to one or more RIBs with
-        which it can exchange routes (in both directions, except for the
-        "static" and "direct" pseudo-protocols).</t>
-        <t>RIBs may also be connected to each other and exchange routes
-        in either direction (or both).</t>
-      </list></t>
 
       <section anchor="sec.system-user"
                title="System-Controlled and User-Controlled List Entries">
-        <t>The core routing data model defines several lists, for
-        example "routing-instance" or "rib", that have to be
-        populated with at least one entry in any properly functioning
-        device, and additional entries may be configured by the user.</t>
+        <t>The core routing data model defines several lists in the
+        schema tree, for example "routing-instance" or "rib", that
+        have to be populated with at least one entry in any properly
+        functioning device, and additional entries may be configured
+        by a client.</t>
         <t>In such a list, the server creates the required item as a
         so-called system-controlled entry in state data, i.e., inside
         the "routing-state" container.</t>
         <t>Additional entries may be created in the configuration by
-        the user, e.g., via the NETCONF protocol. These are so-called
+        a client, e.g., via the NETCONF protocol. These are so-called
         user-controlled entries. If the server accepts a configured
         user-controlled entry, then this entry also appears in the
         state data version of the list.</t>
@@ -303,39 +283,26 @@
         instances, such as VRF (virtual routing and forwarding)
         instances that are used for BGP/MPLS virtual private
         networks <xref target="RFC4364"/>. For each type of routing
-        instance, an identity derived from "rt:routing-instance" MUST
+        instance, an identity derived from "rt:routing-instance" SHALL
         be defined. This identity is then referred to by the value of
         the "type" leaf (a child node of "routing-instance" list).</t>
-        <t>An implementation MAY create one or more system-controlled
-        routing instances, and MAY also impose restrictions on types of
-        routing instances that can be configured, and on the maximum
-        number of supported instances for each type. For example, a
-        simple router implementation may support only one
-        system-controlled routing instance of the default type
-        "rt:default-routing-instance" and may not allow creation of
-        any user-controlled instances.</t>
         <t>Each network layer interface has to be assigned to one or
         more routing instances in order to be able to participate in
         packet forwarding, routing protocols and other operations of
         those routing instances. The assignment is accomplished by
         placing a corresponding (system- or user-controlled) entry in
-        the list of routing instance interfaces ("rt:interface"). The
-        key of the list entry is the name of a configured network layer
-        interface, see the "ietf-interfaces" module <xref
-        target="RFC7223"/>.</t>
-        <t>A data model for a routing instance type MAY state
-        additional rules for the assignment of interfaces to routing
-        instances of that type. For example, it may be required that
-        the sets of interfaces assigned to different routing instances
-        of a certain type be disjoint.</t>
+        the leaf-list of routing instance interfaces
+        ("rt:interface"). Each entry is the name of a configured
+        network layer interface, see the "ietf-interfaces"
+        module <xref target="RFC7223"/>.</t>
 
         <section anchor="sec.4861"
                  title="Parameters of IPv6 Routing Instance Interfaces">
 
-          <t>The module "ietf-ipv6-unicast-routing" augments the
-          definition of the data node "rt:interface", in both
-          configuration and state data, with definitions of the
-          following variables as required by <xref target="RFC4861"/>,
+          <t>YANG module "ietf-ipv6-unicast-routing" (<xref
+          target="sec.mod-v6ur"/>) augments the configuration and
+          state data of interfaces with definitions of the following
+          variables as required by <xref target="RFC4861"/>,
           sec. 6.2.1:
           <list style="symbols">
             <t>send-advertisements,</t>
@@ -358,10 +325,7 @@
               <t>preferred-lifetime,</t>
               <t>autonomous-flag.</t>
             </list></t>
-          </list>
-          The definitions and descriptions of the above parameters can
-          be found in the module "ietf-ipv6-unicast-routing" (<xref
-          target="sec.mod-v6ur"/>).</t>
+          </list></t>
           <t>NOTES:</t>
           <t><list style="numbers">
             <t>The "IsRouter" flag, which is also required by <xref
@@ -395,28 +359,9 @@
           preferred route among routes with the same destination
           prefix. A lower value means a more preferred route.</t>
           <t>"next-hop": determines the action to be performed with a
-          packet. See below for details.</t>
+          packet.</t>
         </list>
         </t>
-        <t>The choice of next-hops comprises the following cases:
-        <list style="symbols">
-          <t>simple next-hop - IP address of the next-hop router,
-          outgoing interface, or both.</t>
-          <t>special next-hop - a keyword indicating special packet
-          handling, one of:
-          <list>
-            <t>"blackhole" - silently discard the packet;</t>
-            <t>"unreachable" - discard the packet and notify the
-            sender with a "destination unreachable" error message;</t>
-            <t>"prohibit" - discard the packet notify the sender with
-            an "administratively prohibited" error message.</t>
-          </list>
-          </t>
-        </list>
-        </t>
-        <t>It is expected that future YANG modules defining will
-        augment routes with more complex next-hop types, or additional
-        attributes such as metrics.</t>
         <t>Routes are primarily state data that appear as entries of
         RIBs (<xref target="sec.rib"/>) but they may also be found in
         configuration data, for example as manually configured static
@@ -425,20 +370,12 @@
       </section>
 
       <section anchor="sec.rib" title="Routing Information Base (RIB)">
-        <t>A routing information base (RIB) is a list of routes
-        complemented with administrative data, namely:
-        <list style="symbols">
-          <t>"source-protocol": type of the routing protocol from which
-          the route was originally obtained.</t>
-          <t>"active": an implementation can use this empty leaf to
-          indicate that the route is preferred among all routes in the
-          same RIB that have the same destination prefix.</t>
-          <t>"last-updated": the date and time when the route was last
-          updated, or inserted into the RIB.</t>
-        </list>
-        Each RIB MUST contain only routes of one address family. An
-        address family is represented by an identity derived from the
-        "rt:address-family" base identity.</t>
+        <t>Every routing instance manages one or more routing
+        information bases (RIB). A RIB is a list of routes
+        complemented with administrative data. Each RIB contain only
+        routes of one address family. An address family is represented
+        by an identity derived from the "rt:address-family" base
+        identity.</t>
         <t>In the core routing data model, RIBs are state data
         represented as entries of the list
         "/routing-state/ribs/rib". The contents of RIBs are controlled
@@ -446,10 +383,6 @@
         result in route additions, removals and modifications. This
         also includes manipulations via the "static" and/or "direct"
         pseudo-protocols, see <xref target="sec.pseudoproto"/>.</t>
-        <t>RIBs are global, which means that a RIB may be used by any
-        or all routing instances. However, a data model for a routing
-        instance type MAY state rules and restrictions for sharing
-        RIBs among routing instances of that type.</t>
         <t>Each routing instance has, for every supported address
         family, one RIB selected as the so-called default RIB. This
         selection is recorded in the list "default-rib". The role of
@@ -581,15 +514,13 @@
 
       <section anchor="sec.rpcs" title="RPC Operations">
 
-        <t>The "ietf-routing" module defines two RPC operations:
+        <t>The "ietf-routing" module defines one RPC operation:
         <list style="symbols">
           <t>fib-route: query a routing instance for the active route
           in the Forwarding Information Base (FIB). It is the route
           that is currently used for sending datagrams to a
           destination host whose address is passed as an input
           parameter.</t>
-          <t>route-count: retrieve the total number of entries in a
-          RIB.</t>
         </list></t>
 
       </section>
@@ -959,6 +890,15 @@ reference:    RFC XXXX
 	    <t>Removed "recipient-ribs" (both state and configuration).</t>
 	    <t>Removed "connected-ribs" from "routing-protocol" (both
 	    state and configuration).</t>
+	    <t>Configuration and state data for IPv6 RA were moved
+	    under "if:interface" and "if:interface-state".</t>
+	    <t>Assignment of interfaces to routing instances now use
+	    leaf-list rather than list (both config and state). The
+	    opposite reference from "if:interface" to
+	    "rt:routing-instance" was changed to a single leaf (an
+	    interface cannot belong to multiple routing instances).</t>
+	    <t>Specification of a default RIB is now a simple flag
+	    under "rib" (both config and state).</t>
 	  </list>
 	</t>
       </section>

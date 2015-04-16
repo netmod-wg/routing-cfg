@@ -422,9 +422,14 @@
         <text>
           <h:p>Each list entry is a container for state
           data of a routing instance.</h:p>
-	  <h:p>An implementation MAY create one or more
-	  system-controlled instances, other user-controlled instances
-	  MAY be created by configuration.</h:p>
+	  <h:p>An implementation MUST support routing instance(s) of
+	  the type 'rt:default-routing-instance', and MAY support
+	  other types. An implementation MAY restrict the number of
+	  routing instances of each supported type.</h:p>
+	  <h:p>An implementation SHOULD create at least one
+	  system-controlled instance, and MAY allow the clients to
+	  create user-controlled routing instances in
+	  configuration.</h:p>
         </text>
       </description>
       <leaf name="name">

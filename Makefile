@@ -3,7 +3,7 @@ REVNO = 18
 DATE ?= $(shell date +%F)
 MODULES = ietf-routing ietf-ipv4-unicast-routing ietf-ipv6-unicast-routing
 FIGURES = config-coll-tree.txt state-coll-tree.txt \
-	config-tree.txt state-tree.txt example-rip.yang diagram.txt example-net.txt
+	config-tree.txt state-tree.txt example-rip.yang example-net.txt
 EXAMPLE_BASE = example
 EXAMPLE_TYPE = get-reply
 baty = $(EXAMPLE_BASE)-$(EXAMPLE_TYPE)
