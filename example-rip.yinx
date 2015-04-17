@@ -42,7 +42,7 @@
   </grouping>
 
   <augment
-      target-node="/rt:routing-state/rt:ribs/rt:rib/rt:routes/rt:route">
+      target-node="/rt:routing-state/rt:routing-instance/rt:ribs/rt:rib/rt:routes/rt:route">
     <when condition="rt:source-protocol = 'rip:rip'">
       <description>
 	<text>This augment is only valid for a routes whose source
@@ -55,7 +55,7 @@
     <uses name="route-content"/>
   </augment>
 
-  <augment target-node="/rt:active-route/rt:output/rt:route">
+  <augment target-node="/rt:fib-route/rt:output/rt:route">
     <description>
       <text>
 	RIP-specific route attributes in the output of 'active-route' RPC.
@@ -86,7 +86,7 @@
 	  <key value="name"/>
 	  <leaf name="name">
 	    <type name="leafref">
-	      <path value="../../../../../../rt:interfaces/rt:interface/rt:name"/>
+	      <path value="../../../../../../rt:interfaces/rt:interface"/>
 	    </type>
 	  </leaf>
 	  <leaf name="enabled">

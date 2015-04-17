@@ -173,13 +173,14 @@
         families, in particular IPv4 and IPv6, and for unicast and
         multicast routing, as well as Multiprotocol Label Switching
         (MPLS).</t>
-        <t>Simple routing set-ups, such as static routing, should be
-        configurable in a simple way, ideally without any need to develop
-        additional YANG modules.</t>
-        <t>On the other hand, the core routing framework must allow for
-        complicated set-ups involving multiple routing information bases
-        (RIB) and multiple routing protocols, as well as controlled
-        redistributions of routing information.</t>
+        <t>A simple IP routing system, such as one that uses only
+        static routing, should be configurable in a simple way,
+        ideally without any need to develop additional YANG
+        modules.</t>
+        <t>On the other hand, the core routing framework must allow
+        for complicated implementations involving multiple routing
+        information bases (RIB) and multiple routing protocols, as
+        well as controlled redistributions of routing information.</t>
         <t>Device vendors will want to map the data models built on this
         generic framework to their proprietary data models and
         configuration interfaces. Therefore, the framework should be
@@ -221,8 +222,8 @@
       format="counter"/>, the core routing data model introduces
       several generic components of a routing framework: routing
       instances, RIBs containing lists of routes, and routing
-      protocols. The following subsections describe these components
-      in more detail.</t>
+      protocols. <xref target="sec.building-blocks"/> describes these
+      components in more detail.</t>
 
       <section anchor="sec.system-user"
                title="System-Controlled and User-Controlled List Entries">
@@ -372,42 +373,33 @@
       <section anchor="sec.rib" title="Routing Information Base (RIB)">
         <t>Every routing instance manages one or more routing
         information bases (RIB). A RIB is a list of routes
-        complemented with administrative data. Each RIB contain only
+        complemented with administrative data. Each RIB contains only
         routes of one address family. An address family is represented
         by an identity derived from the "rt:address-family" base
         identity.</t>
         <t>In the core routing data model, RIBs are state data
         represented as entries of the list
-        "/routing-state/ribs/rib". The contents of RIBs are controlled
-        and manipulated by routing protocol operations which may
-        result in route additions, removals and modifications. This
-        also includes manipulations via the "static" and/or "direct"
-        pseudo-protocols, see <xref target="sec.pseudoproto"/>.</t>
+        "/routing-state/routing-instance/ribs/rib". The contents of
+        RIBs are controlled and manipulated by routing protocol
+        operations which may result in route additions, removals and
+        modifications. This also includes manipulations via the
+        "static" and/or "direct" pseudo-protocols, see <xref
+        target="sec.pseudoproto"/>.</t>
         <t>Each routing instance has, for every supported address
-        family, one RIB selected as the so-called default RIB. This
-        selection is recorded in the list "default-rib". The role of
-        default RIBs is explained in <xref target="sec.proto"/>.</t>
+        family, one RIB marked as the so-called default RIB. Its role
+        is explained in <xref target="sec.proto"/>.</t>
         <t>Simple router implementations that do not advertise the
         feature "multiple-ribs" will typically create one
-        system-controlled RIB per supported address family, and declare
-        it as the default RIB (via a system-controlled entry of the
-        "default-rib" list).</t>
+        system-controlled RIB per routing instance and supported
+        address family, and mark it as the default RIB.</t>
 
-        <section anchor="sec.user-ribs"
-                 title="Multiple RIBs per Address Family">
-          <t>More complex router implementations advertising the
-          "multiple-ribs" feature support multiple RIBs per address
-          family that can be used for policy routing and other
-          purposes. Every RIB can then serve as a source of routes for
-          other RIBs of the same address family. To achieve this, one or
-          more recipient RIBs may be specified in the configuration of
-          the source RIB.</t>
-          <t>A RIB MUST NOT appear among its own recipient RIBs.</t>
-        </section>
+        <t>More complex router implementations advertising the
+        "multiple-ribs" feature support multiple RIBs per address
+        family that can be used for policy routing and other
+        purposes.</t>
       </section>
 
-      <section anchor="sec.proto"
-               title="Routing Protocol">
+      <section anchor="sec.proto" title="Routing Protocol">
 
         <t>The core routing data model provides an open-ended framework
         for defining multiple routing protocol instances within a routing
@@ -418,26 +410,6 @@
         pseudo-protocols (<xref target="sec.pseudoproto"/>).</t>
         <t>Multiple routing protocol instances of the same type MAY be
 	configured within the same routing instance.</t>
-        <t>Each routing protocol instance can be connected to one or
-        more RIBs for each address family that the routing protocol
-        instance supports. By default, the interaction of a routing
-        protocol instance with its connected RIBs is governed by the
-        following rules:
-        <list style="symbols">
-          <t>Routes learned from the network are installed in all
-          connected RIBs with a matching address family.</t>
-          <t>Conversely, routes from all connected RIBs are injected
-          into the routing protocol instance.</t>
-        </list>
-        However, a data model for a routing protocol MAY impose
-        specific rules for exchanging routes between routing protocol
-        instances and connected RIBs.</t>
-        <t>On devices supporting the "multiple-ribs" feature, any RIB
-        (system-controlled or user-controlled) may be connected to a
-        routing protocol instance by configuring a corresponding entry
-        in the "connected-rib" list. If such an entry is not configured
-        for an address family, then the default RIB MUST be used as the
-        connected RIB for this address family.</t>
 
         <section anchor="sec.pseudoproto"
                  title="Routing Pseudo-Protocols">
@@ -446,18 +418,15 @@
           protocol types - "direct" and "static". Both are in fact
           pseudo-protocols, which means they are confined to the local
           device and do not exchange any routing information with
-          adjacent routers. Routes from both "direct" and "static"
-          protocol instances are passed to the connected RIBs, but an
-          exchange in the opposite direction is not allowed.</t>
-          <t>Every routing instance MUST implement exactly one instance of
-          the "direct" pseudo-protocol type. It is the source of direct
-          routes for all configured address families. Direct routes are
-          normally supplied by the operating system kernel, based on the
-          configuration of network interface addresses, see <xref
-          target="sec.ietf-ip"/>. The "direct" pseudo-protocol MUST always
-          be connected to the default RIBs of all supported address
-          families. Unlike other routing protocol types, this connection
-          cannot be changed in the configuration.</t>
+          adjacent routers.</t>
+          <t>Every routing instance MUST implement exactly one
+          instance of the "direct" pseudo-protocol type. It is the
+          source of direct routes for all configured address
+          families. Direct routes are normally supplied by the
+          operating system kernel, based on the configuration of
+          network interface addresses, see <xref
+          target="sec.ietf-ip"/>. Direct routes MUST be installed in
+          default RIBs of all supported address families.</t>
           <t>A pseudo-protocol of the type "static" allows for specifying
           routes manually. It MAY be configured in zero or multiple
           instances, although a typical configuration will have exactly
@@ -495,10 +464,10 @@
             <t>Configuration parameters and/or state data for the new
             protocol can be defined by augmenting the
             "routing-protocol" data node under both "/routing" and "/routing-state".</t>
-            <t>Per-interface configuration, including activation of the
-            routing protocol on individual interfaces, can use
-            references to entries in the list of routing instance
-            interfaces (rt:interface).</t>
+            <t>Per-interface configuration, including activation of
+            the routing protocol on individual interfaces, can use
+            references to entries in the leaf-list of routing
+            instance's interfaces (rt:interface).</t>
           </list></t>
           <t>By using the "when" statement, the augmented configuration
           parameters and state data specific to the new protocol SHOULD
@@ -635,29 +604,29 @@
       IETF XML registry <xref target="RFC3688"/>:</t>
       <figure>
         <artwork>
-----------------------------------------------------------
+--------------------------------------------------------------------
 URI: urn:ietf:params:xml:ns:yang:ietf-routing
 
 Registrant Contact: The IESG.
 
 XML: N/A, the requested URI is an XML namespace.
-----------------------------------------------------------
+--------------------------------------------------------------------
 
-----------------------------------------------------------
+--------------------------------------------------------------------
 URI: urn:ietf:params:xml:ns:yang:ietf-ipv4-unicast-routing
 
 Registrant Contact: The IESG.
 
 XML: N/A, the requested URI is an XML namespace.
-----------------------------------------------------------
+--------------------------------------------------------------------
 
-----------------------------------------------------------
+--------------------------------------------------------------------
 URI: urn:ietf:params:xml:ns:yang:ietf-ipv6-unicast-routing
 
 Registrant Contact: The IESG.
 
 XML: N/A, the requested URI is an XML namespace.
-----------------------------------------------------------
+--------------------------------------------------------------------
         </artwork>
       </figure>
 
@@ -666,26 +635,26 @@ XML: N/A, the requested URI is an XML namespace.
 
       <figure>
         <artwork>
--------------------------------------------------------------------
+--------------------------------------------------------------------
 name:         ietf-routing
 namespace:    urn:ietf:params:xml:ns:yang:ietf-routing
 prefix:       rt
 reference:    RFC XXXX
--------------------------------------------------------------------
+--------------------------------------------------------------------
 
--------------------------------------------------------------------
+--------------------------------------------------------------------
 name:         ietf-ipv4-unicast-routing
 namespace:    urn:ietf:params:xml:ns:yang:ietf-ipv4-unicast-routing
 prefix:       v4ur
 reference:    RFC XXXX
--------------------------------------------------------------------
+--------------------------------------------------------------------
 
--------------------------------------------------------------------
+--------------------------------------------------------------------
 name:         ietf-ipv6-unicast-routing
 namespace:    urn:ietf:params:xml:ns:yang:ietf-ipv6-unicast-routing
 prefix:       v6ur
 reference:    RFC XXXX
--------------------------------------------------------------------
+--------------------------------------------------------------------
         </artwork>
       </figure>
 
@@ -721,8 +690,8 @@ reference:    RFC XXXX
             hangText="/routing/routing-instance/routing-protocols/routing-protocol:">This
         list specifies the routing protocols configured on a device.</t>
 
-        <t hangText="/routing/ribs/rib:">This list specifies the RIBs
-        configured for the device.</t>
+        <t hangText="/routing/routing-instance/ribs/rib:">This list
+        specifies the RIBs configured for the device.</t>
       </list>
 
       Unauthorized access to any of these lists can adversely affect the
@@ -769,8 +738,8 @@ reference:    RFC XXXX
     <section anchor="app.data-tree" title="The Complete Data Trees">
 
       <t>This appendix presents the complete configuration and
-      state data trees of the core routing data model.</t>
-      <t>See <xref target="sec.tree-symbols"/> for an explanation of the
+      state data trees of the core routing data model.
+      See <xref target="sec.tree-symbols"/> for an explanation of the
       symbols used. Data type of every leaf node is shown near the right
       end of the corresponding line.</t>
 
@@ -806,19 +775,11 @@ reference:    RFC XXXX
       <t>Typically, the feature "multiple-ribs" will not be
       supported. This means that a single system-controlled RIB is
       available for each supported address family - IPv4, IPv6 or
-      both. These RIBs must be the default RIBs, so references to them
-      will also appear as system-controlled entries of the
-      "default-rib" list in state data. No user-controlled RIBs are
-      allowed.</t>
+      both. These RIBs must be the default RIBs. No user-controlled
+      RIBs are allowed.</t>
       <t>In addition to the mandatory instance of the "direct"
       pseudo-protocol, a minimum implementation should support
-      configured instance(s) of the "static" pseudo-protocol. Even
-      with a single RIB per address family, it may be occasionally
-      useful to be able to configure multiple "static" instances.  For
-      example, a client may want to configure alternative sets of
-      static routes and activate or deactivate them by means of
-      connnecting the default RIB to the corresponding "static"
-      instance.</t>
+      configuring instance(s) of the "static" pseudo-protocol.</t>
       <t>Platforms with severely constrained resources may use
       deviations for restricting the data model, e.g., limiting the
       number of "static" routing protocol instances.</t>
@@ -830,10 +791,10 @@ reference:    RFC XXXX
 
       <t>This appendix demonstrates how the core routing data model
       can be extended to support a new routing protocol. The YANG
-      module "example-rip" shown below is intended only as an
-      illustration rather than a real definition of a data model for
-      the RIP routing protocol. For the sake of brevity, this module
-      does not obey all the guidelines specified in <xref
+      module "example-rip" shown below is intended as an illustration
+      rather than a real definition of a data model for the RIP
+      routing protocol. For the sake of brevity, this module does not
+      obey all the guidelines specified in <xref
       target="RFC6087"/>. See also <xref target="sec.newproto"/>.</t>
 
       <figure>
@@ -899,6 +860,7 @@ reference:    RFC XXXX
 	    interface cannot belong to multiple routing instances).</t>
 	    <t>Specification of a default RIB is now a simple flag
 	    under "rib" (both config and state).</t>
+	    <t>Default RIBs are marked by a flag in state data.</t>
 	  </list>
 	</t>
       </section>

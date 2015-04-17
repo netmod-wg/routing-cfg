@@ -65,6 +65,7 @@
     <if:type>ianaift:ethernetCsmacd</if:type>
     <if:phys-address>00:0C:42:E5:B1:E9</if:phys-address>
     <if:oper-status>up</if:oper-status>
+    <rt:routing-instance>rtr0</rt:routing-instance>
     <if:statistics>
      <if:discontinuity-time>2014-10-24T17:11:27+00:58</if:discontinuity-time>
     </if:statistics>
@@ -96,8 +97,9 @@
    <if:interface>
     <if:name>eth1</if:name>
     <if:type>ianaift:ethernetCsmacd</if:type>
-    <if:oper-status>up</if:oper-status>
     <if:phys-address>00:0C:42:E5:B1:EA</if:phys-address>
+    <if:oper-status>up</if:oper-status>
+    <rt:routing-instance>rtr0</rt:routing-instance>
     <if:statistics>
      <if:discontinuity-time>2014-10-24T17:11:27+00:59</if:discontinuity-time>
     </if:statistics>
@@ -131,7 +133,9 @@
    <rt:routing-instance>
     <rt:name>rtr0</rt:name>
     <rt:description>Router A</rt:description>
+    <rt:router-id>192.0.2.1</rt:router-id>
     <rt:interfaces>
+     <rt:interface>eth0</rt:interface>
      <rt:interface>eth1</rt:interface>
     </rt:interfaces>
     <rt:routing-protocols>
@@ -181,6 +185,7 @@
      <rt:rib>
       <rt:name>ipv4-master</rt:name>
       <rt:address-family>v4ur:ipv4-unicast</rt:address-family>
+      <rt:default-rib>true</rt:default-rib>
       <rt:routes>
        <rt:route>
 	<v4ur:destination-prefix>192.0.2.1/24</v4ur:destination-prefix>
@@ -214,6 +219,7 @@
      <rt:rib>
       <rt:name>ipv6-master</rt:name>
       <rt:address-family>v6ur:ipv6-unicast</rt:address-family>
+      <rt:default-rib>true</rt:default-rib>
       <rt:routes>
        <rt:route>
 	<v6ur:destination-prefix>2001:db8:0:1::/64</v6ur:destination-prefix>

@@ -56,7 +56,7 @@
 	<h:p>This feature indicates that the server supports
 	user-defined RIBs.
 	</h:p>
-	<h:p>Servers that do not advertise this feature MUST provide
+	<h:p>Servers that do not advertise this feature SHOULD provide
 	exactly one system-controlled RIB per routing-instance and
 	supported address family and make them also the default
 	RIBs. These RIBs then appear as entries of the list
@@ -271,7 +271,8 @@
 	<text>
 	  <h:p>Options for next-hops in static routes.</h:p>
 	  <h:p>It is expected that other cases will be added through
-	  augments from other modules, e.g., for ECMP.</h:p>
+	  augments from other modules, e.g., for Equal-Cost Multipath
+	  routing (ECMP).</h:p>
 	</text>
       </description>
       <case name="simple-next-hop">
@@ -453,6 +454,15 @@
           </text>
         </description>
       </leaf>
+      <uses name="router-id">
+	<description>
+	  <text>
+	    <h:p>Global router ID.</h:p>
+	    <h:p>It may be either configured or assigned
+	    algorithmically by the implementation.</h:p>
+	  </text>
+	</description>
+      </uses>
       <container name="interfaces">
         <description>
           <text>
@@ -526,15 +536,15 @@
 	</description>
 	<list name="rib">
           <key value="name"/>
+	  <min-elements value="1"/>
           <description>
             <text>
               <h:p>Each entry represents a RIB identified by the
               'name' key. All routes in a RIB MUST belong to the
               same address family.</h:p>
-	      <h:p>The server MUST provide a system-controlled default
-	      RIB for each supported address family, and MAY provide
-	      other system-controlled RIBs. Additional RIBs MAY be
-	      created in the configuration.</h:p>
+	      <h:p>For each routing instance, an implementation SHOULD
+	      provide one system-controlled default RIB for each
+	      supported address family.</h:p>
             </text>
           </description>
           <leaf name="name">
@@ -547,6 +557,7 @@
 	  <leaf name="default-rib">
 	    <if-feature name="multiple-ribs"/>
 	    <type name="boolean"/>
+	    <default value="true"/>
 	    <description>
 	      <text>
 		<h:p>This flag has the value of 'true' if and only if
@@ -669,7 +680,7 @@
         <leaf-list name="interface">
           <description>
             <text>
-              The name of a configured network layer interface that is
+              The name of a configured network layer interface to be
               assigned to the routing-instance.
             </text>
           </description>
@@ -766,12 +777,13 @@
           <key value="name"/>
           <description>
             <text>
-              <h:p>Each entry represents a configured RIB identified by the
-	      'name' key.</h:p>
+              <h:p>Each entry contains configuration for a RIB
+              identified by the 'name' key.</h:p>
 	      <h:p>Entries having the same key as a system-controlled
-	      entry of the list /routing-state/ribs/rib are used for
-	      configuring parameters of that entry. Other entries define
-	      additional user-controlled RIBs.</h:p>
+	      entry of the list
+	      /routing-state/routing-instance/ribs/rib are used for
+	      configuring parameters of that entry. Other entries
+	      define additional user-controlled RIBs.</h:p>
             </text>
           </description>
           <leaf name="name">
@@ -787,37 +799,26 @@
 	      </text>
             </description>
           </leaf>
-          <uses name="address-family"/>
+          <uses name="address-family">
+	    <refine target-node="address-family">
+	      <mandatory value="false"/>
+	    </refine>
+	    <description>
+	      <text>
+		<h:p>Address family of the RIB.</h:p>
+		<h:p>It is mandatory for user-controlled RIBs. For
+		system-controlled RIBs it can be omitted, otherwise it
+		must match the address family of the corresponding
+		state entry.</h:p>
+	      </text>
+	    </description>
+	  </uses>
           <leaf name="description">
             <type name="string"/>
             <description>
               <text>Textual description of the RIB.</text>
             </description>
           </leaf>
-	  <leaf name="default-rib">
-	    <if-feature name="multiple-ribs"/>
-	    <must condition=". = 'false' or not(../preceding-sibling::rib[default-rib = 'true' and address-family = current()/../address-family])">
-	      <error-message>
-		<value>
-		  Duplicate default RIB.
-		</value>
-	      </error-message>
-	      <description>
-		<text>
-		  For each address family there can be no more than
-		  one default RIB.
-		</text>
-	      </description>
-	    </must>
-	    <type name="boolean"/>
-	    <default value="false"/>
-	    <description>
-	      <text>
-		This flag determines whether the RIB is the default
-		RIB for the given address family.
-	      </text>
-	    </description>
-	  </leaf>
 	</list>
       </container>
     </list>
