@@ -282,8 +282,8 @@
         every type of "routing instance". Every implementation must support
         a single routing instance of type "default-routing-instance". 
         Additionally, the "vrf-routing-instance" identity is defined 
-        in support of the ubiquitous VRF (virtual routing and forwarding) 
-        type for routing instances subsequent to the first. 
+        for the very common VRF (virtual routing and forwarding) 
+        for routing instances subsequent to the first. 
         VRFs are used for virtual private networks (VPNs) 
         including BGP/MPLS VPNs _<xref target="RFC4364"/>.  
         It is expected that future YANG
