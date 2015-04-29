@@ -123,7 +123,7 @@
   <identity name="vrf-routing-instance">
     <base name="routing-instance"/>
     <description>
-      <text>This identity represents a VRF routing instance. The 
+      <text>This identity represents a VRF routing instance. The
       type is distinct from the default-routing-instance. There may
       be multiple vrf-routing-interfaces.</text>
     </description>
@@ -269,7 +269,7 @@
       </description>
     </leaf>
   </grouping>
-  
+
   <grouping name="next-hop-content">
     <description>
       <text>Generic parameters of next-hops in static routes.</text>
@@ -349,7 +349,7 @@
       </case>
     </choice>
   </grouping>
-  
+
   <grouping name="route-metadata">
     <description>
       <text>Common route metadata.</text>

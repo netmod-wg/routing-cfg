@@ -280,12 +280,12 @@
         "/rt:routing-state/rt:routing-instance", respectively.</t>
         <t>No attempt has been made to define the semantics for
         every type of "routing instance". Every implementation must support
-        a single routing instance of type "default-routing-instance". 
-        Additionally, the "vrf-routing-instance" identity is defined 
-        in support of the ubiquitous VRF (virtual routing and forwarding) 
-        type for routing instances subsequent to the first. 
-        VRFs are used for virtual private networks (VPNs) 
-        including BGP/MPLS VPNs _<xref target="RFC4364"/>.  
+        a single routing instance of type "default-routing-instance".
+        Additionally, the "vrf-routing-instance" identity is defined
+        in support of the ubiquitous VRF (virtual routing and forwarding)
+        type for routing instances subsequent to the first.
+        VRFs are used for virtual private networks (VPNs)
+        including BGP/MPLS VPNs _<xref target="RFC4364"/>.
         It is expected that future YANG
         modules will define data models for specific types of routing
         instances. For each type of routing
@@ -850,8 +850,8 @@ reference:    RFC XXXX
       <section title="Changes Between Versions -18 and -19">
         <t>
           <list style="symbols">
-            <t>The leaf "route-preference" was removed from both the 
-            "routing-protocol" container in both "routing" and 
+            <t>The leaf "route-preference" was removed from both the
+            "routing-protocol" container in both "routing" and
             "routing-state".</t>
             <t>The "vrf-routing-instance" identity was added
                in support of a common routing-instance type
