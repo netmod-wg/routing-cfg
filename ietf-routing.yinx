@@ -721,20 +721,6 @@
               </text>
             </description>
           </leaf>
-          <leaf name="enabled">
-            <type name="boolean"/>
-            <default value="true"/>
-            <description>
-              <text>
-                <h:p>Enable/disable the routing protocol
-                instance.</h:p>
-                <h:p>If this parameter is false, the parent routing
-                protocol instance is disabled and does not appear in
-                state data, despite any other
-                configuration that might be present.</h:p>
-              </text>
-            </description>
-          </leaf>
           <container name="static-routes">
             <when condition="../type='rt:static'">
               <description>

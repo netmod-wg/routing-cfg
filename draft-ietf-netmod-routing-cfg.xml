@@ -853,9 +853,10 @@ reference:    RFC XXXX
             <t>The leaf "route-preference" was removed from both the
             "routing-protocol" container in both "routing" and
             "routing-state".</t>
-            <t>The "vrf-routing-instance" identity was added
-               in support of a common routing-instance type
-               in addition to the "default-routing-instance".</t>
+            <t>The "vrf-routing-instance" identity was added in
+            support of a common routing-instance type in addition to
+            the "default-routing-instance".</t>
+	    <t>Removed "enabled" switch from "routing-protocol".</t>
 	  </list>
 	</t>
       </section>
