@@ -278,20 +278,24 @@
         list. Each routing instance has separate configuration and
         state data under "/rt:routing/rt:routing-instance" and
         "/rt:routing-state/rt:routing-instance", respectively.</t>
-        <t>No attempt has been made to define the semantics for
-        every type of "routing instance". Every implementation must support
-        a single routing instance of type "default-routing-instance".
-        Additionally, the "vrf-routing-instance" identity is defined
-        in support of the ubiquitous VRF (virtual routing and forwarding)
-        type for routing instances subsequent to the first.
-        VRFs are used for virtual private networks (VPNs)
-        including BGP/MPLS VPNs _<xref target="RFC4364"/>.
-        It is expected that future YANG
-        modules will define data models for specific types of routing
-        instances. For each type of routing
-        instance, an identity derived from "rt:routing-instance" SHALL
-        be defined. This identity is then referred to by the value of
-        the "type" leaf (a child node of "routing-instance" list).</t>
+        <t>No attempt has been made to define the semantics for every
+        type of routing instance. The core routing data model defines
+        identities for two ubiquitous routing instance types:
+        <list style="symbols">
+	  <t>"default-routing-instance" - this routing instance type
+	  represents the default (or only) routing instance. All
+	  implementations MUST support a single routing instance of
+	  this type.</t>
+          <t>"vrf-routing-instance" - this routing instance type
+          represents VRF (virtual routing and forwarding) routing
+          instances that are used for virtual private networks (VPN)
+          including BGP/MPLS VPN_<xref target="RFC4364"/>.</t>
+        </list></t>
+	<t>It is expected that future YANG modules will define other
+	types of routing instances. For every such type, an identity
+	derived from "rt:routing-instance" SHALL be defined. This
+	identity is then referred to by the value of the "type" leaf
+	(a child node of "routing-instance" list).</t>
         <t>Each network layer interface has to be assigned to one or
         more routing instances in order to be able to participate in
         packet forwarding, routing protocols and other operations of
@@ -775,8 +779,9 @@ reference:    RFC XXXX
       implementing a bare minimum of available functions. Such an
       implementation may be used for hosts or very simple routers.</t>
       <t>A minimum implementation will provide a single
-      system-controlled routing instance, and will not allow clients to
-      create any user-controlled instances.</t>
+      system-controlled routing instance of the type
+      "default-routing-instance", and will not allow clients to create
+      any user-controlled instances.</t>
       <t>Typically, the feature "multiple-ribs" will not be
       supported. This means that a single system-controlled RIB is
       available for each supported address family - IPv4, IPv6 or
@@ -850,7 +855,7 @@ reference:    RFC XXXX
       <section title="Changes Between Versions -18 and -19">
         <t>
           <list style="symbols">
-            <t>The leaf "route-preference" was removed from both the
+            <t>The leaf "route-preference" was removed from the
             "routing-protocol" container in both "routing" and
             "routing-state".</t>
             <t>The "vrf-routing-instance" identity was added in
