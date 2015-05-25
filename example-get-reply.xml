@@ -178,7 +178,6 @@
      <rt:routing-protocol>
       <rt:type>rt:static</rt:type>
       <rt:name>st0</rt:name>
-      <rt:route-preference>5</rt:route-preference>
      </rt:routing-protocol>
     </rt:routing-protocols>
     <rt:ribs>
