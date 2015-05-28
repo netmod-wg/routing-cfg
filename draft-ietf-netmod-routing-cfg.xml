@@ -482,8 +482,13 @@
           parameters and state data specific to the new protocol SHOULD
           be made conditional and valid only if the value of "rt:type"
           or "rt:source-protocol" is equal to the new protocol's
-          identity. It is also RECOMMENDED that protocol-specific data
-          nodes be encapsulated in appropriately named containers.</t>
+          identity.</t>
+          <t>It is also RECOMMENDED that protocol-specific data nodes
+          be encapsulated in an appropriately named container with
+          presence, see section 7.5.1 in <xref
+          target="RFC6020"/>. Such a container may contain mandatory
+          data nodes that are otherwise forbidden at the top level of
+          an augment.</t>
           <t>The above steps are implemented by the example YANG module
           for the RIP routing protocol in <xref
           target="app.rip"/>.</t>
