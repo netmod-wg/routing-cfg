@@ -279,31 +279,24 @@
       <description>
 	<text>
 	  <h:p>Options for next-hops in static routes.</h:p>
-	  <h:p>It is expected that other cases will be added through
+	  <h:p>Modules for address families MUST augment this choice
+	  with the 'next-hop-address' case/leaf that allows for
+	  specifying a gateway address.</h:p>
+	  <h:p>It is expected that further cases will be added through
 	  augments from other modules, e.g., for Equal-Cost Multipath
 	  routing (ECMP).</h:p>
 	</text>
       </description>
-      <case name="simple-next-hop">
-	<leaf name="outgoing-interface">
-	  <type name="leafref">
-	    <path value="/rt:routing/rt:routing-instance/rt:interfaces/rt:interface"/>
-	  </type>
-	  <description>
-	    <text>
-	      Name of the outgoing interface.
-	    </text>
-	  </description>
-	</leaf>
+      <leaf name="outgoing-interface">
+	<type name="leafref">
+	  <path value="/rt:routing/rt:routing-instance/rt:interfaces/rt:interface"/>
+	</type>
 	<description>
 	  <text>
-	    <h:p>Simple next-hop is specified as an outgoing interface,
-	    next-hop address or both.</h:p>
-	    <h:p>Address-family-specific modules are expected to
-	    provide 'next-hop-address' leaf via augmentation.</h:p>
+	    Name of the outgoing interface.
 	  </text>
 	</description>
-      </case>
+      </leaf>
       <case name="special-next-hop">
 	<uses name="special-next-hop"/>
       </case>
@@ -319,31 +312,24 @@
       <description>
 	<text>
 	  <h:p>Options for next-hops in state data.</h:p>
-	  <h:p>It is expected that other cases will be added through
+	  <h:p>Modules for address families MUST augment this choice
+	  with the 'next-hop-address' case/leaf that allows for
+	  specifying a gateway address.</h:p>
+	  <h:p>It is expected that further cases will be added through
 	  augments from other modules, e.g., for ECMP or recursive
 	  next-hops.</h:p>
 	</text>
       </description>
-      <case name="simple-next-hop">
-	<leaf name="outgoing-interface">
-	  <type name="leafref">
-	    <path value="/rt:routing-state/rt:routing-instance/rt:interfaces/rt:interface"/>
-	  </type>
-	  <description>
-	    <text>
-	      Name of the outgoing interface.
-	    </text>
-	  </description>
-	</leaf>
+      <leaf name="outgoing-interface">
+	<type name="leafref">
+	  <path value="/rt:routing-state/rt:routing-instance/rt:interfaces/rt:interface"/>
+	</type>
 	<description>
 	  <text>
-	    <h:p>Simple next-hop is specified as an outgoing interface,
-	    next-hop address or both.</h:p>
-	    <h:p>Address-family-specific modules are expected to
-	    provide 'next-hop-address' leaf via augmentation.</h:p>
+	    Name of the outgoing interface.
 	  </text>
 	</description>
-      </case>
+      </leaf>
       <case name="special-next-hop">
 	<uses name="special-next-hop"/>
       </case>

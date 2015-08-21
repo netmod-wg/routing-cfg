@@ -79,7 +79,7 @@
   </augment>
 
   <augment
-      target-node="/rt:routing-state/rt:routing-instance/rt:ribs/rt:rib/rt:routes/rt:route/rt:next-hop/rt:next-hop-options/rt:simple-next-hop">
+      target-node="/rt:routing-state/rt:routing-instance/rt:ribs/rt:rib/rt:routes/rt:route/rt:next-hop/rt:next-hop-options">
     <when
         condition="../../../rt:address-family = 'v4ur:ipv4-unicast'">
       <description>
@@ -87,8 +87,7 @@
       </description>
     </when>
     <description>
-      <text>This leaf augments the 'simple-next-hop' case of IPv4
-      unicast routes.</text>
+      <text>Augment 'next-hop-options' in IPv4 unicast routes.</text>
     </description>
     <leaf name="next-hop-address">
       <type name="inet:ipv4-address"/>
@@ -138,7 +137,8 @@
 	  <uses name="rt:next-hop-content">
 	    <augment target-node="next-hop-options">
 	      <description>
-		<text>Add next-hop address case.</text>
+		<text>Augment 'next-hop-options' in IPv4 static
+		routes.</text>
 	      </description>
 	      <leaf name="next-hop-address">
 		<type name="inet:ipv4-address"/>
@@ -196,15 +196,15 @@
   </augment>
 
   <augment
-      target-node="/rt:fib-route/rt:output/rt:route/rt:next-hop/rt:next-hop-options/rt:simple-next-hop">
+      target-node="/rt:fib-route/rt:output/rt:route/rt:next-hop/rt:next-hop-options">
     <when condition="../rt:address-family='v4ur:ipv4-unicast'">
       <description>
 	<text>This augment is valid only for IPv4 unicast.</text>
       </description>
     </when>
     <description>
-      <text>This leaf augments the 'simple-next-hop' case in the reply
-      to the 'rt:fib-route' operation.</text>
+      <text>Augment 'next-hop-options' in the reply to the
+      'rt:fib-route' operation.</text>
     </description>
     <leaf name="next-hop-address">
       <type name="inet:ipv4-address"/>
