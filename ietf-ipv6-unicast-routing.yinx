@@ -674,9 +674,8 @@
       </description>
       <list name="route">
         <key value="destination-prefix"/>
-        <ordered-by value="user"/>
         <description>
-          <text>A user-ordered list of static routes.</text>
+          <text>A list of static routes.</text>
         </description>
 	<leaf name="destination-prefix">
 	  <mandatory value="true"/>
