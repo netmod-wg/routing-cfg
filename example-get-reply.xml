@@ -67,7 +67,7 @@
     <if:oper-status>up</if:oper-status>
     <rt:routing-instance>rtr0</rt:routing-instance>
     <if:statistics>
-     <if:discontinuity-time>2014-10-24T17:11:27+00:58</if:discontinuity-time>
+     <if:discontinuity-time>2015-10-24T17:11:27+02:00</if:discontinuity-time>
     </if:statistics>
     <ip:ipv4>
      <ip:forwarding>true</ip:forwarding>
@@ -101,7 +101,7 @@
     <if:oper-status>up</if:oper-status>
     <rt:routing-instance>rtr0</rt:routing-instance>
     <if:statistics>
-     <if:discontinuity-time>2014-10-24T17:11:27+00:59</if:discontinuity-time>
+     <if:discontinuity-time>2015-10-24T17:11:29+02:00</if:discontinuity-time>
     </if:statistics>
     <ip:ipv4>
      <ip:forwarding>true</ip:forwarding>
@@ -193,7 +193,7 @@
 	</rt:next-hop>
 	<rt:route-preference>0</rt:route-preference>
 	<rt:source-protocol>rt:direct</rt:source-protocol>
-	<rt:last-updated>2014-10-24T17:11:27+01:00</rt:last-updated>
+	<rt:last-updated>2015-10-24T17:11:27+02:00</rt:last-updated>
        </rt:route>
        <rt:route>
 	<v4ur:destination-prefix>198.51.100.0/24</v4ur:destination-prefix>
@@ -202,7 +202,7 @@
 	</rt:next-hop>
 	<rt:source-protocol>rt:direct</rt:source-protocol>
 	<rt:route-preference>0</rt:route-preference>
-	<rt:last-updated>2014-10-24T17:11:27+01:00</rt:last-updated>
+	<rt:last-updated>2015-10-24T17:11:27+02:00</rt:last-updated>
        </rt:route>
        <rt:route>
 	<v4ur:destination-prefix>0.0.0.0/0</v4ur:destination-prefix>
@@ -211,7 +211,7 @@
 	<rt:next-hop>
 	 <v4ur:next-hop-address>192.0.2.2</v4ur:next-hop-address>
 	</rt:next-hop>
-	<rt:last-updated>2014-10-24T18:02:45+01:00</rt:last-updated>
+	<rt:last-updated>2015-10-24T18:02:45+02:00</rt:last-updated>
        </rt:route>
       </rt:routes>
      </rt:rib>
@@ -227,7 +227,7 @@
 	</rt:next-hop>
 	<rt:source-protocol>rt:direct</rt:source-protocol>
 	<rt:route-preference>0</rt:route-preference>
-	<rt:last-updated>2014-10-24T17:11:27+01:00</rt:last-updated>
+	<rt:last-updated>2015-10-24T17:11:27+02:00</rt:last-updated>
        </rt:route>
        <rt:route>
 	<v6ur:destination-prefix>2001:db8:0:2::/64</v6ur:destination-prefix>
@@ -236,7 +236,7 @@
 	</rt:next-hop>
 	<rt:source-protocol>rt:direct</rt:source-protocol>
 	<rt:route-preference>0</rt:route-preference>
-	<rt:last-updated>2014-10-24T17:11:27+01:00</rt:last-updated>
+	<rt:last-updated>2015-10-24T17:11:27+02:00</rt:last-updated>
        </rt:route>
        <rt:route>
 	<v6ur:destination-prefix>::/0</v6ur:destination-prefix>
@@ -245,7 +245,7 @@
 	</rt:next-hop>
 	<rt:source-protocol>rt:static</rt:source-protocol>
 	<rt:route-preference>5</rt:route-preference>
-	<rt:last-updated>2014-10-24T18:02:45+01:00</rt:last-updated>
+	<rt:last-updated>2015-10-24T18:02:45+02:00</rt:last-updated>
        </rt:route>
       </rt:routes>
      </rt:rib>
