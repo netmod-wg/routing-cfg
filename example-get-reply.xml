@@ -16,6 +16,7 @@
     <if:description>
      Uplink to ISP.
     </if:description>
+    <rt:routing-instance>rtr0</rt:routing-instance>
     <ip:ipv4>
      <ip:address>
       <ip:ip>192.0.2.1</ip:ip>
@@ -40,6 +41,7 @@
     <if:description>
      Interface to the internal network.
     </if:description>
+    <rt:routing-instance>rtr0</rt:routing-instance>
     <ip:ipv4>
      <ip:address>
       <ip:ip>198.51.100.1</ip:ip>
@@ -134,10 +136,6 @@
     <rt:name>rtr0</rt:name>
     <rt:description>Router A</rt:description>
     <rt:router-id>192.0.2.1</rt:router-id>
-    <rt:interfaces>
-     <rt:interface>eth0</rt:interface>
-     <rt:interface>eth1</rt:interface>
-    </rt:interfaces>
     <rt:routing-protocols>
      <rt:routing-protocol>
       <rt:type>rt:static</rt:type>

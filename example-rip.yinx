@@ -5,6 +5,9 @@
         xmlns:rt="urn:ietf:params:xml:ns:yang:ietf-routing">
   <namespace uri="http://example.com/rip"/>
   <prefix value="rip"/>
+  <import module="ietf-interfaces">
+    <prefix value="if"/>
+  </import>
   <import module="ietf-routing">
     <prefix value="rt"/>
   </import>
@@ -85,9 +88,7 @@
 	<list name="interface">
 	  <key value="name"/>
 	  <leaf name="name">
-	    <type name="leafref">
-	      <path value="../../../../../../rt:interfaces/rt:interface"/>
-	    </type>
+	    <type name="if:interface-ref"/>
 	  </leaf>
 	  <leaf name="enabled">
 	    <type name="boolean"/>

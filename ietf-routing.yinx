@@ -288,9 +288,7 @@
 	</text>
       </description>
       <leaf name="outgoing-interface">
-	<type name="leafref">
-	  <path value="/rt:routing/rt:routing-instance/rt:interfaces/rt:interface"/>
-	</type>
+	<type name="if:interface-ref"/>
 	<description>
 	  <text>
 	    Name of the outgoing interface.
@@ -321,9 +319,7 @@
 	</text>
       </description>
       <leaf name="outgoing-interface">
-	<type name="leafref">
-	  <path value="/rt:routing-state/rt:routing-instance/rt:interfaces/rt:interface"/>
-	</type>
+	<type name="if:interface-state-ref"/>
 	<description>
 	  <text>
 	    Name of the outgoing interface.
@@ -379,7 +375,8 @@
   <augment target-node="/if:interfaces-state/if:interface">
     <description>
       <text>
-	This augment adds a wrapped leaf-list to interface state data.
+	This augment adds a reference to the routing-instance to which
+	the interface is assigned.
       </text>
     </description>
     <leaf name="routing-instance">
@@ -390,19 +387,6 @@
 	  assigned.
 	</text>
       </description>
-      <must condition="../if:name=/rt:routing-state/rt:routing-instance[rt:name=current()]/rt:interfaces/rt:interface">
-	<description>
-	  <text>
-	    The reference must mirror a corresponding assignment
-	    under routing-instance.
-	  </text>
-	</description>
-	<error-message>
-	  <value>
-	    The interface is not assigned to the routing instance.
-	  </value>
-	</error-message>
-      </must>
     </leaf>
   </augment>
 
@@ -472,6 +456,19 @@
 	    </text>
           </description>
           <type name="if:interface-state-ref"/>
+	  <must condition="../../name = /if:interfaces-state/if:interface[if:name=current()]/rt:routing-instance"><?delim /?>
+	<description>
+	  <text>
+	    This reference must mirror a corresponding assignment
+	    of the ancestor routing-instance to the interface.
+	  </text>
+	</description>
+	<error-message>
+	  <value>
+	    Routing instance is not assigned to the interface.
+	  </value>
+	</error-message>
+      </must>
 	</leaf-list>
       </container>
       <container name="routing-protocols">
@@ -593,6 +590,24 @@
 
   <!-- Configuration Data -->
 
+  <augment target-node="/if:interfaces/if:interface">
+    <description>
+      <text>
+	This augment adds a routing-instance reference to interface
+	configuration.
+      </text>
+    </description>
+    <leaf name="routing-instance">
+      <type name="routing-instance-ref"/>
+      <description>
+	<text>
+	  The name of the routing instance to which the interface is
+	  to be assigned.
+	</text>
+      </description>
+    </leaf>
+  </augment>
+
   <container name="routing">
     <description>
       <text>Configuration parameters for the routing subsystem.</text>
@@ -654,22 +669,6 @@
           <text>Textual description of the routing instance.</text>
         </description>
       </leaf>
-      <container name="interfaces">
-        <description>
-          <text>
-            Assignment of the routing instance's interfaces.
-          </text>
-        </description>
-        <leaf-list name="interface">
-          <description>
-            <text>
-              The name of a configured network layer interface to be
-              assigned to the routing-instance.
-            </text>
-          </description>
-          <type name="if:interface-ref"/>
-	</leaf-list>
-      </container>
       <container name="routing-protocols">
         <description>
           <text>
