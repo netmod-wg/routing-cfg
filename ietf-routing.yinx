@@ -280,8 +280,8 @@
 	<text>
 	  <h:p>Options for next-hops in static routes.</h:p>
 	  <h:p>Modules for address families MUST augment this choice
-	  with the 'next-hop-address' case/leaf that allows for
-	  specifying a gateway address.</h:p>
+	  with the 'next-hop-address' case, which is a leaf containing
+	  a gateway address of that address family.</h:p>
 	  <h:p>It is expected that further cases will be added through
 	  augments from other modules, e.g., for Equal-Cost Multipath
 	  routing (ECMP).</h:p>
@@ -313,8 +313,8 @@
 	<text>
 	  <h:p>Options for next-hops in state data.</h:p>
 	  <h:p>Modules for address families MUST augment this choice
-	  with the 'next-hop-address' case/leaf that allows for
-	  specifying a gateway address.</h:p>
+	  with the 'next-hop-address' case, which is a leaf containing
+	  a gateway address of that address family.</h:p>
 	  <h:p>It is expected that further cases will be added through
 	  augments from other modules, e.g., for ECMP or recursive
 	  next-hops.</h:p>
