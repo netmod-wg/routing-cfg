@@ -65,8 +65,9 @@
         unicast.</t>
         <t>Module "ietf-ipv6-unicast-routing" augments the
         "ietf-routing" module with additional data specific to IPv6
-        unicast, including the router configuration variables required
-        by <xref target="RFC4861"/>.</t>
+        unicast. It also augments the "ietf-interfaces" module <xref
+        target="RFC7223"/> with IPv6 router configuration variables
+        required by <xref target="RFC4861"/>.</t>
       </list></t>
 
       <t>These modules together define the so-called core routing data
@@ -100,9 +101,13 @@
       <list style="symbols">
         <t>augment,</t>
         <t>configuration data,</t>
+	<t>container,</t>
+	<t>container with presence,</t>
         <t>data model,</t>
         <t>data node,</t>
         <t>feature,</t>
+	<t>leaf,</t>
+	<t>list,</t>
         <t>mandatory node,</t>
         <t>module,</t>
 	<t>schema tree,</t>
@@ -243,12 +248,12 @@
         <t>Corresponding entries in both versions of the list (in
         state data and configuration) have the same value of the list
         key.</t>
-        <t>The user may also provide supplemental configuration of
-        system-controlled entries. To do so, the user creates a new
+        <t>A client may also provide supplemental configuration of
+        system-controlled entries. To do so, the client creates a new
         entry in the configuration with the desired contents. In order
-        to bind this entry with the corresponding entry in the
-        state data list, the key of the configuration entry has
-        to be set to the same value as the key of the state entry.</t>
+        to bind this entry to the corresponding entry in the state
+        data list, the key of the configuration entry has to be set to
+        the same value as the key of the state entry.</t>
         <t>An example can be seen in <xref target="app.get-reply"/>: the
         "/routing-state/routing-instance" list has a single
         system-controlled entry whose "name" key has the value
@@ -284,8 +289,8 @@
         <list style="symbols">
 	  <t>"default-routing-instance" - this routing instance type
 	  represents the default (or only) routing instance. All
-	  implementations MUST support a single routing instance of
-	  this type.</t>
+	  implementations MUST provide one and only one
+	  system-controlled routing instance of this type.</t>
           <t>"vrf-routing-instance" - this routing instance type
           represents VRF (virtual routing and forwarding) routing
           instances that are used for virtual private networks (VPN)
@@ -296,23 +301,18 @@
 	derived from "rt:routing-instance" SHALL be defined. This
 	identity is then referred to by the value of the "type" leaf
 	(a child node of "routing-instance" list).</t>
-        <t>Each network layer interface has to be assigned to one or
-        more routing instances in order to be able to participate in
-        packet forwarding, routing protocols and other operations of
-        those routing instances. The assignment is accomplished by
-        placing a corresponding (system- or user-controlled) entry in
-        the leaf-list of routing instance interfaces
-        ("rt:interface"). Each entry is the name of a configured
-        network layer interface, see the "ietf-interfaces"
-        module <xref target="RFC7223"/>.</t>
+        <t>By default, all network layer interfaces are assigned to
+        the routing instance of the "default-routing-instance"
+        type. This can be changed by configuring the
+        "rt:routing-instance" leaf in the interface configuration.</t>
 
         <section anchor="sec.4861"
-                 title="Parameters of IPv6 Routing Instance Interfaces">
+                 title="Parameters of IPv6 Router Interfaces">
 
           <t>YANG module "ietf-ipv6-unicast-routing" (<xref
           target="sec.mod-v6ur"/>) augments the configuration and
-          state data of interfaces with definitions of the following
-          variables as required by <xref target="RFC4861"/>,
+          state data of IPv6 interfaces with definitions of the
+          following variables as required by <xref target="RFC4861"/>,
           sec. 6.2.1:
           <list style="symbols">
             <t>send-advertisements,</t>
@@ -473,22 +473,17 @@
             <t>Configuration parameters and/or state data for the new
             protocol can be defined by augmenting the
             "routing-protocol" data node under both "/routing" and "/routing-state".</t>
-            <t>Per-interface configuration, including activation of
-            the routing protocol on individual interfaces, can use
-            references to entries in the leaf-list of routing
-            instance's interfaces (rt:interface).</t>
           </list></t>
-          <t>By using the "when" statement, the augmented configuration
-          parameters and state data specific to the new protocol SHOULD
-          be made conditional and valid only if the value of "rt:type"
-          or "rt:source-protocol" is equal to the new protocol's
-          identity.</t>
+          <t>By using a "when" statement, the augmented configuration
+          parameters and state data specific to the new protocol
+          SHOULD be made conditional and valid only if the value of
+          "rt:type" or "rt:source-protocol" is equal to the new
+          protocol's identity.</t>
           <t>It is also RECOMMENDED that protocol-specific data nodes
           be encapsulated in an appropriately named container with
-          presence, see section 7.5.1 in <xref
-          target="RFC6020"/>. Such a container may contain mandatory
-          data nodes that are otherwise forbidden at the top level of
-          an augment.</t>
+          presence. Such a container may contain mandatory data nodes
+          that are otherwise forbidden at the top level of an
+          augment.</t>
           <t>The above steps are implemented by the example YANG module
           for the RIP routing protocol in <xref
           target="app.rip"/>.</t>
@@ -523,8 +518,8 @@
           <t hangText="/if:interfaces/if:interface/if:enabled">
             <vspace blankLines="1"/>
             If this switch is set to "false" for a network layer
-            interface, the device MUST behave exactly as if that
-            interface was not assigned to any routing instance at all.
+            interface, then all routing and forwarding functions MUST
+            be disabled on that interface.
           </t>
         </list>
         </t>
@@ -537,28 +532,28 @@
           <t hangText="/if:interfaces/if:interface/ip:ipv4/ip:enabled">
             <vspace blankLines="1"/>
             If this switch is set to "false" for a network layer
-            interface, then all IPv4 routing functions related to that
-            interface MUST be disabled.
+            interface, then all IPv4 routing and forwarding functions
+            MUST be disabled on that interface.
           </t>
           <t hangText="/if:interfaces/if:interface/ip:ipv4/ip:forwarding">
             <vspace blankLines="1"/>
             If this switch is set to "false" for a network layer
-            interface, then the forwarding of IPv4 datagrams to and from
-            this interface MUST be disabled. However, the interface may
+            interface, then the forwarding of IPv4 datagrams through
+            this interface MUST be disabled. However, the interface MAY
             participate in other IPv4 routing functions, such as routing
             protocols.
           </t>
           <t hangText="/if:interfaces/if:interface/ip:ipv6/ip:enabled">
             <vspace blankLines="1"/>
             If this switch is set to "false" for a network layer
-            interface, then all IPv6 routing functions related to that
-            interface MUST be disabled.
+            interface, then all IPv6 routing and forwarding functions
+            MUST be disabled on that interface.
           </t>
           <t hangText="/if:interfaces/if:interface/ip:ipv6/ip:forwarding">
             <vspace blankLines="1"/>
             If this switch is set to "false" for a network layer
-            interface, then the forwarding of IPv6 datagrams to and from
-            this interface MUST be disabled. However, the interface may
+            interface, then the forwarding of IPv6 datagrams through
+            this interface MUST be disabled. However, the interface MAY
             participate in other IPv6 routing functions, such as routing
             protocols.
           </t>
@@ -693,22 +688,24 @@ reference:    RFC XXXX
       operations to these data nodes, such as "edit-config", can have
       negative effects on the network if the protocol operations are not
       properly protected.</t>
-      <t>The vulnerable "config true" subtrees and data nodes are the
+      <t>The vulnerable "config true" parameters and subtrees are the
       following:
       <list style="hanging">
-        <t hangText="/routing/routing-instance/interfaces/interface:">This
-        list assigns a network layer interface to a routing instance and
-        may also specify interface parameters related to routing.</t>
+        <t
+        hangText="/if:interfaces/if:interface/rt:routing-instance:">This
+        leaf assigns a network layer interface to a routing
+        instance.</t>
 
         <t
-            hangText="/routing/routing-instance/routing-protocols/routing-protocol:">This
-        list specifies the routing protocols configured on a device.</t>
+        hangText="/routing/routing-instance/routing-protocols/routing-protocol:">This
+        list specifies the routing protocols configured on a
+        device.</t>
 
         <t hangText="/routing/routing-instance/ribs/rib:">This list
         specifies the RIBs configured for the device.</t>
       </list>
 
-      Unauthorized access to any of these lists can adversely affect the
+      Unauthorised access to any of these lists can adversely affect the
       routing subsystem of both the local device and the network. This
       may lead to network malfunctions, delivery of packets to
       inappropriate destinations and other problems.</t>
@@ -779,14 +776,14 @@ reference:    RFC XXXX
              title="Minimum Implementation">
 
       <t>Some parts and options of the core routing model, such as
-      user-defined routing tables, are intended only for advanced
-      routers. This appendix gives basic non-normative guidelines for
-      implementing a bare minimum of available functions. Such an
-      implementation may be used for hosts or very simple routers.</t>
-      <t>A minimum implementation will provide a single
-      system-controlled routing instance of the type
-      "default-routing-instance", and will not allow clients to create
-      any user-controlled instances.</t>
+      user-defined RIBs, are intended only for advanced routers. This
+      appendix gives basic non-normative guidelines for implementing a
+      bare minimum of available functions. Such an implementation may
+      be used for hosts or very simple routers.</t>
+      <t>A minimum implementation provides a single system-controlled
+      routing instance of the type "default-routing-instance", and
+      will not allow clients to create any user-controlled
+      instances.</t>
       <t>Typically, the feature "multiple-ribs" will not be
       supported. This means that a single system-controlled RIB is
       available for each supported address family - IPv4, IPv6 or
@@ -860,7 +857,12 @@ reference:    RFC XXXX
       <section title="Changes Between Versions -19 and -20">
         <t>
           <list style="symbols">
-	    <t></t>
+	    <t>Assignment of L3 interfaces to routing instances is now
+	    part of interface configuration.</t>
+	    <t>Next-hop options in configuration were aligned with
+	    state data.</t>
+	    <t>It is recommended to enclose protocol-specific
+	    configuration in a presence container.</t>
 	  </list>
 	</t>
       </section>
@@ -1051,7 +1053,7 @@ reference:    RFC XXXX
       <section title="Changes Between Versions -08 and -09">
         <t>
           <list style="symbols">
-            <t>Fixed "must" expresion for "connected-routing-table".</t>
+            <t>Fixed "must" expression for "connected-routing-table".</t>
             <t>Simplified "must" expression for "main-routing-table".</t>
             <t>Moved per-interface configuration of a new routing
             protocol under 'routing-protocol'. This also affects the

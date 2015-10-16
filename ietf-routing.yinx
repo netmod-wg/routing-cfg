@@ -402,14 +402,11 @@
         <text>
           <h:p>Each list entry is a container for state
           data of a routing instance.</h:p>
-	  <h:p>An implementation MUST support routing instance(s) of
-	  the type 'rt:default-routing-instance', and MAY support
-	  other types. An implementation MAY restrict the number of
-	  routing instances of each supported type.</h:p>
-	  <h:p>An implementation SHOULD create at least one
-	  system-controlled instance, and MAY allow the clients to
-	  create user-controlled routing instances in
-	  configuration.</h:p>
+	  <h:p>An implementation MUST provide one and only one
+	  system-controlled routing instance(s) of the type
+	  'rt:default-routing-instance', and MAY support other
+	  types. An implementation MAY restrict the number of routing
+	  instances of each supported type.</h:p>
         </text>
       </description>
       <leaf name="name">
@@ -417,9 +414,8 @@
         <description>
           <text>
 	    <h:p>The name of the routing instance.</h:p>
-	    <h:p>For system-controlled instances the name is
-	    persistent, i.e., it SHOULD NOT change across
-	    reboots.</h:p>
+	    <h:p>For system-controlled instances the name SHOULD be
+	    persistent, i.e., it doesn't change after a reboot.</h:p>
 	  </text>
         </description>
       </leaf>
@@ -601,8 +597,11 @@
       <type name="routing-instance-ref"/>
       <description>
 	<text>
-	  The name of the routing instance to which the interface is
-	  to be assigned.
+	  <h:p>The name of the routing instance to which the interface is
+	  to be assigned.</h:p>
+	  <h:p>By default, all network layer interfaces belong to the
+	  routing-instance of the 'default-routing-instance'
+	  type.</h:p>
 	</text>
       </description>
     </leaf>

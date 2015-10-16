@@ -76,6 +76,7 @@
       </description>
     </when>
     <container name="rip">
+      <presence value="RIP configuration"/>
       <description>
 	<text>RIP instance configuration.</text>
       </description>
