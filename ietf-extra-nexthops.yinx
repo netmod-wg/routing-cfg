@@ -1,0 +1,1242 @@
+<?xml version="1.0" encoding="utf-8"?>
+<module name="ietf-extra-nexthops"
+        xmlns="urn:ietf:params:xml:ns:yang:yin:1"
+        xmlns:md="urn:ietf:params:xml:ns:yang:ietf-extra-nexthops"
+        xmlns:h="http://www.w3.org/1999/xhtml"
+        xmlns:xi="http://www.w3.org/2001/XInclude">
+  <namespace uri="urn:ietf:params:xml:ns:yang:ietf-extra-nexthops"/>
+  <prefix value="xnh"/>
+  <import module="ietf-yang-types">
+    <prefix value="yang"/>
+  </import>
+  <import module="ietf-inet-types">
+    <prefix value="inet"/>
+  </import>
+  <import module="ietf-routing">
+    <prefix value="rt"/>
+  </import>
+
+  <organization>
+    <text>IETF Routing Working Group</text>
+  </organization>
+  <contact>
+    <text>
+      <xi:include href=".tools/bplate/netmod-module.yinx"
+                  xpointer="xpointer(id('contact')/*)"/>
+      <h:p>
+        Editor:   TBD<h:br/>
+                  &lt;mailto:TBD&gt;
+      </h:p>
+    </text>
+  </contact>
+  <description>
+    <text>
+      <h:p>This module augments the core routing data model with
+      several new types of nexthops.</h:p>
+      <xi:include href=".tools/bplate/netmod-module.yinx"
+                  xpointer="xpointer(id('desc')/*)"/>
+    </text>
+  </description>
+  <revision date="2015-11-11">
+    <description>
+      <text>Initial revision.</text>
+    </description>
+    <reference>
+      <text>
+	RFC XXXX: TBD
+      </text>
+    </reference>
+  </revision>
+
+  <!-- Features -->
+
+  <feature name="ipv4-tunnel">
+    <if-feature name="nexthop-tunnel"/>
+    <description>
+      <text>
+        This feature means that a node supports IPv4 tunnel
+        encapsulation capability.
+      </text>
+    </description>
+  </feature>
+
+  <feature name="ipv6-tunnel">
+    <if-feature name="nexthop-tunnel"/>
+    <description>
+      <text>
+        This feature means that a node supports IPv6 tunnel
+        encapsulation capability.
+      </text>
+    </description>
+  </feature>
+  
+  <feature name="mpls-tunnel">
+    <if-feature name="nexthop-tunnel"/>
+    <description>
+      <text>
+        This feature means that a node supports MPLS tunnel
+        encapsulation capability.
+      </text>
+    </description>
+  </feature>
+
+  <feature name="vxlan-tunnel">
+    <if-feature name="nexthop-tunnel"/>
+    <description>
+      <text>
+        This feature means that a node supports VxLAN tunnel
+        encapsulation capability.
+      </text>
+    </description>
+  </feature>
+  
+  <feature name="gre-tunnel">
+    <if-feature name="nexthop-tunnel"/>
+    <description>
+      <text>
+        This feature means that a node supports GRE tunnel
+        encapsulation capability.
+      </text>
+    </description>
+  </feature>
+  
+  <feature name="nvgre-tunnel">
+    <if-feature name="nexthop-tunnel"/>
+    <description>
+      <text>
+        This feature means that a node supports NvGRE tunnel
+        encapsulation capability.
+      </text>
+    </description>
+  </feature>
+
+  <feature name="nexthop-tunnel">
+    <description>
+      <text>
+        This feature means that a node supports tunnel nexhtop
+        capability.
+      </text>
+    </description>
+  </feature>
+  
+  <feature name="nexthop-chain">
+    <description>
+      <text>
+        This feature means that a node supports chain nexhtop
+        capability.
+      </text>
+    </description>
+  </feature>
+  
+  <feature name="nexthop-protection">
+    <description>
+      <text>
+        This feature means that a node supports protection nexhtop
+        capability.
+      </text>
+    </description>
+  </feature>
+  
+  <feature name="nexthop-replicates">
+    <description>
+      <text>
+        This feature means that a node supports replicates nexthop
+        capability.
+      </text>
+    </description>
+  </feature>
+  
+  <feature name="nexthop-load-balance">
+    <description>
+      <text>
+        This feature means that a node supports load balance nexhtop
+        capability.
+      </text>
+    </description>
+  </feature>
+
+  <!-- Identities -->
+
+  <identity name="special-nexthop">
+    <description>
+      <text>
+        Base identify from which all special nexthops are derived.
+      </text>
+    </description>
+  </identity>
+  
+  <identity name="discard">
+    <base name="special-nexthop"/>
+    <description>
+      <text>
+        This indicates that the network device should drop the packet
+        and increment a drop counter.
+      </text>
+    </description>
+  </identity>
+  
+  <identity name="discard-with-error">
+    <base name="special-nexthop"/>
+    <description>
+      <text>
+        This indicates that the network device should drop the packet,
+        increment a drop counter and send back an appropriate error
+        message (like ICMP error).
+      </text>
+    </description>
+  </identity>
+  
+  <identity name="receive">
+    <base name="special-nexthop"/>
+    <description>
+      <text>
+        <h:p>This indicates that that the traffic is destined for the
+        network device, for example, protocol packets or OAM
+	packets.</h:p>
+	<h:p>All locally destined traffic SHOULD be throttled to avoid
+	a denial of service attack on the router's control plane. An
+	optional rate-limiter can be specified to indicate how to
+	throttle traffic destined for the control plane.</h:p>
+      </text>
+    </description>
+  </identity>
+  
+  <identity name="cos-value">
+    <base name="special-nexthop"/>
+    <description>
+      <text>
+        Cos-value special nexthop.
+      </text>
+    </description>
+  </identity>
+  
+  <identity name="tunnel-decap-action">
+    <description>
+      <text>
+        <h:p>Base identify from which all tunnel decap actions are derived.</h:p>
+        <h:p>Tunnel decap actions include:</h:p>
+	<h:ul>
+	  <h:li>ipv4-decap: to decap an IPv4 tunnel,</h:li>
+	  <h:li>ipv6-decap: to decap an IPv6 tunnel.</h:li>
+	</h:ul>
+      </text>
+    </description>
+  </identity>
+  
+  <identity name="ipv4-decap">
+    <base name="tunnel-decap-action"/>
+    <description>
+      <text>
+        IPv4 tunnel decap.
+      </text>
+    </description>
+  </identity>
+  
+  <identity name="ipv6-decap">
+    <base name="tunnel-decap-action"/>
+    <description>
+      <text>
+        IPv6 tunnel decap.
+      </text>
+    </description>
+  </identity>
+
+  <identity name="ttl-action">
+    <description>
+      <text>
+        <h:p>Base identify from which all TTL actions are
+	derived.</h:p>
+	<h:p>The tll actions include:</h:p>
+	<h:ul>
+	  <h:li>ttl-no-action: do nothing regarding the TTL,</h:li>
+	  <h:li>ttl-copy-to-inner: copy the TTL of the outer header to
+	  inner header,</h:li>
+	  <h:li>ttl-decrease-and-copy-to-inner: decrease the TTL by
+	  one and copy it to inner header.</h:li>
+	</h:ul>
+      </text>
+    </description>
+  </identity>
+  
+  <identity name="no-action">
+    <base name="ttl-action"/>
+    <description>
+      <text>
+        Do nothing regarding the TTL.
+      </text>
+    </description>
+  </identity>
+  
+  <identity name="copy-to-inner">
+    <base name="ttl-action"/>
+    <description>
+      <text>
+        Copy the TTL of the outer header to inner header.
+      </text>
+    </description>
+  </identity>
+  
+  <identity name="decrease-and-copy-to-inner">
+    <base name="ttl-action"/>
+    <description>
+      <text>
+        Decrease TTL by one and copy the TTL to inner header.
+      </text>
+    </description>
+  </identity>
+  
+  <identity name="decrease-and-copy-to-next">
+    <base name="ttl-action"/>
+    <description>
+      <text>
+        Decrease TTL by one and copy the TTL to the next header. For
+        example: when MPLS label swapping, decrease the TTL of the in
+        label and copy it to the out label.
+      </text>
+    </description>
+  </identity>
+
+  <identity name="hop-limit-action">
+    <description>
+      <text>
+        Base identify from which all hop limit actions are derived.
+      </text>
+    </description>
+  </identity>
+  
+  <identity name="hop-limit-no-action">
+    <base name="hop-limit-action"/>
+    <description>
+      <text>
+        Do nothing regarding the hop limit.
+      </text>
+    </description>
+  </identity>
+  
+  <identity name="hop-limit-copy-to-inner">
+    <base name="hop-limit-action"/>
+    <description>
+      <text>
+        Copy the hop limit of the outer header to inner header.
+      </text>
+    </description>
+  </identity>
+
+  <identity name="mpls-label-action">
+    <description>
+      <text>
+        <h:p>Base identify from which all mpls label operations are
+        derived.</h:p>
+	<h:p>The MPLS label stack operations include:</h:p>
+	<h:ul>
+	  <h:li>push: to add a new label to a label stack,</h:li>
+	  <h:li>pop: to pop the top label from a label stack,</h:li>
+	  <h:li>swap: to change the top label of a label stack with
+	  new label.</h:li>
+	</h:ul>
+      </text>
+    </description>
+  </identity>
+  
+  <identity name="label-push">
+    <base name="mpls-label-action"/>
+    <description>
+      <text>
+        MPLS label stack operation: push.
+      </text>
+    </description>
+  </identity>
+  
+  <identity name="label-pop">
+    <base name="mpls-label-action"/>
+    <description>
+      <text>
+        MPLS label stack operation: pop.
+      </text>
+    </description>
+  </identity>
+  
+  <identity name="label-swap">
+    <base name="mpls-label-action"/>
+    <description>
+      <text>
+        MPLS label stack operation: swap.
+      </text>
+    </description>
+  </identity>
+
+  <identity name="tunnel-type">
+    <description>
+      <text>
+        Base identify from which all tunnel types are derived.
+      </text>
+    </description>
+  </identity>
+  
+  <identity name="ipv4-tunnel">
+    <base name="tunnel-type"/>
+    <description>
+      <text>
+        IPv4 tunnel type.
+      </text>
+    </description>
+  </identity>
+  
+  <identity name="ipv6-tunnel">
+    <base name="tunnel-type"/>
+    <description>
+      <text>
+        IPv6 tunnel type.
+      </text>
+    </description>
+  </identity>
+  
+  <identity name="mpls-tunnel">
+    <base name="tunnel-type"/>
+    <description>
+      <text>
+        MPLS tunnel type.
+      </text>
+    </description>
+  </identity>
+  
+  <identity name="gre-tunnel">
+    <base name="tunnel-type"/>
+    <description>
+      <text>
+        GRE tunnel type.
+      </text>
+    </description>
+  </identity>
+  
+  <identity name="vxlan-tunnel">
+    <base name="tunnel-type"/>
+    <description>
+      <text>
+        VxLAN tunnel type.
+      </text>
+    </description>
+  </identity>
+  
+  <identity name="nvgre-tunnel">
+    <base name="tunnel-type"/>
+    <description>
+      <text>
+        NVGRE tunnel type.
+      </text>
+    </description>
+  </identity>
+
+  <!-- Typedefs -->
+
+  <typedef name="special-nexthop-def">
+    <type name="identityref">
+      <base name="special-nexthop"/>
+    </type>
+    <description>
+      <text>
+        Special nexthop def.
+      </text>
+    </description>
+  </typedef>
+  
+  <typedef name="nexthop-preference-def">
+    <type name="uint8">
+      <range value="1..99"/>
+    </type>
+    <description>
+      <text>
+        <h:p>Nexthop-preference is used for protection schemes. A lower value indicates
+        higher preference.</h:p>
+	<h:p>To download a primary/standby/tertiary group to the FIB,
+	the nexthops that are resolved and have two highest
+	preferences are selected.</h:p>
+      </text>
+    </description>
+  </typedef>
+  
+  <typedef name="nexthop-lb-weight-def">
+    <type name="uint8">
+      <range value="1..99"/>
+    </type>
+    <description>
+      <text>
+        Nhop-lb-weight is a number between 1 and 99.
+      </text>
+    </description>
+  </typedef>
+
+  <typedef name="tunnel-decap-action-def">
+    <type name="identityref">
+      <base name="tunnel-decap-action"/>
+    </type>
+    <description>
+      <text>
+        Tunnel decap def.
+      </text>
+    </description>
+  </typedef>
+
+  <typedef name="ttl-action-def">
+    <type name="identityref">
+      <base name="ttl-action"/>
+    </type>
+    <description>
+      <text>
+        TTL action def.
+      </text>
+    </description>
+  </typedef>
+
+  <typedef name="hop-limit-action-def">
+    <type name="identityref">
+      <base name="hop-limit-action"/>
+    </type>
+    <description>
+      <text>
+        IPv6 hop limit action def.
+      </text>
+    </description>
+  </typedef>
+
+  <typedef name="mpls-label-action-def">
+    <type name="identityref">
+      <base name="mpls-label-action"/>
+    </type>
+    <description>
+      <text>
+        MPLS label action def.
+      </text>
+    </description>
+  </typedef>
+
+  <typedef name="tunnel-type-def">
+    <type name="identityref">
+      <base name="tunnel-type"/>
+    </type>
+    <description>
+      <text>
+        Tunnel type def.
+      </text>
+    </description>
+  </typedef>
+
+  <!-- Groupings -->
+
+  <grouping name="nexthop-list">
+    <description>
+      <text>
+        A generic nexthop list.
+      </text>
+    </description>
+    <list name="nexthop-list">
+      <key value="nexthop-member-id"/>
+      <description>
+        <text>
+          A list of nexthops.
+        </text>
+      </description>
+      <leaf name="nexthop-member-id">
+        <type name="uint32"/>
+        <mandatory value="true"/>
+        <description>
+          <text>
+            A nexthop identifier that points to a nexthop list member.
+            A nexthop list member is a nexthop.
+          </text>
+        </description>
+      </leaf>
+    </list>
+  </grouping>
+  
+  <grouping name="nexthop-list-p">
+    <description>
+      <text>
+        A nexthop list with preference parameter.
+      </text>
+    </description>
+    <list name="nexthop-list">
+      <key value="nexthop-member-id"/>
+      <description>
+        <text>
+          A list of nexthops.
+        </text>
+      </description>
+      <leaf name="nexthop-member-id">
+        <type name="uint32"/>
+        <mandatory value="true"/>
+        <description>
+          <text>
+            A nexthop identifier that points to a nexthop list member.
+            A nexthop list member is a nexthop.
+          </text>
+        </description>
+      </leaf>
+      <leaf name="nexthop-preference">
+        <type name="nexthop-preference-def"/>
+        <mandatory value="true"/>
+        <description>
+          <text>
+            <h:p>Nexthop-preference is used for protection schemes. A lower
+            value indicates higher preference.</h:p>
+	    <h:p>To download a primary/standby/tertiary group to the
+	    FIB, the nexthops that are resolved and have two highest
+	    preferences are selected.</h:p>
+          </text>
+        </description>
+      </leaf>
+    </list>
+  </grouping>
+  
+  <grouping name="nexthop-list-w">
+    <description>
+      <text>
+        A nexthop list with weight parameter.
+      </text>
+    </description>
+    <list name="nexthop-list">
+      <key value="nexthop-member-id"/>
+      <description>
+        <text>
+          A list of nexthops.
+        </text>
+      </description>
+      <leaf name="nexthop-member-id">
+        <type name="uint32"/>
+        <mandatory value="true"/>
+        <description>
+          <text>
+            A nexthop identifier that points to a nexthop list member.
+            A nexthop list member is a nexthop.
+          </text>
+        </description>
+      </leaf>
+      <leaf name="nexthop-lb-weight">
+        <type name="nexthop-lb-weight-def"/>
+        <mandatory value="true"/>
+        <description>
+          <text>
+            The weight of a nexthop of the load balance nexthops.
+          </text>
+        </description>
+      </leaf>
+    </list>
+  </grouping>
+  
+  <grouping name="tunnel-decap">
+    <description>
+      <text>
+        Tunnel decapsulation inforamtion.
+      </text>
+    </description>
+    <choice name="tunnel-type">
+      <description>
+        <text>
+          Nexthop tunnel type options.
+        </text>
+      </description>
+      <case name="ipv4">
+        <if-feature name="ipv4-tunnel"/>
+        <container name="ipv4-decap">
+          <description>
+            <text>
+              IPv4 decap.
+            </text>
+          </description>
+          <leaf name="ipv4-decap">
+            <type name="tunnel-decap-action-def"/>
+            <mandatory value="true"/>
+            <description>
+              <text>
+                IPv4 decap operations.
+              </text>
+            </description>
+          </leaf>
+          <leaf name="ttl-action">
+            <type name="ttl-action-def"/>
+            <description>
+              <text>
+                The ttl actions: no-action or copy to inner header.
+              </text>
+            </description>
+          </leaf>
+        </container>
+      </case>
+      <case name="ipv6">
+        <if-feature name="ipv6-tunnel"/>
+        <container name="ipv6-decap">
+          <description>
+            <text>
+              IPv6 decap.
+            </text>
+          </description>
+          <leaf name="ipv6-decap">
+            <type name="tunnel-decap-action-def"/>
+            <mandatory value="true"/>
+            <description>
+              <text>
+                IPv6 decap operations.
+              </text>
+            </description>
+          </leaf>
+          <leaf name="hop-limit-action">
+            <type name="hop-limit-action-def"/>
+            <description>
+              <text>
+                The hop limit actions: no-action or copy to inner
+                header.
+              </text>
+            </description>
+          </leaf>
+        </container>
+      </case>
+      <case name="mpls">
+        <if-feature name="mpls-tunnel"/>
+        <container name="label-pop">
+          <description>
+            <text>
+              MPLS decap.
+            </text>
+          </description>
+          <leaf name="label-pop">
+            <type name="mpls-label-action-def"/>
+            <mandatory value="true"/>
+            <description>
+              <text>
+                Pop a label from the label stack.
+              </text>
+            </description>
+          </leaf>
+          <leaf name="ttl-action">
+            <type name="ttl-action-def"/>
+            <description>
+              <text>
+                The label ttl actions: no-action or copy to inner
+                label.
+              </text>
+            </description>
+          </leaf>
+        </container>
+      </case>
+    </choice>
+  </grouping>
+  
+  <grouping name="logical-tunnel">
+    <description>
+      <text>
+        A logical tunnel that is identified by a type and a tunnel
+        name.
+      </text>
+    </description>
+    <leaf name="tunnel-type">
+      <type name="tunnel-type-def"/>
+      <mandatory value="true"/>
+      <description>
+        <text>
+          A tunnel type.
+        </text>
+      </description>
+    </leaf>
+    <leaf name="tunnel-name">
+      <type name="string"/>
+      <mandatory value="true"/>
+      <description>
+        <text>
+          A tunnel name that points to a logical tunnel.
+        </text>
+      </description>
+    </leaf>
+  </grouping>
+  
+  <grouping name="ipv4-header">
+    <description>
+      <text>
+        The IPv4 header encapsulation information.
+      </text>
+    </description>
+    <leaf name="src-ipv4-address">
+      <type name="inet:ipv4-address"/>
+      <mandatory value="true"/>
+      <description>
+        <text>
+          The source IP address of the header.
+        </text>
+      </description>
+    </leaf>
+    <leaf name="dest-ipv4-address">
+      <type name="inet:ipv4-address"/>
+      <mandatory value="true"/>
+      <description>
+        <text>
+          The destination IP address of the header.
+        </text>
+      </description>
+    </leaf>
+    <leaf name="protocol">
+      <type name="uint8"/>
+      <mandatory value="true"/>
+      <description>
+        <text>
+          The protocol id of the header.
+        </text>
+      </description>
+    </leaf>
+    <leaf name="ttl">
+      <type name="uint8"/>
+      <description>
+        <text>
+          The TTL of the header.
+        </text>
+      </description>
+    </leaf>
+    <leaf name="dscp">
+      <type name="uint8"/>
+      <description>
+        <text>
+          The DSCP field of the header.
+        </text>
+      </description>
+    </leaf>
+  </grouping>
+  
+  <grouping name="ipv6-header">
+    <description>
+      <text>
+        The IPv6 header encapsulation information.
+      </text>
+    </description>
+    <leaf name="src-ipv6-address">
+      <type name="inet:ipv6-address"/>
+      <mandatory value="true"/>
+      <description>
+        <text>
+          The source ip address of the header.
+        </text>
+      </description>
+    </leaf>
+    <leaf name="dest-ipv6-address">
+      <type name="inet:ipv6-address"/>
+      <mandatory value="true"/>
+      <description>
+        <text>
+          The destination ip address of the header.
+        </text>
+      </description>
+    </leaf>
+    <leaf name="next-header">
+      <type name="uint8"/>
+      <mandatory value="true"/>
+      <description>
+        <text>
+          The next header of the IPv6 header.
+        </text>
+      </description>
+    </leaf>
+    <leaf name="traffic-class">
+      <type name="uint8"/>
+      <description>
+        <text>
+          The traffic class value of the header.
+        </text>
+      </description>
+    </leaf>
+    <leaf name="flow-label">
+      <type name="uint16"/>
+      <description>
+        <text>
+          The flow label of the header.
+        </text>
+      </description>
+    </leaf>
+    <leaf name="hop-limit">
+      <type name="uint8"/>
+      <description>
+        <text>
+          The hop limit the header.
+        </text>
+      </description>
+    </leaf>
+  </grouping>
+  
+  <grouping name="nvgre-header">
+    <description>
+      <text>
+        The NvGRE header encapsulation information.
+      </text>
+    </description>
+    <choice name="nvgre-type">
+      <description>
+        <text>
+          NvGRE can use eigher IPv4 or IPv6 header for encapsulation.
+        </text>
+      </description>
+      <case name="ipv4">
+        <uses name="ipv4-header"/>
+      </case>
+      <case name="ipv6">
+        <uses name="ipv6-header"/>
+      </case>
+    </choice>
+    <leaf name="virtual-subnet-id">
+      <type name="uint32"/>
+      <mandatory value="true"/>
+      <description>
+        <text>
+          The subnet identifier of the NvGRE header.
+        </text>
+      </description>
+    </leaf>
+    <leaf name="flow-id">
+      <type name="uint16"/>
+      <description>
+        <text>
+          The flow identifier of the NvGRE header.
+        </text>
+      </description>
+    </leaf>
+  </grouping>
+  
+  <grouping name="vxlan-header">
+    <description>
+      <text>
+        The VxLAN encapsulation header information.
+      </text>
+    </description>
+    <choice name="vxlan-type">
+      <description>
+        <text>
+          NvGRE can use eigher IPv4 or IPv6 header for encapsulation.
+        </text>
+      </description>
+      <case name="ipv4">
+        <uses name="ipv4-header"/>
+      </case>
+      <case name="ipv6">
+        <uses name="ipv6-header"/>
+      </case>
+    </choice>
+    <leaf name="vxlan-identifier">
+      <type name="uint32"/>
+      <mandatory value="true"/>
+      <description>
+        <text>
+          The VxLAN identifier of the VxLAN header.
+        </text>
+      </description>
+    </leaf>
+  </grouping>
+  
+  <grouping name="gre-header">
+    <description>
+      <text>
+        The GRE encapsulation header information.
+      </text>
+    </description>
+    <choice name="dest-address-type">
+      <description>
+        <text>
+          GRE options: IPv4 and IPv6
+        </text>
+      </description>
+      <case name="ipv4">
+        <leaf name="ipv4-dest">
+          <type name="inet:ipv4-address"/>
+          <mandatory value="true"/>
+          <description>
+            <text>
+              The destination ip address of the GRE header.
+            </text>
+          </description>
+        </leaf>
+      </case>
+      <case name="ipv6">
+        <leaf name="ipv6-dest">
+          <type name="inet:ipv6-address"/>
+          <mandatory value="true"/>
+          <description>
+            <text>
+              The destination ip address of the GRE header.
+            </text>
+          </description>
+        </leaf>
+      </case>
+    </choice>
+    <leaf name="protocol-type">
+      <type name="uint16"/>
+      <mandatory value="true"/>
+      <description>
+        <text>
+          The protocol type of the GRE header.
+        </text>
+      </description>
+    </leaf>
+    <leaf name="key">
+      <type name="uint64"/>
+      <description>
+        <text>
+          The GRE key of the GRE header.
+        </text>
+      </description>
+    </leaf>
+  </grouping>
+  
+  <grouping name="mpls-header">
+    <description>
+      <text>
+        The MPLS encapsulation header information.
+      </text>
+    </description>
+    <list name="label-operations">
+      <key value="label-oper-id"/>
+      <description>
+        <text>
+          Label operations.
+        </text>
+      </description>
+      <leaf name="label-oper-id">
+        <type name="uint32"/>
+        <description>
+          <text>
+            An optional identifier that points to a label operation.
+          </text>
+        </description>
+      </leaf>
+      <choice name="label-actions">
+        <description>
+          <text>
+            Label action options.
+          </text>
+        </description>
+        <case name="label-push">
+          <container name="label-push">
+            <description>
+              <text>
+                Label push operation.
+              </text>
+            </description>
+            <leaf name="label">
+              <type name="uint32"/>
+              <mandatory value="true"/>
+              <description>
+                <text>
+                  The label to be pushed.
+                </text>
+              </description>
+            </leaf>
+            <leaf name="s-bit">
+              <type name="boolean"/>
+              <description>
+                <text>
+                  The s-bit of the label to be pushed.
+                </text>
+              </description>
+            </leaf>
+            <leaf name="tc-value">
+              <type name="uint8"/>
+              <description>
+                <text>
+                  The traffic class value of the label to be pushed.
+                </text>
+              </description>
+            </leaf>
+            <leaf name="ttl-value">
+              <type name="uint8"/>
+              <description>
+                <text>
+                  The TTL value of the label to to be pushed.
+                </text>
+              </description>
+            </leaf>
+          </container>
+        </case>
+        <case name="label-swap">
+          <container name="label-swap">
+            <description>
+              <text>
+                Label swap operation.
+              </text>
+            </description>
+            <leaf name="in-label">
+              <type name="uint32"/>
+              <mandatory value="true"/>
+              <description>
+                <text>
+                  The label to be swapped.
+                </text>
+              </description>
+            </leaf>
+            <leaf name="out-label">
+              <type name="uint32"/>
+              <mandatory value="true"/>
+              <description>
+                <text>
+                  The out MPLS label.
+                </text>
+              </description>
+            </leaf>
+            <leaf name="ttl-action">
+              <type name="ttl-action-def"/>
+              <description>
+                <text>
+                  <h:p>The label ttl actions:</h:p>
+		  <h:ul>
+		    <h:li>no-action,</h:li>
+		    <h:li>copy to inner label,</h:li>
+		    <h:li>decrease the label ttl by 1 and copy to the
+		    outer label.</h:li>
+		  </h:ul>
+                </text>
+              </description>
+            </leaf>
+          </container>
+        </case>
+      </choice>
+    </list>
+  </grouping>
+
+  <!-- State data -->
+
+  <augment target-node="/rt:routing-state/rt:routing-instance/rt:ribs/rt:rib/rt:routes/rt:route/rt:next-hop/rt:next-hop-options">
+    <description>
+      <text>
+        This augment adds additional next-hop types.
+      </text>
+    </description>
+    <case name="ipv4-tunnel-encap">
+      <if-feature name="ipv4-tunnel"/>
+      <container name="ipv4-tunnel-encap">
+        <uses name="ipv4-header"/>
+      </container>
+    </case>
+    <case name="ipv6-tunnel-encap">
+      <if-feature name="ipv6-tunnel"/>
+      <container name="ipv6-tunnel-encap">
+        <uses name="ipv6-header"/>
+      </container>
+    </case>
+    <case name="mpls-tunnel-encap">
+      <if-feature name="mpls-tunnel"/>
+      <container name="mpls-tunnel-encap">
+        <uses name="mpls-header"/>
+      </container>
+    </case>
+    <case name="gre-tunnel-encap">
+      <if-feature name="gre-tunnel"/>
+      <container name="gre-tunnel-encap">
+        <uses name="gre-header"/>
+      </container>
+    </case>
+    <case name="nvgre-tunnel-encap">
+      <if-feature name="nvgre-tunnel"/>
+      <container name="nvgre-tunnel-encap">
+        <uses name="nvgre-header"/>
+      </container>
+    </case>
+    <case name="vxlan-tunnel-encap">
+      <if-feature name="vxlan-tunnel"/>
+      <container name="vxlan-tunnel-encap">
+        <uses name="vxlan-header"/>
+      </container>
+    </case>
+    <case name="tunnel-decap-nexthop">
+      <if-feature name="nexthop-tunnel"/>
+      <container name="tunnel-decap">
+        <uses name="tunnel-decap"/>
+        <description>
+          <text>
+            This is to specify decapsulating a tunnel header.
+          </text>
+        </description>
+      </container>
+    </case>
+    <case name="logical-tunnel-nexthop">
+      <if-feature name="nexthop-tunnel"/>
+      <container name="logical-tunnel">
+        <uses name="logical-tunnel"/>
+        <description>
+          <text>
+            This can be a MPLS LSP or a GRE tunnel (or others as
+            defined in this document), that is represented by a
+            unique identifier (e.g. name).
+          </text>
+        </description>
+      </container>
+    </case>
+    <case name="rib-name-nexthop">
+      <leaf name="rib-name">
+        <type name="string"/>
+        <description>
+          <text>
+            A nexthop pointing to a rib indicates that the route
+            lookup needs to continue in the specified RIB. This is a
+            way to perform chained lookups.
+          </text>
+        </description>
+      </leaf>
+    </case>
+    <case name="nexthop-chain">
+      <if-feature name="nexthop-chain"/>
+      <container name="nexthop-chain">
+        <description>
+          <text>
+            A chain nexthop.
+          </text>
+        </description>
+        <uses name="nexthop-list"/>
+      </container>
+    </case>
+    <case name="nexthop-replicates">
+      <if-feature name="nexthop-replicates"/>
+      <container name="nexthop-replicates">
+        <description>
+          <text>
+            A replicates nexthop.
+          </text>
+        </description>
+        <uses name="nexthop-list"/>
+      </container>
+    </case>
+    <case name="nexthop-protection">
+      <if-feature name="nexthop-protection"/>
+      <container name="nexthop-protection">
+        <description>
+          <text>
+            A protection nexthop.
+          </text>
+        </description>
+        <uses name="nexthop-list-p"/>
+      </container>
+    </case>
+    <case name="nexthop-load-balance">
+      <if-feature name="nexthop-load-balance"/>
+      <container name="nexthop-lbs">
+        <description>
+          <text>
+            A load balance nexthop.
+          </text>
+        </description>
+        <uses name="nexthop-list-w"/>
+      </container>
+    </case>
+  </augment>
+  
+  <augment
+      target-node="/rt:routing-state/rt:routing-instance/rt:ribs/rt:rib/rt:routes/rt:route/rt:next-hop/rt:next-hop-options/rt:outgoing-interface">
+    <description>
+      <text>
+	This augment adds a possibility to specify MAC address of the
+	next hop with the outgoing interface.
+      </text>
+    </description>
+    <leaf name="ieee-mac-address">
+      <type name="yang:mac-address"/>
+      <description>
+        <text>
+          The nexthop points to an interface with a specific MAC
+          address.
+        </text>
+      </description>
+    </leaf>
+  </augment>
+  
+</module>

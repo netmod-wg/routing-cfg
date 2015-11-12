@@ -1,7 +1,8 @@
 I_D = draft-ietf-netmod-routing-cfg
 REVNO = 20
 DATE ?= $(shell date +%F)
-MODULES = ietf-routing ietf-ipv4-unicast-routing ietf-ipv6-unicast-routing # example-rip
+MODULES = ietf-routing ietf-ipv4-unicast-routing ietf-ipv6-unicast-routing \
+	  ietf-extra-nexthops # example-rip
 FIGURES = config-coll-tree.txt state-coll-tree.txt \
 	config-tree.txt state-tree.txt example-rip.yang example-net.txt
 EXAMPLE_BASE = example
