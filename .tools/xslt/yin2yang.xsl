@@ -330,14 +330,26 @@ OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
   </xsl:template>
 
   <xsl:template
-      match="yin:anyxml|yin:argument|yin:base|yin:bit|yin:case
-	     |yin:choice|yin:container|yin:enum|yin:extension
-	     |yin:feature|yin:grouping|yin:identity|yin:if-feature
-	     |yin:leaf|yin:leaf-list|yin:list|yin:module
-	     |yin:notification|yin:rpc|yin:submodule|yin:type
-	     |yin:typedef|yin:uses">
+      match="yin:action|yin:anydata|yin:anyxml|yin:argument|yin:base
+	     |yin:bit|yin:case|yin:choice|yin:container|yin:enum
+	     |yin:extension|yin:feature|yin:grouping|yin:identity
+	     |yin:if-feature|yin:leaf|yin:leaf-list|yin:list
+	     |yin:module|yin:notification|yin:rpc|yin:submodule
+	     |yin:type|yin:typedef|yin:uses">
     <xsl:call-template name="statement">
       <xsl:with-param name="arg" select="@name"/>
+    </xsl:call-template>
+  </xsl:template>
+
+  <xsl:template match="yin:namespace">
+    <xsl:call-template name="keyword"/>
+    <xsl:apply-templates select="@uri"/>
+    <xsl:call-template name="semi-or-sub"/>
+  </xsl:template>
+
+  <xsl:template match="@uri">
+    <xsl:call-template name="chop-arg">
+      <xsl:with-param name="token-delim">:</xsl:with-param>
     </xsl:call-template>
   </xsl:template>
 
@@ -367,6 +379,12 @@ OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 	     |yin:presence|yin:range|yin:require-instance
 	     |yin:status|yin:value|yin:yang-version|yin:yin-element">
     <xsl:call-template name="statement-dq">
+      <xsl:with-param name="arg" select="@value"/>
+    </xsl:call-template>
+  </xsl:template>
+
+  <xsl:template match="yin:modifier">
+    <xsl:call-template name="statement">
       <xsl:with-param name="arg" select="@value"/>
     </xsl:call-template>
   </xsl:template>
@@ -427,12 +445,6 @@ OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 	</xsl:choose>
       </xsl:with-param>
       <xsl:with-param name="after" select="3"/>
-    </xsl:call-template>
-  </xsl:template>
-
-  <xsl:template match="yin:namespace">
-    <xsl:call-template name="statement-dq">
-      <xsl:with-param name="arg" select="@uri"/>
     </xsl:call-template>
   </xsl:template>
 
