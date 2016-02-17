@@ -743,7 +743,7 @@ reference:    RFC XXXX
       &RFC6242;
       &RFC6536;
       &RFC4364;
-
+      &RFC7224;
     </references>
 
     <section anchor="app.data-tree" title="The Complete Data Trees">
@@ -824,6 +824,7 @@ reference:    RFC XXXX
       following YANG modules:
       <list style="symbols">
         <t>ietf-interfaces <xref target="RFC7223"/>,</t>
+	<t>iana-if-type <xref target="RFC7224"/>,</t>
         <t>ietf-ip <xref target="RFC7277"/>,</t>
         <t>ietf-routing (<xref target="sec.mod-rt"/>),</t>
         <t>ietf-ipv4-unicast-routing (<xref target="sec.mod-v4ur"/>),</t>

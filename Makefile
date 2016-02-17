@@ -1,5 +1,5 @@
 I_D = draft-ietf-netmod-routing-cfg
-REVNO = 20
+REVNO = 21
 DATE ?= $(shell date +%F)
 MODULES = ietf-routing ietf-ipv4-unicast-routing ietf-ipv6-unicast-routing # example-rip
 FIGURES = config-coll-tree.txt state-coll-tree.txt \
