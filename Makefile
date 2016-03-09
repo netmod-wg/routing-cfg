@@ -131,5 +131,5 @@ static-routes-tree.txt: model.tree
 	     -v root=routing/routing-instance*/routing-protocols/routing-protocol*/static-routes \
 	     -f .tools/awk/tree.awk $< > $@
 clean:
-	@rm -rf *.rng *.rnc *.sch *.dsrl hello.xml model.tree \
+	@rm -rf *.rng *.rnc *.sch *.dsrl hello.xml model.tree $(yass) \
 	        $(yams) $(idrev).* $(artworks) figures.ent yang.ent
