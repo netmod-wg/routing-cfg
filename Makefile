@@ -128,7 +128,7 @@ config-coll-tree.txt: model.tree
 
 static-routes-tree.txt: model.tree
 	@awk -v yam=ietf-routing \
-	     -v root=routing/routing-instance*/routing-protocols/routing-protocol*/static-routes \
+	     -v root=routing/routing-protocols/routing-protocol*/static-routes \
 	     -f .tools/awk/tree.awk $< > $@
 clean:
 	@rm -rf *.rng *.rnc *.sch *.dsrl hello.xml model.tree $(yass) \
