@@ -1,0 +1,617 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<submodule name="ietf-ipv6-router-advertisements"
+        xmlns="urn:ietf:params:xml:ns:yang:yin:1"
+        xmlns:h="http://www.w3.org/1999/xhtml"
+        xmlns:xi="http://www.w3.org/2001/XInclude"
+        xmlns:inet="urn:ietf:params:xml:ns:yang:ietf-inet-types"
+        xmlns:if="urn:ietf:params:xml:ns:yang:ietf-interfaces"
+        xmlns:ip="urn:ietf:params:xml:ns:yang:ietf-ip">
+  <belongs-to module="ietf-ipv6-unicast-routing">
+    <prefix value="v6ur"/>
+  </belongs-to>
+  <import module="ietf-inet-types">
+    <prefix value="inet"/>
+  </import>
+  <import module="ietf-interfaces">
+    <prefix value="if"/>
+  </import>
+  <import module="ietf-ip">
+    <prefix value="ip"/>
+  </import>
+  <xi:include href=".tools/bplate/netmod-module.yinx"
+              xpointer="xpointer(id('org'))"/>
+  <contact>
+    <text>
+      <xi:include href=".tools/bplate/netmod-module.yinx"
+                  xpointer="xpointer(id('contact')/*)"/>
+      <h:p>
+        Editor:   Ladislav Lhotka<h:br/>
+                  &lt;mailto:lhotka@nic.cz&gt;
+      </h:p>
+      <h:p>
+        Editor:   Acee Lindem<h:br/>
+                  &lt;mailto:acee@cisco.com&gt;
+      </h:p>
+    </text>
+  </contact>
+  <description>
+    <text>
+      <h:p>This YANG module augments the 'ietf-ip' module with
+      configuration and state data of IPv6 router
+      advertisements.</h:p>
+      <xi:include href=".tools/bplate/netmod-module.yinx"
+                  xpointer="xpointer(id('desc')/*)"/>
+    </text>
+  </description>
+  <reference>
+    <text>
+      RFC 4861: Neighbor Discovery for IP version 6 (IPv6).
+    </text>
+  </reference>
+
+  <revision date="2016-03-08">
+    <description>
+      <text>Initial revision.</text>
+    </description>
+    <reference>
+      <text>
+        RFC XXXX: A YANG Data Model for Routing Management
+      </text>
+    </reference>
+  </revision>
+
+  <!-- State data -->
+
+  <augment
+      target-node="/if:interfaces-state/if:interface/ip:ipv6">
+    <description>
+      <text>
+        Augment interface state data with parameters of
+        IPv6 router advertisements.
+      </text>
+    </description>
+    <container name="ipv6-router-advertisements">
+      <description>
+        <text>
+          Parameters of IPv6 Router Advertisements.
+        </text>
+      </description>
+      <leaf name="send-advertisements">
+        <type name="boolean"/>
+        <description>
+          <text>
+            A flag indicating whether or not the router sends periodic
+            Router Advertisements and responds to Router
+            Solicitations.
+          </text>
+        </description>
+      </leaf>
+      <leaf name="max-rtr-adv-interval">
+        <type name="uint16">
+          <range value="4..1800"/>
+        </type>
+        <units name="seconds"/>
+        <description>
+          <text>
+            The maximum time allowed between sending unsolicited
+            multicast Router Advertisements from the interface.
+          </text>
+        </description>
+      </leaf>
+      <leaf name="min-rtr-adv-interval">
+        <type name="uint16">
+          <range value="3..1350"/>
+        </type>
+        <units name="seconds"/>
+        <description>
+          <text>
+            <h:p>The minimum time allowed between sending unsolicited
+            multicast Router Advertisements from the interface.</h:p>
+          </text>
+        </description>
+      </leaf>
+      <leaf name="managed-flag">
+        <type name="boolean"/>
+        <description>
+          <text>
+            The value that is placed in the 'Managed address
+            configuration' flag field in the Router Advertisement.
+          </text>
+        </description>
+      </leaf>
+      <leaf name="other-config-flag">
+        <type name="boolean"/>
+        <description>
+          <text>
+            The value that is placed in the 'Other configuration' flag
+            field in the Router Advertisement.
+          </text>
+        </description>
+      </leaf>
+      <leaf name="link-mtu">
+        <type name="uint32"/>
+        <description>
+          <text>
+            The value that is placed in MTU options sent by the
+            router. A value of zero indicates that no MTU options are
+            sent.
+          </text>
+        </description>
+      </leaf>
+      <leaf name="reachable-time">
+        <type name="uint32">
+          <range value="0..3600000"/>
+        </type>
+        <units name="milliseconds"/>
+        <description>
+          <text>
+            The value that is placed in the Reachable Time field in
+            the Router Advertisement messages sent by the router. A
+            value of zero means unspecified (by this router).
+          </text>
+        </description>
+      </leaf>
+      <leaf name="retrans-timer">
+        <type name="uint32"/>
+        <units name="milliseconds"/>
+        <description>
+          <text>
+            The value that is placed in the Retrans Timer field in the
+            Router Advertisement messages sent by the router. A value
+            of zero means unspecified (by this router).
+          </text>
+        </description>
+      </leaf>
+      <leaf name="cur-hop-limit">
+        <type name="uint8"/>
+        <description>
+          <text>
+            <h:p>The value that is placed in the Cur Hop Limit
+            field in the Router Advertisement messages sent by the
+            router. A value of zero means unspecified (by
+            this router).</h:p>
+          </text>
+        </description>
+      </leaf>
+      <leaf name="default-lifetime">
+        <type name="uint16">
+          <range value="0..9000"/>
+        </type>
+        <units name="seconds"/>
+        <description>
+          <text>
+            <h:p>The value that is placed in the Router Lifetime field
+            of Router Advertisements sent from the interface, in
+            seconds. A value of zero indicates that the router is not
+            to be used as a default router.</h:p>
+          </text>
+        </description>
+      </leaf>
+      <container name="prefix-list">
+        <description>
+          <text>
+            <h:p>A list of prefixes that are placed in Prefix Information
+            options in Router Advertisement messages sent from the
+            interface.</h:p>
+            <h:p>By default, these are all prefixes that the router
+            advertises via routing protocols as being on-link for the
+            interface from which the advertisement is sent.</h:p>
+          </text>
+        </description>
+        <list name="prefix">
+          <key value="prefix-spec"/>
+          <description>
+            <text>
+              Advertised prefix entry and its parameters.
+            </text>
+          </description>
+          <leaf name="prefix-spec">
+            <type name="inet:ipv6-prefix"/>
+            <description>
+              <text>IPv6 address prefix.</text>
+            </description>
+          </leaf>
+	  <leaf name="valid-lifetime">
+	    <type name="uint32"/>
+	    <units name="seconds"/>
+	    <description>
+	      <text>
+		<h:p>The value that is placed in the Valid Lifetime in
+		the Prefix Information option. The designated value
+		of all 1's (0xffffffff) represents infinity.</h:p>
+		<h:p>An implementation SHOULD keep this value constant
+		in consecutive advertisements except when it is
+		explicitly changed in configuration.</h:p>
+	      </text>
+	    </description>
+	  </leaf>
+	  <leaf name="on-link-flag">
+	    <type name="boolean"/>
+	    <description>
+	      <text>
+		The value that is placed in the on-link flag ('L-bit')
+		field in the Prefix Information option.
+	      </text>
+	    </description>
+	  </leaf>
+	  <leaf name="preferred-lifetime">
+	    <type name="uint32"/>
+	    <units name="seconds"/>
+	    <description>
+	      <text>
+		<h:p>The value that is placed in the Preferred Lifetime in
+		the Prefix Information option, in seconds. The
+		designated value of all 1's (0xffffffff) represents
+		infinity.</h:p>
+		<h:p>An implementation SHOULD keep this value constant
+		in consecutive advertisements except when it is
+		explicitly changed in configuration.</h:p>
+	      </text>
+	    </description>
+	  </leaf>
+	  <leaf name="autonomous-flag">
+	    <type name="boolean"/>
+	    <description>
+	      <text>The value that is placed in the Autonomous Flag
+	      field in the Prefix Information option.</text>
+	    </description>
+	  </leaf>
+        </list>
+      </container>
+    </container>
+  </augment>
+
+  <!-- Configuration data -->
+
+  <augment target-node="/if:interfaces/if:interface/ip:ipv6">
+    <description>
+      <text>
+        Augment interface configuration with parameters of IPv6 router
+        advertisements.
+      </text>
+    </description>
+    <container name="ipv6-router-advertisements">
+      <description>
+        <text>
+	  <h:p>Configuration of IPv6 Router Advertisements.</h:p>
+        </text>
+      </description>
+      <leaf name="send-advertisements">
+        <type name="boolean"/>
+        <default value="false"/>
+        <description>
+          <text>
+            A flag indicating whether or not the router sends periodic
+            Router Advertisements and responds to Router
+            Solicitations.
+          </text>
+        </description>
+        <reference>
+          <text>
+	    RFC 4861: Neighbor Discovery for IP version 6 (IPv6) -
+	    AdvSendAdvertisements.
+	  </text>
+        </reference>
+      </leaf>
+      <leaf name="max-rtr-adv-interval">
+        <type name="uint16">
+          <range value="4..1800"/>
+        </type>
+        <units name="seconds"/>
+        <default value="600"/>
+        <description>
+          <text>
+            The maximum time allowed between sending unsolicited
+            multicast Router Advertisements from the interface.
+          </text>
+        </description>
+        <reference>
+          <text>
+	    RFC 4861: Neighbor Discovery for IP version 6 (IPv6) -
+            MaxRtrAdvInterval.
+	  </text>
+        </reference>
+      </leaf>
+      <leaf name="min-rtr-adv-interval">
+        <type name="uint16">
+          <range value="3..1350"/>
+        </type>
+        <units name="seconds"/>
+        <must condition=". &lt;= 0.75 * ../max-rtr-adv-interval">
+          <description>
+            <text>The value MUST NOT be greater than 75 % of
+            'max-rtr-adv-interval'.</text>
+          </description>
+        </must>
+        <description>
+          <text>
+            <h:p>The minimum time allowed between sending unsolicited
+            multicast Router Advertisements from the interface.</h:p>
+            <h:p>The default value to be used operationally if this
+            leaf is not configured is determined as follows:</h:p>
+            <h:ul>
+              <h:li>if max-rtr-adv-interval &gt;= 9 seconds, the
+              default value is 0.33 * max-rtr-adv-interval;</h:li>
+              <h:li>otherwise it is 0.75 * max-rtr-adv-interval.</h:li>
+            </h:ul>
+          </text>
+        </description>
+        <reference>
+          <text>
+	    RFC 4861: Neighbor Discovery for IP version 6 (IPv6) -
+            MinRtrAdvInterval.
+	  </text>
+        </reference>
+      </leaf>
+      <leaf name="managed-flag">
+        <type name="boolean"/>
+        <default value="false"/>
+        <description>
+          <text>
+            The value to be placed in the 'Managed address
+            configuration' flag field in the Router Advertisement.
+          </text>
+        </description>
+        <reference>
+          <text>
+	    RFC 4861: Neighbor Discovery for IP version 6 (IPv6) -
+            AdvManagedFlag.
+	  </text>
+        </reference>
+      </leaf>
+      <leaf name="other-config-flag">
+        <type name="boolean"/>
+        <default value="false"/>
+        <description>
+          <text>
+            The value to be placed in the 'Other configuration' flag
+            field in the Router Advertisement.
+          </text>
+        </description>
+        <reference>
+          <text>
+	    RFC 4861: Neighbor Discovery for IP version 6 (IPv6) -
+            AdvOtherConfigFlag.
+	  </text>
+        </reference>
+      </leaf>
+      <leaf name="link-mtu">
+        <type name="uint32"/>
+        <default value="0"/>
+        <description>
+          <text>
+            The value to be placed in MTU options sent by the router.
+            A value of zero indicates that no MTU options are sent.
+          </text>
+        </description>
+        <reference>
+          <text>
+	    RFC 4861: Neighbor Discovery for IP version 6 (IPv6) -
+            AdvLinkMTU.
+	  </text>
+        </reference>
+      </leaf>
+      <leaf name="reachable-time">
+        <type name="uint32">
+          <range value="0..3600000"/>
+        </type>
+        <units name="milliseconds"/>
+        <default value="0"/>
+        <description>
+          <text>
+            The value to be placed in the Reachable Time field in the
+            Router Advertisement messages sent by the router. A value
+            of zero means unspecified (by this router).
+          </text>
+        </description>
+        <reference>
+          <text>
+	    RFC 4861: Neighbor Discovery for IP version 6 (IPv6) -
+            AdvReachableTime.
+	  </text>
+        </reference>
+      </leaf>
+      <leaf name="retrans-timer">
+        <type name="uint32"/>
+        <units name="milliseconds"/>
+        <default value="0"/>
+        <description>
+          <text>
+            The value to be placed in the Retrans Timer field in the
+            Router Advertisement messages sent by the router. A value
+            of zero means unspecified (by this router).
+          </text>
+        </description>
+        <reference>
+          <text>
+	    RFC 4861: Neighbor Discovery for IP version 6 (IPv6) -
+            AdvRetransTimer.
+	  </text>
+        </reference>
+      </leaf>
+      <leaf name="cur-hop-limit">
+        <type name="uint8"/>
+        <description>
+          <text>
+            <h:p>The value to be placed in the Cur Hop Limit field in
+            the Router Advertisement messages sent by the router. A
+            value of zero means unspecified (by this router).</h:p>
+            <h:p>If this parameter is not configured, the device
+            SHOULD use the value specified in IANA Assigned Numbers
+            that was in effect at the time of implementation.</h:p>
+          </text>
+        </description>
+        <reference>
+          <text>
+            <h:p>RFC 4861: Neighbor Discovery for IP version 6 (IPv6)
+            - AdvCurHopLimit.</h:p>
+            <h:p>IANA: IP Parameters,
+            http://www.iana.org/assignments/ip-parameters</h:p>
+          </text>
+        </reference>
+      </leaf>
+      <leaf name="default-lifetime">
+        <type name="uint16">
+          <range value="0..9000"/>
+        </type>
+        <units name="seconds"/>
+        <description>
+          <text>
+            <h:p>The value to be placed in the Router Lifetime field
+            of Router Advertisements sent from the interface, in
+            seconds. It MUST be either zero or between
+            max-rtr-adv-interval and 9000 seconds. A value of zero
+            indicates that the router is not to be used as a default
+            router. These limits may be overridden by specific
+            documents that describe how IPv6 operates over different
+            link layers.</h:p>
+            <h:p>If this parameter is not configured, the device
+	    SHOULD use a value of 3 * max-rtr-adv-interval.</h:p>
+          </text>
+        </description>
+        <reference>
+          <text>
+	    RFC 4861: Neighbor Discovery for IP version 6 (IPv6) -
+            AdvDefaultLifeTime.
+	  </text>
+        </reference>
+      </leaf>
+      <container name="prefix-list">
+        <description>
+          <text>
+            <h:p>Configuration of prefixes to be placed in Prefix
+            Information options in Router Advertisement messages sent
+            from the interface.</h:p>
+	    <h:p>Prefixes that are advertised by default but do not
+	    have their entries in the child 'prefix' list are
+	    advertised with the default values of all
+	    parameters.</h:p>
+	    <h:p>The link-local prefix SHOULD NOT be included in the
+	    list of advertised prefixes.</h:p>
+          </text>
+        </description>
+        <reference>
+          <text>
+	    RFC 4861: Neighbor Discovery for IP version 6 (IPv6) -
+            AdvPrefixList.
+	  </text>
+        </reference>
+        <list name="prefix">
+          <key value="prefix-spec"/>
+          <description>
+            <text>
+              Configuration of an advertised prefix entry.
+            </text>
+          </description>
+          <leaf name="prefix-spec">
+            <type name="inet:ipv6-prefix"/>
+            <description>
+              <text>
+                IPv6 address prefix.
+              </text>
+            </description>
+          </leaf>
+          <choice name="control-adv-prefixes">
+            <default value="advertise"/>
+            <description>
+              <text>
+                The prefix either may be explicitly removed from the
+                set of advertised prefixes, or parameters with which
+                it is advertised may be specified (default case).
+              </text>
+            </description>
+            <leaf name="no-advertise">
+              <type name="empty"/>
+              <description>
+                <text>
+                  <h:p>The prefix will not be advertised.</h:p>
+                  <h:p>This can be used for removing the prefix from
+                  the default set of advertised prefixes.</h:p>
+                </text>
+              </description>
+            </leaf>
+            <case name="advertise">
+              <leaf name="valid-lifetime">
+                <type name="uint32"/>
+                <units name="seconds"/>
+                <default value="2592000"/>
+                <description>
+                  <text>
+                    The value to be placed in the Valid Lifetime in
+                    the Prefix Information option. The designated
+                    value of all 1's (0xffffffff) represents infinity.
+                  </text>
+                </description>
+		<reference>
+		  <text>
+		    RFC 4861: Neighbor Discovery for IP version 6
+		    (IPv6) - AdvValidLifetime.
+		  </text>
+		</reference>
+              </leaf>
+              <leaf name="on-link-flag">
+                <type name="boolean"/>
+                <default value="true"/>
+                <description>
+                  <text>
+                    The value to be placed in the on-link flag
+                    ('L-bit') field in the Prefix Information option.
+                  </text>
+                </description>
+		<reference>
+		  <text>
+		    RFC 4861: Neighbor Discovery for IP version 6
+		    (IPv6) - AdvOnLinkFlag.
+		  </text>
+		</reference>
+              </leaf>
+              <leaf name="preferred-lifetime">
+                <type name="uint32"/>
+                <units name="seconds"/>
+                <must condition=". &lt;= ../valid-lifetime">
+                  <description>
+                    <text>
+                      This value MUST NOT be greater than
+                      valid-lifetime.
+                    </text>
+                  </description>
+                </must>
+                <default value="604800"/>
+                <description>
+                  <text>
+                    The value to be placed in the Preferred Lifetime
+                    in the Prefix Information option. The designated
+                    value of all 1's (0xffffffff) represents infinity.
+                  </text>
+                </description>
+		<reference>
+		  <text>
+		    RFC 4861: Neighbor Discovery for IP version 6
+		    (IPv6) - AdvPreferredLifetime.
+		  </text>
+		</reference>
+              </leaf>
+              <leaf name="autonomous-flag">
+                <type name="boolean"/>
+                <default value="true"/>
+                <description>
+                  <text>
+                    The value to be placed in the Autonomous Flag
+                    field in the Prefix Information option.
+                  </text>
+                </description>
+		<reference>
+		  <text>
+		    RFC 4861: Neighbor Discovery for IP version 6
+		    (IPv6) - AdvAutonomousFlag.
+		  </text>
+		</reference>
+              </leaf>
+            </case>
+          </choice>
+        </list>
+      </container>
+    </container>
+  </augment>
+
+</submodule>
