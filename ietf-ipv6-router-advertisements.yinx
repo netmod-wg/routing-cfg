@@ -211,51 +211,51 @@
               <text>IPv6 address prefix.</text>
             </description>
           </leaf>
-	  <leaf name="valid-lifetime">
-	    <type name="uint32"/>
-	    <units name="seconds"/>
-	    <description>
-	      <text>
-		<h:p>The value that is placed in the Valid Lifetime in
-		the Prefix Information option. The designated value
-		of all 1's (0xffffffff) represents infinity.</h:p>
-		<h:p>An implementation SHOULD keep this value constant
-		in consecutive advertisements except when it is
-		explicitly changed in configuration.</h:p>
-	      </text>
-	    </description>
-	  </leaf>
-	  <leaf name="on-link-flag">
-	    <type name="boolean"/>
-	    <description>
-	      <text>
-		The value that is placed in the on-link flag ('L-bit')
-		field in the Prefix Information option.
-	      </text>
-	    </description>
-	  </leaf>
-	  <leaf name="preferred-lifetime">
-	    <type name="uint32"/>
-	    <units name="seconds"/>
-	    <description>
-	      <text>
-		<h:p>The value that is placed in the Preferred Lifetime in
-		the Prefix Information option, in seconds. The
-		designated value of all 1's (0xffffffff) represents
-		infinity.</h:p>
-		<h:p>An implementation SHOULD keep this value constant
-		in consecutive advertisements except when it is
-		explicitly changed in configuration.</h:p>
-	      </text>
-	    </description>
-	  </leaf>
-	  <leaf name="autonomous-flag">
-	    <type name="boolean"/>
-	    <description>
-	      <text>The value that is placed in the Autonomous Flag
-	      field in the Prefix Information option.</text>
-	    </description>
-	  </leaf>
+          <leaf name="valid-lifetime">
+            <type name="uint32"/>
+            <units name="seconds"/>
+            <description>
+              <text>
+                <h:p>The value that is placed in the Valid Lifetime in
+                the Prefix Information option. The designated value
+                of all 1's (0xffffffff) represents infinity.</h:p>
+                <h:p>An implementation SHOULD keep this value constant
+                in consecutive advertisements except when it is
+                explicitly changed in configuration.</h:p>
+              </text>
+            </description>
+          </leaf>
+          <leaf name="on-link-flag">
+            <type name="boolean"/>
+            <description>
+              <text>
+                The value that is placed in the on-link flag ('L-bit')
+                field in the Prefix Information option.
+              </text>
+            </description>
+          </leaf>
+          <leaf name="preferred-lifetime">
+            <type name="uint32"/>
+            <units name="seconds"/>
+            <description>
+              <text>
+                <h:p>The value that is placed in the Preferred Lifetime in
+                the Prefix Information option, in seconds. The
+                designated value of all 1's (0xffffffff) represents
+                infinity.</h:p>
+                <h:p>An implementation SHOULD keep this value constant
+                in consecutive advertisements except when it is
+                explicitly changed in configuration.</h:p>
+              </text>
+            </description>
+          </leaf>
+          <leaf name="autonomous-flag">
+            <type name="boolean"/>
+            <description>
+              <text>The value that is placed in the Autonomous Flag
+              field in the Prefix Information option.</text>
+            </description>
+          </leaf>
         </list>
       </container>
     </container>
@@ -273,7 +273,7 @@
     <container name="ipv6-router-advertisements">
       <description>
         <text>
-	  <h:p>Configuration of IPv6 Router Advertisements.</h:p>
+          <h:p>Configuration of IPv6 Router Advertisements.</h:p>
         </text>
       </description>
       <leaf name="send-advertisements">
@@ -288,9 +288,9 @@
         </description>
         <reference>
           <text>
-	    RFC 4861: Neighbor Discovery for IP version 6 (IPv6) -
-	    AdvSendAdvertisements.
-	  </text>
+            RFC 4861: Neighbor Discovery for IP version 6 (IPv6) -
+            AdvSendAdvertisements.
+          </text>
         </reference>
       </leaf>
       <leaf name="max-rtr-adv-interval">
@@ -307,9 +307,9 @@
         </description>
         <reference>
           <text>
-	    RFC 4861: Neighbor Discovery for IP version 6 (IPv6) -
+            RFC 4861: Neighbor Discovery for IP version 6 (IPv6) -
             MaxRtrAdvInterval.
-	  </text>
+          </text>
         </reference>
       </leaf>
       <leaf name="min-rtr-adv-interval">
@@ -338,9 +338,9 @@
         </description>
         <reference>
           <text>
-	    RFC 4861: Neighbor Discovery for IP version 6 (IPv6) -
+            RFC 4861: Neighbor Discovery for IP version 6 (IPv6) -
             MinRtrAdvInterval.
-	  </text>
+          </text>
         </reference>
       </leaf>
       <leaf name="managed-flag">
@@ -354,9 +354,9 @@
         </description>
         <reference>
           <text>
-	    RFC 4861: Neighbor Discovery for IP version 6 (IPv6) -
+            RFC 4861: Neighbor Discovery for IP version 6 (IPv6) -
             AdvManagedFlag.
-	  </text>
+          </text>
         </reference>
       </leaf>
       <leaf name="other-config-flag">
@@ -370,9 +370,9 @@
         </description>
         <reference>
           <text>
-	    RFC 4861: Neighbor Discovery for IP version 6 (IPv6) -
+            RFC 4861: Neighbor Discovery for IP version 6 (IPv6) -
             AdvOtherConfigFlag.
-	  </text>
+          </text>
         </reference>
       </leaf>
       <leaf name="link-mtu">
@@ -386,9 +386,9 @@
         </description>
         <reference>
           <text>
-	    RFC 4861: Neighbor Discovery for IP version 6 (IPv6) -
+            RFC 4861: Neighbor Discovery for IP version 6 (IPv6) -
             AdvLinkMTU.
-	  </text>
+          </text>
         </reference>
       </leaf>
       <leaf name="reachable-time">
@@ -406,9 +406,9 @@
         </description>
         <reference>
           <text>
-	    RFC 4861: Neighbor Discovery for IP version 6 (IPv6) -
+            RFC 4861: Neighbor Discovery for IP version 6 (IPv6) -
             AdvReachableTime.
-	  </text>
+          </text>
         </reference>
       </leaf>
       <leaf name="retrans-timer">
@@ -424,9 +424,9 @@
         </description>
         <reference>
           <text>
-	    RFC 4861: Neighbor Discovery for IP version 6 (IPv6) -
+            RFC 4861: Neighbor Discovery for IP version 6 (IPv6) -
             AdvRetransTimer.
-	  </text>
+          </text>
         </reference>
       </leaf>
       <leaf name="cur-hop-limit">
@@ -466,14 +466,14 @@
             documents that describe how IPv6 operates over different
             link layers.</h:p>
             <h:p>If this parameter is not configured, the device
-	    SHOULD use a value of 3 * max-rtr-adv-interval.</h:p>
+            SHOULD use a value of 3 * max-rtr-adv-interval.</h:p>
           </text>
         </description>
         <reference>
           <text>
-	    RFC 4861: Neighbor Discovery for IP version 6 (IPv6) -
+            RFC 4861: Neighbor Discovery for IP version 6 (IPv6) -
             AdvDefaultLifeTime.
-	  </text>
+          </text>
         </reference>
       </leaf>
       <container name="prefix-list">
@@ -482,19 +482,19 @@
             <h:p>Configuration of prefixes to be placed in Prefix
             Information options in Router Advertisement messages sent
             from the interface.</h:p>
-	    <h:p>Prefixes that are advertised by default but do not
-	    have their entries in the child 'prefix' list are
-	    advertised with the default values of all
-	    parameters.</h:p>
-	    <h:p>The link-local prefix SHOULD NOT be included in the
-	    list of advertised prefixes.</h:p>
+            <h:p>Prefixes that are advertised by default but do not
+            have their entries in the child 'prefix' list are
+            advertised with the default values of all
+            parameters.</h:p>
+            <h:p>The link-local prefix SHOULD NOT be included in the
+            list of advertised prefixes.</h:p>
           </text>
         </description>
         <reference>
           <text>
-	    RFC 4861: Neighbor Discovery for IP version 6 (IPv6) -
+            RFC 4861: Neighbor Discovery for IP version 6 (IPv6) -
             AdvPrefixList.
-	  </text>
+          </text>
         </reference>
         <list name="prefix">
           <key value="prefix-spec"/>
@@ -542,12 +542,12 @@
                     value of all 1's (0xffffffff) represents infinity.
                   </text>
                 </description>
-		<reference>
-		  <text>
-		    RFC 4861: Neighbor Discovery for IP version 6
-		    (IPv6) - AdvValidLifetime.
-		  </text>
-		</reference>
+                <reference>
+                  <text>
+                    RFC 4861: Neighbor Discovery for IP version 6
+                    (IPv6) - AdvValidLifetime.
+                  </text>
+                </reference>
               </leaf>
               <leaf name="on-link-flag">
                 <type name="boolean"/>
@@ -558,12 +558,12 @@
                     ('L-bit') field in the Prefix Information option.
                   </text>
                 </description>
-		<reference>
-		  <text>
-		    RFC 4861: Neighbor Discovery for IP version 6
-		    (IPv6) - AdvOnLinkFlag.
-		  </text>
-		</reference>
+                <reference>
+                  <text>
+                    RFC 4861: Neighbor Discovery for IP version 6
+                    (IPv6) - AdvOnLinkFlag.
+                  </text>
+                </reference>
               </leaf>
               <leaf name="preferred-lifetime">
                 <type name="uint32"/>
@@ -584,12 +584,12 @@
                     value of all 1's (0xffffffff) represents infinity.
                   </text>
                 </description>
-		<reference>
-		  <text>
-		    RFC 4861: Neighbor Discovery for IP version 6
-		    (IPv6) - AdvPreferredLifetime.
-		  </text>
-		</reference>
+                <reference>
+                  <text>
+                    RFC 4861: Neighbor Discovery for IP version 6
+                    (IPv6) - AdvPreferredLifetime.
+                  </text>
+                </reference>
               </leaf>
               <leaf name="autonomous-flag">
                 <type name="boolean"/>
@@ -600,12 +600,12 @@
                     field in the Prefix Information option.
                   </text>
                 </description>
-		<reference>
-		  <text>
-		    RFC 4861: Neighbor Discovery for IP version 6
-		    (IPv6) - AdvAutonomousFlag.
-		  </text>
-		</reference>
+                <reference>
+                  <text>
+                    RFC 4861: Neighbor Discovery for IP version 6
+                    (IPv6) - AdvAutonomousFlag.
+                  </text>
+                </reference>
               </leaf>
             </case>
           </choice>

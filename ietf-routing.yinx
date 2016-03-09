@@ -34,7 +34,7 @@
     <text>
       <h:p>
         This YANG module defines essential components for the
-	management of a routing subsystem.
+        management of a routing subsystem.
       </h:p>
       <xi:include href=".tools/bplate/netmod-module.yinx"
                   xpointer="xpointer(id('desc')/*)"/>
@@ -57,13 +57,13 @@
   <feature name="multiple-ribs">
     <description>
       <text>
-	<h:p>This feature indicates that the server supports
-	user-defined RIBs.
-	</h:p>
-	<h:p>Servers that do not advertise this feature SHOULD provide
-	exactly one system-controlled RIB per supported address family
-	and make them also the default RIBs. These RIBs then appear as
-	entries of the list /routing-state/ribs/rib.</h:p>
+        <h:p>This feature indicates that the server supports
+        user-defined RIBs.
+        </h:p>
+        <h:p>Servers that do not advertise this feature SHOULD provide
+        exactly one system-controlled RIB per supported address family
+        and make them also the default RIBs. These RIBs then appear as
+        entries of the list /routing-state/ribs/rib.</h:p>
     </text>
     </description>
   </feature>
@@ -71,13 +71,13 @@
   <feature name="router-id">
     <description>
       <text>
-	<h:p>This feature indicates that the server supports
-	configuration of an explicit 32-bit router ID that is used by
-	some routing protocols.</h:p>
-	<h:p>Servers that do not advertise this feature set a router
-	ID algorithmically, usually to one of configured IPv4
-	addresses. However, this algorithm is
-	implementation-specific.</h:p>
+        <h:p>This feature indicates that the server supports
+        configuration of an explicit 32-bit router ID that is used by
+        some routing protocols.</h:p>
+        <h:p>Servers that do not advertise this feature set a router
+        ID algorithmically, usually to one of configured IPv4
+        addresses. However, this algorithm is
+        implementation-specific.</h:p>
       </text>
     </description>
   </feature>
@@ -143,7 +143,7 @@
   <grouping name="address-family">
     <leaf name="address-family">
       <type name="identityref">
-	<base name="address-family"/>
+        <base name="address-family"/>
       </type>
       <mandatory value="true"/>
       <description>
@@ -162,20 +162,20 @@
     <leaf name="router-id">
       <type name="yang:dotted-quad"/>
       <description>
-	<text>
-	  A 32-bit number in the form of a dotted quad that is used by
-	  some routing protocols identifying a router.
-	</text>
+        <text>
+          A 32-bit number in the form of a dotted quad that is used by
+          some routing protocols identifying a router.
+        </text>
       </description>
       <reference>
-	<text>
-	  RFC 2328: OSPF Version 2.
-	</text>
+        <text>
+          RFC 2328: OSPF Version 2.
+        </text>
       </reference>
     </leaf>
     <description>
       <text>
-	This grouping provides router ID.
+        This grouping provides router ID.
       </text>
     </description>
   </grouping>
@@ -184,40 +184,40 @@
   <grouping name="special-next-hop">
     <description>
       <text>
-	This grouping provides a leaf with an enumeration of special
-	next-hops.
+        This grouping provides a leaf with an enumeration of special
+        next-hops.
       </text>
     </description>
     <leaf name="special-next-hop">
       <type name="enumeration">
-	<enum name="blackhole">
-	  <description>
-	    <text>Silently discard the packet.</text>
-	  </description>
-	</enum>
-	<enum name="unreachable">
-	  <description>
-	    <text>Discard the packet and notify the sender with an
-	    error message indicating that the destination host is
-	    unreachable.</text>
-	  </description>
-	</enum>
-	<enum name="prohibit">
-	  <description>
-	    <text>Discard the packet and notify the sender with an
-	    error message indicating that the communication is
-	    administratively prohibited.</text>
-	  </description>
-	</enum>
-	<enum name="receive">
-	  <description>
-	    <text>The packet will be received by the local
-	    system.</text>
-	  </description>
-	</enum>
+        <enum name="blackhole">
+          <description>
+            <text>Silently discard the packet.</text>
+          </description>
+        </enum>
+        <enum name="unreachable">
+          <description>
+            <text>Discard the packet and notify the sender with an
+            error message indicating that the destination host is
+            unreachable.</text>
+          </description>
+        </enum>
+        <enum name="prohibit">
+          <description>
+            <text>Discard the packet and notify the sender with an
+            error message indicating that the communication is
+            administratively prohibited.</text>
+          </description>
+        </enum>
+        <enum name="receive">
+          <description>
+            <text>The packet will be received by the local
+            system.</text>
+          </description>
+        </enum>
       </type>
       <description>
-	<text>Special next-hop options.</text>
+        <text>Special next-hop options.</text>
       </description>
     </leaf>
   </grouping>
@@ -229,26 +229,26 @@
     <choice name="next-hop-options">
       <mandatory value="true"/>
       <description>
-	<text>
-	  <h:p>Options for next-hops in static routes.</h:p>
-	  <h:p>Modules for address families MUST augment this choice
-	  with the 'next-hop-address' case, which is a leaf containing
-	  a gateway address of that address family.</h:p>
-	  <h:p>It is expected that further cases will be added through
-	  augments from other modules, e.g., for Equal-Cost Multipath
-	  routing (ECMP).</h:p>
-	</text>
+        <text>
+          <h:p>Options for next-hops in static routes.</h:p>
+          <h:p>Modules for address families MUST augment this choice
+          with the 'next-hop-address' case, which is a leaf containing
+          a gateway address of that address family.</h:p>
+          <h:p>It is expected that further cases will be added through
+          augments from other modules, e.g., for Equal-Cost Multipath
+          routing (ECMP).</h:p>
+        </text>
       </description>
       <leaf name="outgoing-interface">
-	<type name="if:interface-ref"/>
-	<description>
-	  <text>
-	    Name of the outgoing interface.
-	  </text>
-	</description>
+        <type name="if:interface-ref"/>
+        <description>
+          <text>
+            Name of the outgoing interface.
+          </text>
+        </description>
       </leaf>
       <case name="special-next-hop">
-	<uses name="special-next-hop"/>
+        <uses name="special-next-hop"/>
       </case>
     </choice>
   </grouping>
@@ -260,26 +260,26 @@
     <choice name="next-hop-options">
       <mandatory value="true"/>
       <description>
-	<text>
-	  <h:p>Options for next-hops in state data.</h:p>
-	  <h:p>Modules for address families MUST augment this choice
-	  with the 'next-hop-address' case, which is a leaf containing
-	  a gateway address of that address family.</h:p>
-	  <h:p>It is expected that further cases will be added through
-	  augments from other modules, e.g., for ECMP or recursive
-	  next-hops.</h:p>
-	</text>
+        <text>
+          <h:p>Options for next-hops in state data.</h:p>
+          <h:p>Modules for address families MUST augment this choice
+          with the 'next-hop-address' case, which is a leaf containing
+          a gateway address of that address family.</h:p>
+          <h:p>It is expected that further cases will be added through
+          augments from other modules, e.g., for ECMP or recursive
+          next-hops.</h:p>
+        </text>
       </description>
       <leaf name="outgoing-interface">
-	<type name="if:interface-state-ref"/>
-	<description>
-	  <text>
-	    Name of the outgoing interface.
-	  </text>
-	</description>
+        <type name="if:interface-state-ref"/>
+        <description>
+          <text>
+            Name of the outgoing interface.
+          </text>
+        </description>
       </leaf>
       <case name="special-next-hop">
-	<uses name="special-next-hop"/>
+        <uses name="special-next-hop"/>
       </case>
     </choice>
   </grouping>
@@ -290,34 +290,34 @@
     </description>
     <leaf name="source-protocol">
       <type name="identityref">
-	<base name="routing-protocol"/>
+        <base name="routing-protocol"/>
       </type>
       <mandatory value="true"/>
       <description>
-	<text>
-	  Type of the routing protocol from which the route
-	  originated.
-	</text>
+        <text>
+          Type of the routing protocol from which the route
+          originated.
+        </text>
       </description>
     </leaf>
     <leaf name="active">
       <type name="empty"/>
       <description>
-	<text>
-	  Presence of this leaf indicates that the route is preferred
-	  among all routes in the same RIB that have the same
-	  destination prefix.
-	</text>
+        <text>
+          Presence of this leaf indicates that the route is preferred
+          among all routes in the same RIB that have the same
+          destination prefix.
+        </text>
       </description>
     </leaf>
     <leaf name="last-updated">
       <type name="yang:date-and-time"/>
       <description>
-	<text>
-	  Time stamp of the last modification of the route.
-	  If the route was never modified, it is the time when
-	  the route was inserted into the RIB.
-	</text>
+        <text>
+          Time stamp of the last modification of the route.
+          If the route was never modified, it is the time when
+          the route was inserted into the RIB.
+        </text>
       </description>
     </leaf>
   </grouping>
@@ -331,11 +331,11 @@
     <config value="false"/>
     <uses name="router-id">
       <description>
-	<text>
-	  <h:p>Global router ID.</h:p>
-	  <h:p>It may be either configured or assigned
-	  algorithmically by the implementation.</h:p>
-	</text>
+        <text>
+          <h:p>Global router ID.</h:p>
+          <h:p>It may be either configured or assigned
+          algorithmically by the implementation.</h:p>
+        </text>
       </description>
     </uses>
     <container name="interfaces">
@@ -347,9 +347,9 @@
       <leaf-list name="interface">
         <description>
           <text>
-	    Each entry is a reference to the name of a configured
-	    network layer interface.
-	  </text>
+            Each entry is a reference to the name of a configured
+            network layer interface.
+          </text>
         </description>
         <type name="if:interface-state-ref"/>
       </leaf-list>
@@ -364,11 +364,11 @@
         <key value="type name"/>
         <description>
           <text>
-	    <h:p>State data of a routing protocol instance.</h:p>
-	    <h:p>An implementation MUST provide exactly one
-	    system-controlled instance of the type 'direct'. Other
-	    instances MAY be created by configuration.</h:p>
-	  </text>
+            <h:p>State data of a routing protocol instance.</h:p>
+            <h:p>An implementation MUST provide exactly one
+            system-controlled instance of the type 'direct'. Other
+            instances MAY be created by configuration.</h:p>
+          </text>
         </description>
         <leaf name="type">
           <type name="identityref">
@@ -384,11 +384,11 @@
           <type name="string"/>
           <description>
             <text>
-	      <h:p>The name of the routing protocol instance.</h:p>
-	      <h:p>For system-controlled instances this name is
-	      persistent, i.e., it SHOULD NOT change across
-	      reboots.</h:p>
-	    </text>
+              <h:p>The name of the routing protocol instance.</h:p>
+              <h:p>For system-controlled instances this name is
+              persistent, i.e., it SHOULD NOT change across
+              reboots.</h:p>
+            </text>
           </description>
         </leaf>
       </list>
@@ -399,15 +399,15 @@
       </description>
       <list name="rib">
         <key value="name"/>
-	<min-elements value="1"/>
+        <min-elements value="1"/>
         <description>
           <text>
             <h:p>Each entry represents a RIB identified by the
             'name' key. All routes in a RIB MUST belong to the
             same address family.</h:p>
-	    <h:p>An implementation SHOULD provide one
-	    system-controlled default RIB for each supported address
-	    family.</h:p>
+            <h:p>An implementation SHOULD provide one
+            system-controlled default RIB for each supported address
+            family.</h:p>
           </text>
         </description>
         <leaf name="name">
@@ -417,53 +417,53 @@
           </description>
         </leaf>
         <uses name="address-family"/>
-	<leaf name="default-rib">
-	  <if-feature name="multiple-ribs"/>
-	  <type name="boolean"/>
-	  <default value="true"/>
-	  <description>
-	    <text>
-	      <h:p>This flag has the value of 'true' if and only if
-	      the RIB is the default RIB for the given address
-	      family.</h:p>
-	      <h:p>A default RIB always receives direct routes. By
-	      default it also receives routes from all routing
-	      protocols.</h:p>
-	    </text>
-	  </description>
-	</leaf>
+        <leaf name="default-rib">
+          <if-feature name="multiple-ribs"/>
+          <type name="boolean"/>
+          <default value="true"/>
+          <description>
+            <text>
+              <h:p>This flag has the value of 'true' if and only if
+              the RIB is the default RIB for the given address
+              family.</h:p>
+              <h:p>A default RIB always receives direct routes. By
+              default it also receives routes from all routing
+              protocols.</h:p>
+            </text>
+          </description>
+        </leaf>
         <container name="routes">
           <description>
             <text>
-	      Current content of the RIB.
+              Current content of the RIB.
             </text>
           </description>
           <list name="route">
             <description>
-	      <text>
+              <text>
                 A RIB route entry. This data node MUST be augmented
                 with information specific for routes of each address
                 family.
-	      </text>
+              </text>
             </description>
-	    <leaf name="route-preference">
-	      <type name="route-preference"/>
-	      <description>
-		<text>
-		  This route attribute, also known as administrative
-		  distance, allows for selecting the preferred route
-		  among routes with the same destination prefix. A
-		  smaller value means a more preferred route.
-		</text>
-	      </description>
-	    </leaf>
-	    <container name="next-hop">
-	      <uses name="next-hop-state-content"/>
-	      <description>
-		<text>Route's next-hop attribute.</text>
-	      </description>
-	    </container>
-	    <uses name="route-metadata"/>
+            <leaf name="route-preference">
+              <type name="route-preference"/>
+              <description>
+                <text>
+                  This route attribute, also known as administrative
+                  distance, allows for selecting the preferred route
+                  among routes with the same destination prefix. A
+                  smaller value means a more preferred route.
+                </text>
+              </description>
+            </leaf>
+            <container name="next-hop">
+              <uses name="next-hop-state-content"/>
+              <description>
+                <text>Route's next-hop attribute.</text>
+              </description>
+            </container>
+            <uses name="route-metadata"/>
           </list>
         </container>
       </list>
@@ -479,10 +479,10 @@
     <uses name="router-id">
       <if-feature name="router-id"/>
       <description>
-	<text>
-	  Configuration of the global router ID. Routing protocols
-	  that use router ID can use this parameter or override it
-	with another value.</text>
+        <text>
+          Configuration of the global router ID. Routing protocols
+          that use router ID can use this parameter or override it
+        with another value.</text>
       </description>
     </uses>
     <container name="routing-protocols">
@@ -511,8 +511,8 @@
           <type name="string"/>
           <description>
             <text>
-	      An arbitrary name of the routing protocol instance.
-	    </text>
+              An arbitrary name of the routing protocol instance.
+            </text>
           </description>
         </leaf>
         <leaf name="description">
@@ -553,40 +553,40 @@
           <text>
             <h:p>Each entry contains configuration for a RIB
             identified by the 'name' key.</h:p>
-	    <h:p>Entries having the same key as a system-controlled
-	    entry of the list
-	    /routing-state/ribs/rib are used for
-	    configuring parameters of that entry. Other entries
-	    define additional user-controlled RIBs.</h:p>
+            <h:p>Entries having the same key as a system-controlled
+            entry of the list
+            /routing-state/ribs/rib are used for
+            configuring parameters of that entry. Other entries
+            define additional user-controlled RIBs.</h:p>
           </text>
         </description>
         <leaf name="name">
           <type name="string"/>
           <description>
             <text>
-	      <h:p>The name of the RIB.</h:p>
-	      <h:p>For system-controlled entries, the value of this
-	      leaf must be the same as the name of the corresponding
-	      entry in state data.</h:p>
-	      <h:p>For user-controlled entries, an arbitrary name can
-	      be used.</h:p>
-	    </text>
+              <h:p>The name of the RIB.</h:p>
+              <h:p>For system-controlled entries, the value of this
+              leaf must be the same as the name of the corresponding
+              entry in state data.</h:p>
+              <h:p>For user-controlled entries, an arbitrary name can
+              be used.</h:p>
+            </text>
           </description>
         </leaf>
         <uses name="address-family">
-	  <refine target-node="address-family">
-	    <mandatory value="false"/>
-	  </refine>
-	  <description>
-	    <text>
-	      <h:p>Address family of the RIB.</h:p>
-	      <h:p>It is mandatory for user-controlled RIBs. For
-	      system-controlled RIBs it can be omitted, otherwise it
-	      must match the address family of the corresponding
-	      state entry.</h:p>
-	    </text>
-	  </description>
-	</uses>
+          <refine target-node="address-family">
+            <mandatory value="false"/>
+          </refine>
+          <description>
+            <text>
+              <h:p>Address family of the RIB.</h:p>
+              <h:p>It is mandatory for user-controlled RIBs. For
+              system-controlled RIBs it can be omitted, otherwise it
+              must match the address family of the corresponding
+              state entry.</h:p>
+            </text>
+          </description>
+        </uses>
         <leaf name="description">
           <type name="string"/>
           <description>
@@ -625,13 +625,13 @@
     <output>
       <container name="route">
         <uses name="address-family"/>
-	<container name="next-hop">
+        <container name="next-hop">
           <uses name="next-hop-state-content"/>
-	  <description>
-	    <text>Route's next-hop attribute.</text>
-	  </description>
-	</container>
-	<uses name="route-metadata"/>
+          <description>
+            <text>Route's next-hop attribute.</text>
+          </description>
+        </container>
+        <uses name="route-metadata"/>
         <description>
           <text>
             <h:p>The active FIB route for the specified

@@ -126,38 +126,38 @@
         <description>
           <text>A list of static routes.</text>
         </description>
-	<leaf name="destination-prefix">
-	  <mandatory value="true"/>
-	  <type name="inet:ipv6-prefix"/>
-	  <description>
-	    <text>IPv6 destination prefix.</text>
-	  </description>
-	</leaf>
+        <leaf name="destination-prefix">
+          <mandatory value="true"/>
+          <type name="inet:ipv6-prefix"/>
+          <description>
+            <text>IPv6 destination prefix.</text>
+          </description>
+        </leaf>
         <leaf name="description">
           <type name="string"/>
           <description>
             <text>Textual description of the route.</text>
           </description>
         </leaf>
-	<container name="next-hop">
-	  <uses name="rt:next-hop-content">
-	    <augment target-node="next-hop-options">
-	      <description>
-		<text>Augment 'next-hop-options' in IPv6 static
-		routes.</text>
-	      </description>
-	      <leaf name="next-hop-address">
-		<type name="inet:ipv6-address"/>
-		<description>
-		  <text>IPv6 address of the next-hop.</text>
-		</description>
-	      </leaf>
-	    </augment>
-	  </uses>
-	  <description>
-	    <text>Configuration of next-hop.</text>
-	  </description>
-	</container>
+        <container name="next-hop">
+          <uses name="rt:next-hop-content">
+            <augment target-node="next-hop-options">
+              <description>
+                <text>Augment 'next-hop-options' in IPv6 static
+                routes.</text>
+              </description>
+              <leaf name="next-hop-address">
+                <type name="inet:ipv6-address"/>
+                <description>
+                  <text>IPv6 address of the next-hop.</text>
+                </description>
+              </leaf>
+            </augment>
+          </uses>
+          <description>
+            <text>Configuration of next-hop.</text>
+          </description>
+        </container>
       </list>
     </container>
   </augment>
@@ -186,7 +186,7 @@
   <augment target-node="/rt:fib-route/rt:output/rt:route">
     <when condition="rt:address-family='v6ur:ipv6-unicast'">
       <description>
-	<text>This augment is valid only for IPv6 unicast.</text>
+        <text>This augment is valid only for IPv6 unicast.</text>
       </description>
     </when>
     <description>
@@ -205,7 +205,7 @@
       target-node="/rt:fib-route/rt:output/rt:route/rt:next-hop/rt:next-hop-options">
     <when condition="../rt:address-family='v6ur:ipv6-unicast'">
       <description>
-	<text>This augment is valid only for IPv6 unicast.</text>
+        <text>This augment is valid only for IPv6 unicast.</text>
       </description>
     </when>
     <description>

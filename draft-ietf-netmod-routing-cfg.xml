@@ -34,21 +34,21 @@
     <author initials="A." surname="Lindem" fullname="Acee Lindem">
       <organization>Cisco Systems</organization>
       <address>
-	<email>acee@cisco.com</email>
+        <email>acee@cisco.com</email>
       </address>
     </author>
     <date day="21" month="October" year="2014"/>
     &netmod-wg;
     <abstract>
-      <t>This document contains a specification of three YANG modules.
-      Together they form the core routing data model which serves as a
-      framework for configuring and managing a routing subsystem. It
-      is expected that these modules will be augmented by additional
-      YANG modules defining data models for routing protocols, route
-      filters and other functions. The core routing data model
-      provides common building blocks for such extensions - routing
-      instances, routes, routing information bases (RIB), and routing
-      protocols.</t>
+      <t>This document contains a specification of three YANG modules
+      and one submodule. Together they form the core routing data
+      model which serves as a framework for configuring and managing a
+      routing subsystem. It is expected that these modules will be
+      augmented by additional YANG modules defining data models for
+      routing protocols, route filters and other functions. The core
+      routing data model provides common building blocks for such
+      extensions - routes, routing information bases (RIB), and
+      routing protocols.</t>
     </abstract>
   </front>
   <middle>
@@ -65,9 +65,10 @@
         unicast.</t>
         <t>Module "ietf-ipv6-unicast-routing" augments the
         "ietf-routing" module with additional data specific to IPv6
-        unicast. It also augments the "ietf-interfaces" module <xref
-        target="RFC7223"/> with IPv6 router configuration variables
-        required by <xref target="RFC4861"/>.</t>
+        unicast. Its submodule "ietf-ipv6-router-advertisements" also
+        augments the "ietf-interfaces" module <xref target="RFC7223"/>
+        with IPv6 router configuration variables required by <xref
+        target="RFC4861"/>.</t>
       </list></t>
 
       <t>These modules together define the so-called core routing data
@@ -101,16 +102,16 @@
       <list style="symbols">
         <t>augment,</t>
         <t>configuration data,</t>
-	<t>container,</t>
-	<t>container with presence,</t>
+        <t>container,</t>
+        <t>container with presence,</t>
         <t>data model,</t>
         <t>data node,</t>
         <t>feature,</t>
-	<t>leaf,</t>
-	<t>list,</t>
+        <t>leaf,</t>
+        <t>list,</t>
         <t>mandatory node,</t>
         <t>module,</t>
-	<t>schema tree,</t>
+        <t>schema tree,</t>
         <t>state data,</t>
         <t>RPC operation.</t>
       </list></t>
@@ -198,17 +199,20 @@
     <section anchor="sec.design"
              title="The Design of the Core Routing Data Model">
 
-      <t>The core routing data model consists of three YANG
-      modules. The first module, "ietf-routing", defines the generic
-      components of a routing system. The other two modules,
+      <t>The core routing data model consists of three YANG modules
+      and one submodule. The first module, "ietf-routing", defines the
+      generic components of a routing system. The other two modules,
       "ietf-ipv4-unicast-routing" and "ietf-ipv6-unicast-routing",
       augment the "ietf-routing" module with additional data nodes
       that are needed for IPv4 and IPv6 unicast routing,
-      respectively. Figures <xref target="fig.confdata"
-      format="counter"/> and <xref target="fig.statedata"
-      format="counter"/> show abridged views of the configuration and
-      state data hierarchies. See <xref target="app.data-tree"/> for
-      the complete data trees.</t>
+      respectively. Module "ietf-ipv6-unicast-routing" has a
+      submodule, "ietf-ipv6-router-advertisements", that defines
+      configuration variables for IPv6 router advertisements as
+      required by <xref target="RFC4861"/>. Figures <xref
+      target="fig.confdata" format="counter"/> and <xref
+      target="fig.statedata" format="counter"/> show abridged views of
+      the configuration and state data hierarchies. See <xref
+      target="app.data-tree"/> for the complete data trees.</t>
 
       <figure
           anchor="fig.confdata"
@@ -225,21 +229,24 @@
       <t>As can be seen from Figures <xref target="fig.confdata"
       format="counter"/> and <xref target="fig.statedata"
       format="counter"/>, the core routing data model introduces
-      several generic components of a routing framework: routing
-      instances, RIBs containing lists of routes, and routing
-      protocols. <xref target="sec.building-blocks"/> describes these
-      components in more detail.</t>
+      several generic components of a routing framework: routes, RIBs
+      containing lists of routes, and routing protocols. <xref
+      target="sec.building-blocks"/> describes these components in
+      more detail.</t>
 
       <section anchor="sec.system-user"
                title="System-Controlled and User-Controlled List Entries">
         <t>The core routing data model defines several lists in the
-        schema tree, for example "routing-instance" or "rib", that
-        have to be populated with at least one entry in any properly
-        functioning device, and additional entries may be configured
-        by a client.</t>
+        schema tree, such as "rib", that have to be populated with at
+        least one entry in any properly functioning device, and
+        additional entries may be configured by a client.</t>
         <t>In such a list, the server creates the required item as a
         so-called system-controlled entry in state data, i.e., inside
         the "routing-state" container.</t>
+        <t>An example can be seen in <xref target="app.get-reply"/>: the
+        "/routing-state/ribs/rib" list has two
+        system-controlled entries named "ipv4-master" and
+	"ipv6-master".</t>
         <t>Additional entries may be created in the configuration by
         a client, e.g., via the NETCONF protocol. These are so-called
         user-controlled entries. If the server accepts a configured
@@ -254,12 +261,6 @@
         to bind this entry to the corresponding entry in the state
         data list, the key of the configuration entry has to be set to
         the same value as the key of the state entry.</t>
-        <t>An example can be seen in <xref target="app.get-reply"/>: the
-        "/routing-state/routing-instance" list has a single
-        system-controlled entry whose "name" key has the value
-        "rtr0". This entry is configured by the
-        "/routing/routing-instance" entry whose "name" key is
-        also "rtr0".</t>
         <t>Deleting a user-controlled entry from the configuration list
         results in the removal of the corresponding entry in the
         state data list. In contrast, if a system-controlled
@@ -275,86 +276,6 @@
 
       <t>This section describes the essential components of the core
       routing data model.</t>
-
-      <section anchor="sec.routing-instance" title="Routing Instance">
-
-        <t>The core routing data model supports one or more routing
-        instances appearing as entries of the "routing-instance"
-        list. Each routing instance has separate configuration and
-        state data under "/rt:routing/rt:routing-instance" and
-        "/rt:routing-state/rt:routing-instance", respectively.</t>
-        <t>No attempt has been made to define the semantics for every
-        type of routing instance. The core routing data model defines
-        identities for two ubiquitous routing instance types:
-        <list style="symbols">
-	  <t>"default-routing-instance" - this routing instance type
-	  represents the default (or only) routing instance. All
-	  implementations MUST provide one and only one
-	  system-controlled routing instance of this type.</t>
-          <t>"vrf-routing-instance" - this routing instance type
-          represents VRF (virtual routing and forwarding) routing
-          instances that are used for virtual private networks (VPN)
-          including BGP/MPLS VPN_<xref target="RFC4364"/>.</t>
-        </list></t>
-	<t>It is expected that future YANG modules will define other
-	types of routing instances. For every such type, an identity
-	derived from "rt:routing-instance" SHALL be defined. This
-	identity is then referred to by the value of the "type" leaf
-	(a child node of "routing-instance" list).</t>
-        <t>By default, all network layer interfaces are assigned to
-        the routing instance of the "default-routing-instance"
-        type. This can be changed by configuring the
-        "rt:routing-instance" leaf in the interface configuration.</t>
-
-        <section anchor="sec.4861"
-                 title="Parameters of IPv6 Router Interfaces">
-
-          <t>YANG module "ietf-ipv6-unicast-routing" (<xref
-          target="sec.mod-v6ur"/>) augments the configuration and
-          state data of IPv6 interfaces with definitions of the
-          following variables as required by <xref target="RFC4861"/>,
-          sec. 6.2.1:
-          <list style="symbols">
-            <t>send-advertisements,</t>
-            <t>max-rtr-adv-interval,</t>
-            <t>min-rtr-adv-interval,</t>
-            <t>managed-flag,</t>
-            <t>other-config-flag,</t>
-            <t>link-mtu,</t>
-            <t>reachable-time,</t>
-            <t>retrans-timer,</t>
-            <t>cur-hop-limit,</t>
-            <t>default-lifetime,</t>
-            <t>prefix-list: a list of prefixes to be advertised.<vspace
-            blankLines="1"/>The
-            following parameters are associated with each prefix in the
-            list:
-            <list style="symbols">
-              <t>valid-lifetime,</t>
-              <t>on-link-flag,</t>
-              <t>preferred-lifetime,</t>
-              <t>autonomous-flag.</t>
-            </list></t>
-          </list></t>
-          <t>NOTES:</t>
-          <t><list style="numbers">
-            <t>The "IsRouter" flag, which is also required by <xref
-            target="RFC4861"/>, is implemented in the "ietf-ip" module
-            <xref target="RFC7277"/> (leaf "ip:forwarding").</t>
-            <t>The original specification <xref target="RFC4861"/>
-            allows the implementations to decide whether the
-            "valid-lifetime" and "preferred-lifetime" parameters remain
-            the same in consecutive advertisements, or decrement in real
-            time. However, the latter behavior seems problematic because
-            the values might be reset again to the (higher) configured
-            values after a configuration is reloaded. Moreover, no
-            implementation is known to use the decrementing
-            behavior. The "ietf-ipv6-unicast-routing" module therefore
-            assumes the former behavior with constant values.</t>
-          </list></t>
-
-        </section>
-      </section>
 
       <section anchor="sec.route" title="Route">
         <t>Routes are basic elements of information in a routing
@@ -380,27 +301,27 @@
       </section>
 
       <section anchor="sec.rib" title="Routing Information Base (RIB)">
-        <t>Every routing instance manages one or more routing
-        information bases (RIB). A RIB is a list of routes
-        complemented with administrative data. Each RIB contains only
-        routes of one address family. An address family is represented
-        by an identity derived from the "rt:address-family" base
-        identity.</t>
+        <t>Every implementation of the core routing data model manages
+        one or more routing information bases (RIB). A RIB is a list
+        of routes complemented with administrative data. Each RIB
+        contains only routes of one address family. An address family
+        is represented by an identity derived from the
+        "rt:address-family" base identity.</t>
         <t>In the core routing data model, RIBs are state data
         represented as entries of the list
-        "/routing-state/routing-instance/ribs/rib". The contents of
+        "/routing-state/ribs/rib". The contents of
         RIBs are controlled and manipulated by routing protocol
         operations which may result in route additions, removals and
         modifications. This also includes manipulations via the
         "static" and/or "direct" pseudo-protocols, see <xref
         target="sec.pseudoproto"/>.</t>
-        <t>Each routing instance has, for every supported address
-        family, one RIB marked as the so-called default RIB. Its role
-        is explained in <xref target="sec.proto"/>.</t>
+        <t>For every supported address family, exactly one RIB MUST be
+        marked as the so-called default RIB. Its role is explained in
+        <xref target="sec.proto"/>.</t>
         <t>Simple router implementations that do not advertise the
         feature "multiple-ribs" will typically create one
-        system-controlled RIB per routing instance and supported
-        address family, and mark it as the default RIB.</t>
+        system-controlled RIB per supported address family, and mark
+        it as the default RIB.</t>
 
         <t>More complex router implementations advertising the
         "multiple-ribs" feature support multiple RIBs per address
@@ -410,15 +331,15 @@
 
       <section anchor="sec.proto" title="Routing Protocol">
 
-        <t>The core routing data model provides an open-ended framework
-        for defining multiple routing protocol instances within a routing
-        instance. Each routing protocol instance MUST be assigned a
+        <t>The core routing data model provides an open-ended
+        framework for defining multiple routing protocol
+        instances. Each routing protocol instance MUST be assigned a
         type, which is an identity derived from the
-        "rt:routing-protocol" base identity. The core routing data model
-        defines two identities for the direct and static
+        "rt:routing-protocol" base identity. The core routing data
+        model defines two identities for the direct and static
         pseudo-protocols (<xref target="sec.pseudoproto"/>).</t>
         <t>Multiple routing protocol instances of the same type MAY be
-	configured within the same routing instance.</t>
+        configured.</t>
 
         <section anchor="sec.pseudoproto"
                  title="Routing Pseudo-Protocols">
@@ -428,10 +349,10 @@
           pseudo-protocols, which means they are confined to the local
           device and do not exchange any routing information with
           adjacent routers.</t>
-          <t>Every routing instance MUST implement exactly one
-          instance of the "direct" pseudo-protocol type. It is the
-          source of direct routes for all configured address
-          families. Direct routes are normally supplied by the
+          <t>Every implementation of the core routing data model MUST
+          provide exactly one instance of the "direct" pseudo-protocol
+          type. It is the source of direct routes for all configured
+          address families. Direct routes are normally supplied by the
           operating system kernel, based on the configuration of
           network interface addresses, see <xref
           target="sec.ietf-ip"/>. Direct routes MUST be installed in
@@ -439,7 +360,7 @@
           <t>A pseudo-protocol of the type "static" allows for specifying
           routes manually. It MAY be configured in zero or multiple
           instances, although a typical configuration will have exactly
-          one instance per routing instance.</t>
+          one instance.</t>
         </section>
 
         <section anchor="sec.newproto"
@@ -447,7 +368,7 @@
           <t>It is expected that future YANG modules will create data
           models for additional routing protocol types. Such a new
           module has to define the protocol-specific configuration and
-          state data, and it has to fit it into the core routing
+          state data, and it has to integrate it into the core routing
           framework in the following way:
           <list style="symbols">
             <t>A new identity MUST be defined for the routing protocol
@@ -494,11 +415,61 @@
 
         <t>The "ietf-routing" module defines one RPC operation:
         <list style="symbols">
-          <t>fib-route: query a routing instance for the active route
+          <t>fib-route: query the routing system for the active route
           in the Forwarding Information Base (FIB). It is the route
           that is currently used for sending datagrams to a
-          destination host whose address is passed as an input
+          destination host whose address is passed as the input
           parameter.</t>
+        </list></t>
+
+      </section>
+
+      <section anchor="sec.4861"
+               title="Parameters of IPv6 Router Advertisements">
+
+        <t>YANG module "ietf-ipv6-router-advertisements" (<xref
+        target="sec.mod-v6ra"/>), which is a submodule of the
+        "ietf-ipv6-unicast-routing" module, augments the configuration
+        and state data of IPv6 interfaces with definitions of the
+        following variables as required by <xref target="RFC4861"/>,
+        sec. 6.2.1:
+        <list style="symbols">
+          <t>send-advertisements,</t>
+          <t>max-rtr-adv-interval,</t>
+          <t>min-rtr-adv-interval,</t>
+          <t>managed-flag,</t>
+          <t>other-config-flag,</t>
+          <t>link-mtu,</t>
+          <t>reachable-time,</t>
+          <t>retrans-timer,</t>
+          <t>cur-hop-limit,</t>
+          <t>default-lifetime,</t>
+          <t>prefix-list: a list of prefixes to be advertised.<vspace
+          blankLines="1"/>The
+          following parameters are associated with each prefix in the
+          list:
+          <list style="symbols">
+            <t>valid-lifetime,</t>
+            <t>on-link-flag,</t>
+            <t>preferred-lifetime,</t>
+            <t>autonomous-flag.</t>
+          </list></t>
+        </list></t>
+        <t>NOTES:</t>
+        <t><list style="numbers">
+          <t>The "IsRouter" flag, which is also required by <xref
+          target="RFC4861"/>, is implemented in the "ietf-ip" module
+          <xref target="RFC7277"/> (leaf "ip:forwarding").</t>
+          <t>The original specification <xref target="RFC4861"/>
+          allows the implementations to decide whether the
+          "valid-lifetime" and "preferred-lifetime" parameters remain
+          the same in consecutive advertisements, or decrement in real
+          time. However, the latter behavior seems problematic because
+          the values might be reset again to the (higher) configured
+          values after a configuration is reloaded. Moreover, no
+          implementation is known to use the decrementing
+          behavior. The "ietf-ipv6-unicast-routing" module therefore
+          assumes the former behavior with constant values.</t>
         </list></t>
 
       </section>
@@ -602,6 +573,17 @@
         &ietf-ipv6-unicast-routing.yang;
       </figure>
 
+      <section anchor="sec.mod-v6ra"
+             title="IPv6 Router Advertisements Submodule">
+
+      &ed-hint-fill-in;
+
+      <figure>
+        &ietf-ipv6-router-advertisements.yang;
+      </figure>
+
+    </section>
+
     </section>
 
     <section anchor="sec.iana" title="IANA Considerations">
@@ -620,7 +602,10 @@ Registrant Contact: The IESG.
 
 XML: N/A, the requested URI is an XML namespace.
 --------------------------------------------------------------------
-
+	</artwork>
+      </figure>
+      <figure>
+	<artwork>
 --------------------------------------------------------------------
 URI: urn:ietf:params:xml:ns:yang:ietf-ipv4-unicast-routing
 
@@ -628,7 +613,10 @@ Registrant Contact: The IESG.
 
 XML: N/A, the requested URI is an XML namespace.
 --------------------------------------------------------------------
-
+	</artwork>
+      </figure>
+      <figure>
+	<artwork>
 --------------------------------------------------------------------
 URI: urn:ietf:params:xml:ns:yang:ietf-ipv6-unicast-routing
 
@@ -650,14 +638,20 @@ namespace:    urn:ietf:params:xml:ns:yang:ietf-routing
 prefix:       rt
 reference:    RFC XXXX
 --------------------------------------------------------------------
-
+	</artwork>
+      </figure>
+      <figure>
+	<artwork>
 --------------------------------------------------------------------
 name:         ietf-ipv4-unicast-routing
 namespace:    urn:ietf:params:xml:ns:yang:ietf-ipv4-unicast-routing
 prefix:       v4ur
 reference:    RFC XXXX
 --------------------------------------------------------------------
-
+	</artwork>
+      </figure>
+      <figure>
+	<artwork>
 --------------------------------------------------------------------
 name:         ietf-ipv6-unicast-routing
 namespace:    urn:ietf:params:xml:ns:yang:ietf-ipv6-unicast-routing
@@ -667,6 +661,18 @@ reference:    RFC XXXX
         </artwork>
       </figure>
 
+      <t>This document registers the following YANG submodule in the YANG
+      Module Names registry <xref target="RFC6020"/>:</t>
+
+      <figure>
+        <artwork>
+--------------------------------------------------------------------
+name:         ietf-ipv6-router-advertisements
+parent:       ietf-ipv6-unicast-routing
+reference:    RFC XXXX
+--------------------------------------------------------------------
+	</artwork>
+      </figure>
     </section>
 
     <section anchor="sec-cons" title="Security Considerations">
@@ -691,17 +697,13 @@ reference:    RFC XXXX
       <t>The vulnerable "config true" parameters and subtrees are the
       following:
       <list style="hanging">
-        <t
-        hangText="/if:interfaces/if:interface/rt:routing-instance:">This
-        leaf assigns a network layer interface to a routing
-        instance.</t>
 
         <t
-        hangText="/routing/routing-instance/routing-protocols/routing-protocol:">This
+        hangText="/routing/routing-protocols/routing-protocol:">This
         list specifies the routing protocols configured on a
         device.</t>
 
-        <t hangText="/routing/routing-instance/ribs/rib:">This list
+        <t hangText="/routing/ribs/rib:">This list
         specifies the RIBs configured for the device.</t>
       </list>
 
@@ -742,7 +744,6 @@ reference:    RFC XXXX
       &RFC6087;
       &RFC6242;
       &RFC6536;
-      &RFC4364;
       &RFC7224;
     </references>
 
@@ -780,14 +781,10 @@ reference:    RFC XXXX
       appendix gives basic non-normative guidelines for implementing a
       bare minimum of available functions. Such an implementation may
       be used for hosts or very simple routers.</t>
-      <t>A minimum implementation provides a single system-controlled
-      routing instance of the type "default-routing-instance", and
-      will not allow clients to create any user-controlled
-      instances.</t>
-      <t>Typically, the feature "multiple-ribs" will not be
-      supported. This means that a single system-controlled RIB is
-      available for each supported address family - IPv4, IPv6 or
-      both. These RIBs must be the default RIBs. No user-controlled
+      <t>A minimum implementation does not support the feature
+      "multiple-ribs". This means that a single system-controlled RIB
+      is available for each supported address family - IPv4, IPv6 or
+      both. These RIBs are also the default RIBs. No user-controlled
       RIBs are allowed.</t>
       <t>In addition to the mandatory instance of the "direct"
       pseudo-protocol, a minimum implementation should support
@@ -824,7 +821,7 @@ reference:    RFC XXXX
       following YANG modules:
       <list style="symbols">
         <t>ietf-interfaces <xref target="RFC7223"/>,</t>
-	<t>iana-if-type <xref target="RFC7224"/>,</t>
+        <t>iana-if-type <xref target="RFC7224"/>,</t>
         <t>ietf-ip <xref target="RFC7277"/>,</t>
         <t>ietf-routing (<xref target="sec.mod-rt"/>),</t>
         <t>ietf-ipv4-unicast-routing (<xref target="sec.mod-v4ur"/>),</t>
@@ -855,17 +852,27 @@ reference:    RFC XXXX
 
       &ed-hint-remove-sec;
 
+      <section title="Changes Between Versions -20 and -21">
+        <t>
+          <list style="symbols">
+            <t>Routing instances were removed.</t>
+	    <t>IPv6 RA parameters were moved to the
+	    "ietf-ipv6-router-advertisements".</t>
+	  </list>
+	</t>
+      </section>
+
       <section title="Changes Between Versions -19 and -20">
         <t>
           <list style="symbols">
-	    <t>Assignment of L3 interfaces to routing instances is now
-	    part of interface configuration.</t>
-	    <t>Next-hop options in configuration were aligned with
-	    state data.</t>
-	    <t>It is recommended to enclose protocol-specific
-	    configuration in a presence container.</t>
-	  </list>
-	</t>
+            <t>Assignment of L3 interfaces to routing instances is now
+            part of interface configuration.</t>
+            <t>Next-hop options in configuration were aligned with
+            state data.</t>
+            <t>It is recommended to enclose protocol-specific
+            configuration in a presence container.</t>
+          </list>
+        </t>
       </section>
 
       <section title="Changes Between Versions -18 and -19">
@@ -877,9 +884,9 @@ reference:    RFC XXXX
             <t>The "vrf-routing-instance" identity was added in
             support of a common routing-instance type in addition to
             the "default-routing-instance".</t>
-	    <t>Removed "enabled" switch from "routing-protocol".</t>
-	  </list>
-	</t>
+            <t>Removed "enabled" switch from "routing-protocol".</t>
+          </list>
+        </t>
       </section>
 
       <section title="Changes Between Versions -17 and -18">
@@ -887,22 +894,22 @@ reference:    RFC XXXX
           <list style="symbols">
             <t>The container "ribs" was moved under "routing-instance"
             (in both "routing" and "routing-state").</t>
-	    <t>Typedefs "rib-ref" and "rib-state-ref" were removed.</t>
-	    <t>Removed "recipient-ribs" (both state and configuration).</t>
-	    <t>Removed "connected-ribs" from "routing-protocol" (both
-	    state and configuration).</t>
-	    <t>Configuration and state data for IPv6 RA were moved
-	    under "if:interface" and "if:interface-state".</t>
-	    <t>Assignment of interfaces to routing instances now use
-	    leaf-list rather than list (both config and state). The
-	    opposite reference from "if:interface" to
-	    "rt:routing-instance" was changed to a single leaf (an
-	    interface cannot belong to multiple routing instances).</t>
-	    <t>Specification of a default RIB is now a simple flag
-	    under "rib" (both config and state).</t>
-	    <t>Default RIBs are marked by a flag in state data.</t>
-	  </list>
-	</t>
+            <t>Typedefs "rib-ref" and "rib-state-ref" were removed.</t>
+            <t>Removed "recipient-ribs" (both state and configuration).</t>
+            <t>Removed "connected-ribs" from "routing-protocol" (both
+            state and configuration).</t>
+            <t>Configuration and state data for IPv6 RA were moved
+            under "if:interface" and "if:interface-state".</t>
+            <t>Assignment of interfaces to routing instances now use
+            leaf-list rather than list (both config and state). The
+            opposite reference from "if:interface" to
+            "rt:routing-instance" was changed to a single leaf (an
+            interface cannot belong to multiple routing instances).</t>
+            <t>Specification of a default RIB is now a simple flag
+            under "rib" (both config and state).</t>
+            <t>Default RIBs are marked by a flag in state data.</t>
+          </list>
+        </t>
       </section>
 
       <section title="Changes Between Versions -16 and -17">
@@ -910,14 +917,14 @@ reference:    RFC XXXX
           <list style="symbols">
             <t>Added Acee as a co-author.</t>
             <t>Removed all traces of route filters.</t>
-	    <t>Removed numeric IDs of list entries in state data.</t>
-	    <t>Removed all next-hop cases except "simple-next-hop" and
-	    "special-next-hop".</t>
-	    <t>Removed feature "multipath-routes".</t>
-	    <t>Augmented "ietf-interfaces" module with a leaf-list of
-	    leafrefs pointing form state data of an interface entry to
-	    the routing instance(s) to which the interface is
-	    assigned.</t>
+            <t>Removed numeric IDs of list entries in state data.</t>
+            <t>Removed all next-hop cases except "simple-next-hop" and
+            "special-next-hop".</t>
+            <t>Removed feature "multipath-routes".</t>
+            <t>Augmented "ietf-interfaces" module with a leaf-list of
+            leafrefs pointing form state data of an interface entry to
+            the routing instance(s) to which the interface is
+            assigned.</t>
           </list>
         </t>
       </section>

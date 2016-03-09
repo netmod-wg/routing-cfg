@@ -123,38 +123,38 @@
         <description>
           <text>A list of static routes.</text>
         </description>
-	<leaf name="destination-prefix">
-	  <mandatory value="true"/>
-	  <type name="inet:ipv4-prefix"/>
-	  <description>
-	    <text>IPv4 destination prefix.</text>
-	  </description>
-	</leaf>
+        <leaf name="destination-prefix">
+          <mandatory value="true"/>
+          <type name="inet:ipv4-prefix"/>
+          <description>
+            <text>IPv4 destination prefix.</text>
+          </description>
+        </leaf>
         <leaf name="description">
           <type name="string"/>
           <description>
             <text>Textual description of the route.</text>
           </description>
         </leaf>
-	<container name="next-hop">
-	  <uses name="rt:next-hop-content">
-	    <augment target-node="next-hop-options">
-	      <description>
-		<text>Augment 'next-hop-options' in IPv4 static
-		routes.</text>
-	      </description>
-	      <leaf name="next-hop-address">
-		<type name="inet:ipv4-address"/>
-		<description>
-		  <text>IPv4 address of the next-hop.</text>
-		</description>
-	      </leaf>
-	    </augment>
-	  </uses>
-	  <description>
-	    <text>Configuration of next-hop.</text>
-	  </description>
-	</container>
+        <container name="next-hop">
+          <uses name="rt:next-hop-content">
+            <augment target-node="next-hop-options">
+              <description>
+                <text>Augment 'next-hop-options' in IPv4 static
+                routes.</text>
+              </description>
+              <leaf name="next-hop-address">
+                <type name="inet:ipv4-address"/>
+                <description>
+                  <text>IPv4 address of the next-hop.</text>
+                </description>
+              </leaf>
+            </augment>
+          </uses>
+          <description>
+            <text>Configuration of next-hop.</text>
+          </description>
+        </container>
       </list>
     </container>
   </augment>
@@ -183,7 +183,7 @@
   <augment target-node="/rt:fib-route/rt:output/rt:route">
     <when condition="rt:address-family='v4ur:ipv4-unicast'">
       <description>
-	<text>This augment is valid only for IPv4 unicast.</text>
+        <text>This augment is valid only for IPv4 unicast.</text>
       </description>
     </when>
     <description>
@@ -202,7 +202,7 @@
       target-node="/rt:fib-route/rt:output/rt:route/rt:next-hop/rt:next-hop-options">
     <when condition="../rt:address-family='v4ur:ipv4-unicast'">
       <description>
-	<text>This augment is valid only for IPv4 unicast.</text>
+        <text>This augment is valid only for IPv4 unicast.</text>
       </description>
     </when>
     <description>
