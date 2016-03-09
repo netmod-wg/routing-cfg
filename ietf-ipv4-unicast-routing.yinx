@@ -60,7 +60,7 @@
   <!-- State data -->
 
   <augment
-      target-node="/rt:routing-state/rt:routing-instance/rt:ribs/rt:rib/rt:routes/rt:route">
+      target-node="/rt:routing-state/rt:ribs/rt:rib/rt:routes/rt:route">
     <when
         condition="../../rt:address-family = 'v4ur:ipv4-unicast'">
       <description>
@@ -79,7 +79,7 @@
   </augment>
 
   <augment
-      target-node="/rt:routing-state/rt:routing-instance/rt:ribs/rt:rib/rt:routes/rt:route/rt:next-hop/rt:next-hop-options">
+      target-node="/rt:routing-state/rt:ribs/rt:rib/rt:routes/rt:route/rt:next-hop/rt:next-hop-options">
     <when
         condition="../../../rt:address-family = 'v4ur:ipv4-unicast'">
       <description>
@@ -100,7 +100,7 @@
   <!-- Configuration data -->
 
   <augment
-      target-node="/rt:routing/rt:routing-instance/rt:routing-protocols/rt:routing-protocol/rt:static-routes">
+      target-node="/rt:routing/rt:routing-protocols/rt:routing-protocol/rt:static-routes">
     <description>
       <text>
         This augment defines the configuration of the 'static'

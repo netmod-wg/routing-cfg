@@ -45,7 +45,7 @@
   </grouping>
 
   <augment
-      target-node="/rt:routing-state/rt:routing-instance/rt:ribs/rt:rib/rt:routes/rt:route">
+      target-node="/rt:routing-state/rt:ribs/rt:rib/rt:routes/rt:route">
     <when condition="rt:source-protocol = 'rip:rip'">
       <description>
 	<text>This augment is only valid for a routes whose source
@@ -68,7 +68,7 @@
   </augment>
 
   <augment
-      target-node="/rt:routing/rt:routing-instance/rt:routing-protocols/rt:routing-protocol">
+      target-node="/rt:routing/rt:routing-protocols/rt:routing-protocol">
     <when condition="rt:type = 'rip:rip'">
       <description>
 	<text>This augment is only valid for a routing protocol
