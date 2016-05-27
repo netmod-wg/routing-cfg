@@ -68,7 +68,7 @@
   </augment>
 
   <augment
-      target-node="/rt:routing/rt:routing-protocols/rt:routing-protocol">
+      target-node="/rt:routing/rt:control-plane-protocols/rt:control-plane-protocol">
     <when condition="rt:type = 'rip:rip'">
       <description>
 	<text>This augment is only valid for a routing protocol

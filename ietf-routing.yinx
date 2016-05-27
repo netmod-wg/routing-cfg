@@ -105,14 +105,25 @@
     </description>
   </identity>
 
-  <identity name="routing-protocol">
+  <identity name="control-plane-protocol">
     <description>
       <text>
-        Base identity from which routing protocol identities are
+        Base identity from which control plane protocol identities are
         derived.
       </text>
     </description>
   </identity>
+
+  <identity name="routing-protocol">
+    <base name="control-plane-protocol"/>
+    <description>
+      <text>
+        Identity from which Layer 3 routing protocol identities are
+        derived.
+      </text>
+    </description>
+  </identity>
+
   <identity name="direct">
     <base name="routing-protocol"/>
     <description>
@@ -122,6 +133,7 @@
       </text>
     </description>
   </identity>
+
   <identity name="static">
     <base name="routing-protocol"/>
     <description>
@@ -354,29 +366,31 @@
         <type name="if:interface-state-ref"/>
       </leaf-list>
     </container>
-    <container name="routing-protocols">
+    <container name="control-plane-protocols">
       <description>
         <text>
           Container for the list of routing protocol instances.
         </text>
       </description>
-      <list name="routing-protocol">
+      <list name="control-plane-protocol">
         <key value="type name"/>
         <description>
           <text>
-            <h:p>State data of a routing protocol instance.</h:p>
+            <h:p>State data of a control plane protocol
+            instance.</h:p>
             <h:p>An implementation MUST provide exactly one
-            system-controlled instance of the type 'direct'. Other
-            instances MAY be created by configuration.</h:p>
+            system-controlled instance of the 'direct'
+            pseudo-protocol. Instances of other control plane
+            protocols MAY be created by configuration.</h:p>
           </text>
         </description>
         <leaf name="type">
           <type name="identityref">
-            <base name="routing-protocol"/>
+            <base name="control-plane-protocol"/>
           </type>
           <description>
             <text>
-              Type of the routing protocol.
+              Type of the control plane protocol.
             </text>
           </description>
         </leaf>
@@ -384,7 +398,8 @@
           <type name="string"/>
           <description>
             <text>
-              <h:p>The name of the routing protocol instance.</h:p>
+              <h:p>The name of the control plane protocol
+              instance.</h:p>
               <h:p>For system-controlled instances this name is
               persistent, i.e., it SHOULD NOT change across
               reboots.</h:p>
@@ -485,25 +500,26 @@
         with another value.</text>
       </description>
     </uses>
-    <container name="routing-protocols">
+    <container name="control-plane-protocols">
       <description>
         <text>
-          Configuration of routing protocol instances.
+          Configuration of control plane protocol instances.
         </text>
       </description>
-      <list name="routing-protocol">
+      <list name="control-plane-protocol">
         <key value="type name"/>
         <description>
-          <text>Each entry contains configuration of a routing protocol instance.</text>
+          <text>Each entry contains configuration of a control plane
+          protocol instance.</text>
         </description>
         <leaf name="type">
           <type name="identityref">
-            <base name="routing-protocol"/>
+            <base name="control-plane-protocol"/>
           </type>
           <description>
             <text>
-              Type of the routing protocol - an identity derived
-              from the 'routing-protocol' base identity.
+              Type of the control plane protocol - an identity derived
+              from the 'control-plane-protocol' base identity.
             </text>
           </description>
         </leaf>
@@ -511,7 +527,7 @@
           <type name="string"/>
           <description>
             <text>
-              An arbitrary name of the routing protocol instance.
+              An arbitrary name of the control plane protocol instance.
             </text>
           </description>
         </leaf>
@@ -519,7 +535,7 @@
           <type name="string"/>
           <description>
             <text>
-              Textual description of the routing protocol instance.
+              Textual description of the control plane protocol instance.
             </text>
           </description>
         </leaf>
@@ -635,12 +651,13 @@
         <description>
           <text>
             <h:p>The active FIB route for the specified
-            destination.</h:p> <h:p>If no active FIB route exists for
-            the destination address, no output is returned - the
-            server SHALL send an &lt;rpc-reply&gt; containing a single
-            element &lt;ok&gt;.</h:p>
-            <h:p>Address family specific modules MUST augment
-            this list with appropriate route contents.</h:p>
+            destination.</h:p>
+	    <h:p>If no active FIB route exists for the destination
+	    address, no output is returned - the server SHALL send an
+	    &lt;rpc-reply&gt; containing a single element
+	    &lt;ok&gt;.</h:p>
+            <h:p>Address family specific modules MUST augment this
+            list with appropriate route contents.</h:p>
           </text>
         </description>
       </container>

@@ -104,7 +104,7 @@
   <!-- Configuration data -->
 
   <augment
-      target-node="/rt:routing/rt:routing-protocols/rt:routing-protocol/rt:static-routes">
+      target-node="/rt:routing/rt:control-plane-protocols/rt:control-plane-protocol/rt:static-routes">
     <description>
       <text>
         This augment defines the configuration of the 'static'
