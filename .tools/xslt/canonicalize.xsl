@@ -38,8 +38,8 @@ OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
   </xsl:template>
   <xsl:template name="data-def-stmt">
     <xsl:apply-templates
-	select="yin:container|yin:leaf|yin:leaf-list|
-		yin:list|yin:choice|yin:anyxml|yin:uses"/>
+	select="yin:container|yin:leaf|yin:leaf-list|yin:list|
+		yin:choice|yin:anydata|yin:anyxml|yin:uses"/>
   </xsl:template>
 
   <xsl:template match="yin:module">
@@ -101,6 +101,7 @@ OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
       <xsl:apply-templates
 	  select="html:*|xi:*|@*|text()|processing-instruction()"/>
       <xsl:apply-templates select="yin:base"/>
+      <xsl:apply-templates select="yin:if-feature"/>
       <xsl:apply-templates select="yin:status"/>
       <xsl:apply-templates select="yin:description"/>
       <xsl:apply-templates select="yin:reference"/>
@@ -229,6 +230,7 @@ OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
     <xsl:copy>
       <xsl:apply-templates
 	  select="html:*|xi:*|@*|text()|processing-instruction()"/>
+      <xsl:apply-templates select="yin:modifier"/>
       <xsl:apply-templates select="yin:error-message"/>
       <xsl:apply-templates select="yin:error-app-tag"/>
       <xsl:apply-templates select="yin:description"/>
@@ -240,6 +242,7 @@ OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
     <xsl:copy>
       <xsl:apply-templates
 	  select="html:*|xi:*|@*|text()|processing-instruction()"/>
+      <xsl:apply-templates select="yin:if-feature"/>
       <xsl:apply-templates select="yin:value"/>
       <xsl:apply-templates select="yin:status"/>
       <xsl:apply-templates select="yin:description"/>
@@ -251,6 +254,7 @@ OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
     <xsl:copy>
       <xsl:apply-templates
 	  select="html:*|xi:*|@*|text()|processing-instruction()"/>
+      <xsl:apply-templates select="yin:if-feature"/>
       <xsl:apply-templates select="yin:position"/>
       <xsl:apply-templates select="yin:status"/>
       <xsl:apply-templates select="yin:description"/>
@@ -287,6 +291,8 @@ OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
       <xsl:apply-templates select="yin:typedef"/>
       <xsl:apply-templates select="yin:grouping"/>
       <xsl:call-template name="data-def-stmt"/>
+      <xsl:apply-templates select="yin:action"/>
+      <xsl:apply-templates select="yin:notification"/>
     </xsl:copy>
   </xsl:template>
   <xsl:template match="yin:container">
@@ -305,6 +311,8 @@ OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
       <xsl:apply-templates select="yin:typedef"/>
       <xsl:apply-templates select="yin:grouping"/>
       <xsl:call-template name="data-def-stmt"/>
+      <xsl:apply-templates select="yin:action"/>
+      <xsl:apply-templates select="yin:notification"/>
     </xsl:copy>
   </xsl:template>
   <xsl:template match="yin:leaf">
@@ -335,6 +343,7 @@ OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
       <xsl:apply-templates select="yin:type"/>
       <xsl:apply-templates select="yin:units"/>
       <xsl:apply-templates select="yin:must"/>
+      <xsl:apply-templates select="yin:default"/>
       <xsl:apply-templates select="yin:config"/>
       <xsl:apply-templates select="yin:min-elements"/>
       <xsl:apply-templates select="yin:max-elements"/>
@@ -364,6 +373,8 @@ OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
       <xsl:apply-templates select="yin:typedef"/>
       <xsl:apply-templates select="yin:grouping"/>
       <xsl:call-template name="data-def-stmt"/>
+      <xsl:apply-templates select="yin:action"/>
+      <xsl:apply-templates select="yin:notification"/>
     </xsl:copy>
   </xsl:template>
   <xsl:template match="yin:if-feature|yin:base|yin:yang-version|
@@ -373,7 +384,7 @@ OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 		       yin:status|yin:config|yin:mandatory|yin:presence|
 		       yin:ordered-by|yin:value|yin:error-app-tag|
 		       yin:min-elements|yin:max-elements|yin:key|
-		       yin:revision-date|yin:unique">
+		       yin:revision-date|yin:unique|yin:modifier">
     <xsl:call-template name="preceding-comment"/>
     <xsl:copy>
       <xsl:apply-templates
@@ -414,7 +425,7 @@ OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
       <xsl:call-template name="data-def-stmt"/>
     </xsl:copy>
   </xsl:template>
-  <xsl:template match="yin:anyxml">
+  <xsl:template match="yin:anydata|yin:anyxml">
     <xsl:call-template name="preceding-comment"/>
     <xsl:copy>
       <xsl:apply-templates
@@ -448,6 +459,7 @@ OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
     <xsl:copy>
       <xsl:apply-templates
 	  select="html:*|xi:*|@*|text()|processing-instruction()"/>
+      <xsl:apply-templates select="yin:if-feature"/>
       <xsl:apply-templates select="yin:must"/>
       <xsl:apply-templates select="yin:presence"/>
       <xsl:apply-templates select="yin:default"/>
@@ -471,6 +483,8 @@ OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
       <xsl:apply-templates select="yin:reference"/>
       <xsl:call-template name="data-def-stmt"/>
       <xsl:apply-templates select="yin:case"/>
+      <xsl:apply-templates select="yin:action"/>
+      <xsl:apply-templates select="yin:notification"/>
     </xsl:copy>
   </xsl:template>
   <xsl:template match="yin:when">
@@ -482,7 +496,7 @@ OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
       <xsl:apply-templates select="yin:reference"/>
     </xsl:copy>
   </xsl:template>
-  <xsl:template match="yin:rpc">
+  <xsl:template match="yin:action|yin:rpc">
     <xsl:call-template name="preceding-comment"/>
     <xsl:copy>
       <xsl:apply-templates
