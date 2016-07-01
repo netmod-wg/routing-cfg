@@ -234,6 +234,61 @@
     </leaf>
   </grouping>
 
+  <grouping name="next-hop-classifiers">
+    <description>
+      <text>This grouping provides two next-hop classifiers.</text>
+    </description>
+    <leaf name="priority">
+      <type name="enumeration">
+        <enum name="primary">
+          <value value="1"/>
+          <description>
+            <text>Primary next-hop.</text>
+          </description>
+        </enum>
+        <enum name="backup">
+          <value value="2"/>
+          <description>
+            <text>Backup next-hop.</text>
+          </description>
+        </enum>
+      </type>
+      <description>
+        <text>
+          <h:p>Simple priority for distinguishing between primary
+          and backup next-hops.</h:p>
+          <h:p>Backup next-hops are used if and only if no
+          primary next-hops are reachable.</h:p>
+        </text>
+      </description>
+    </leaf>
+    <leaf name="weight">
+      <type name="uint8"/>
+      <must condition=". = 0 or not(../../next-hop/weight = 0)">
+        <error-message>
+          <value>
+            Illegal combination of zero and non-zero next-hop weights.
+          </value>
+        </error-message>
+        <description>
+          <text>Next-hop weights must be either all zero (equal
+          load-balancing) or all non-zero.</text>
+        </description>
+      </must>
+      <description>
+        <text>
+          <h:p>This parameter specifies the weight of the next-hop for
+          load balancing. The number specifies the relative fraction
+          of the traffic that will use the corresponding
+          next-hop.</h:p>
+          <h:p>A value of 0 represents equal load-balancing.</h:p>
+          <h:p>If both primary and backup next-hops are present, then
+          the weights for each priority level are used separately.</h:p>
+        </text>
+      </description>
+    </leaf>
+  </grouping>
+
   <grouping name="next-hop-content">
     <description>
       <text>Generic parameters of next-hops in static routes.</text>
@@ -247,8 +302,7 @@
           with the 'next-hop-address' case, which is a leaf containing
           a gateway address of that address family.</h:p>
           <h:p>It is expected that further cases will be added through
-          augments from other modules, e.g., for Equal-Cost Multipath
-          routing (ECMP).</h:p>
+          augments from other modules.</h:p>
         </text>
       </description>
       <leaf name="outgoing-interface">
@@ -261,6 +315,52 @@
       </leaf>
       <case name="special-next-hop">
         <uses name="special-next-hop"/>
+      </case>
+      <case name="next-hop-list">
+        <container name="next-hop-list">
+          <description>
+            <text>Container for multiple next-hops.</text>
+          </description>
+          <list name="next-hop">
+            <key value="index"/>
+            <description>
+              <text>An entry of a next-hop list.</text>
+            </description>
+            <leaf name="index">
+              <type name="string"/>
+              <description>
+                <text>
+                  An user-specified identifier utilised to uniquely
+                  reference the next-hop entry in the next-hop
+                  list. The value of this index has no semantic
+                  meaning other than for referencing the entry.
+                </text>
+              </description>
+            </leaf>
+            <choice name="address-or-interface">
+              <mandatory value="true"/>
+              <description>
+                <text>
+                  <h:p>Choice between outgoing interface and next-hop
+                  address in next-hop list entries.</h:p>
+                  <h:p>Modules for address families MUST augment this
+                  choice with the 'next-hop-address' case, which is a
+                  leaf containing a gateway address of that address
+                  family.</h:p>
+                </text>
+              </description>
+              <leaf name="outgoing-interface">
+                <type name="if:interface-ref"/>
+                <description>
+                  <text>
+                    Name of the outgoing interface.
+                  </text>
+                </description>
+              </leaf>
+            </choice>
+            <uses name="next-hop-classifiers"/>
+          </list>
+        </container>
       </case>
     </choice>
   </grouping>
@@ -278,7 +378,7 @@
           with the 'next-hop-address' case, which is a leaf containing
           a gateway address of that address family.</h:p>
           <h:p>It is expected that further cases will be added through
-          augments from other modules, e.g., for ECMP or recursive
+          augments from other modules, e.g., for recursive
           next-hops.</h:p>
         </text>
       </description>
@@ -292,6 +392,40 @@
       </leaf>
       <case name="special-next-hop">
         <uses name="special-next-hop"/>
+      </case>
+      <case name="next-hop-list">
+        <container name="next-hop-list">
+          <description>
+            <text>Container for multiple next-hops.</text>
+          </description>
+          <list name="next-hop">
+            <description>
+              <text>An entry of a next-hop list.</text>
+            </description>
+            <choice name="address-or-interface">
+              <mandatory value="true"/>
+              <description>
+                <text>
+                  <h:p>Choice between outgoing interface and next-hop
+                  address in next-hop list entries.</h:p>
+                  <h:p>Modules for address families MUST augment this
+                  choice with the 'next-hop-address' case, which is a
+                  leaf containing a gateway address of that address
+                  family.</h:p>
+                </text>
+              </description>
+              <leaf name="outgoing-interface">
+                <type name="if:interface-state-ref"/>
+                <description>
+                  <text>
+                    Name of the outgoing interface.
+                  </text>
+                </description>
+              </leaf>
+            </choice>
+            <uses name="next-hop-classifiers"/>
+          </list>
+        </container>
       </case>
     </choice>
   </grouping>
@@ -652,10 +786,10 @@
           <text>
             <h:p>The active FIB route for the specified
             destination.</h:p>
-	    <h:p>If no active FIB route exists for the destination
-	    address, no output is returned - the server SHALL send an
-	    &lt;rpc-reply&gt; containing a single element
-	    &lt;ok&gt;.</h:p>
+            <h:p>If no active FIB route exists for the destination
+            address, no output is returned - the server SHALL send an
+            &lt;rpc-reply&gt; containing a single element
+            &lt;ok&gt;.</h:p>
             <h:p>Address family specific modules MUST augment this
             list with appropriate route contents.</h:p>
           </text>

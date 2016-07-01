@@ -246,7 +246,7 @@
         <t>An example can be seen in <xref target="app.get-reply"/>: the
         "/routing-state/ribs/rib" list has two
         system-controlled entries named "ipv4-master" and
-	"ipv6-master".</t>
+        "ipv6-master".</t>
         <t>Additional entries may be created in the configuration by
         a client, e.g., via the NETCONF protocol. These are so-called
         user-controlled entries. If the server accepts a configured
@@ -602,10 +602,10 @@ Registrant Contact: The IESG.
 
 XML: N/A, the requested URI is an XML namespace.
 --------------------------------------------------------------------
-	</artwork>
+        </artwork>
       </figure>
       <figure>
-	<artwork>
+        <artwork>
 --------------------------------------------------------------------
 URI: urn:ietf:params:xml:ns:yang:ietf-ipv4-unicast-routing
 
@@ -613,10 +613,10 @@ Registrant Contact: The IESG.
 
 XML: N/A, the requested URI is an XML namespace.
 --------------------------------------------------------------------
-	</artwork>
+        </artwork>
       </figure>
       <figure>
-	<artwork>
+        <artwork>
 --------------------------------------------------------------------
 URI: urn:ietf:params:xml:ns:yang:ietf-ipv6-unicast-routing
 
@@ -638,20 +638,20 @@ namespace:    urn:ietf:params:xml:ns:yang:ietf-routing
 prefix:       rt
 reference:    RFC XXXX
 --------------------------------------------------------------------
-	</artwork>
+        </artwork>
       </figure>
       <figure>
-	<artwork>
+        <artwork>
 --------------------------------------------------------------------
 name:         ietf-ipv4-unicast-routing
 namespace:    urn:ietf:params:xml:ns:yang:ietf-ipv4-unicast-routing
 prefix:       v4ur
 reference:    RFC XXXX
 --------------------------------------------------------------------
-	</artwork>
+        </artwork>
       </figure>
       <figure>
-	<artwork>
+        <artwork>
 --------------------------------------------------------------------
 name:         ietf-ipv6-unicast-routing
 namespace:    urn:ietf:params:xml:ns:yang:ietf-ipv6-unicast-routing
@@ -671,7 +671,7 @@ name:         ietf-ipv6-router-advertisements
 parent:       ietf-ipv6-unicast-routing
 reference:    RFC XXXX
 --------------------------------------------------------------------
-	</artwork>
+        </artwork>
       </figure>
     </section>
 
@@ -856,10 +856,10 @@ reference:    RFC XXXX
         <t>
           <list style="symbols">
             <t>Routing instances were removed.</t>
-	    <t>IPv6 RA parameters were moved to the
-	    "ietf-ipv6-router-advertisements".</t>
-	  </list>
-	</t>
+            <t>IPv6 RA parameters were moved to the
+            "ietf-ipv6-router-advertisements".</t>
+          </list>
+        </t>
       </section>
 
       <section title="Changes Between Versions -19 and -20">

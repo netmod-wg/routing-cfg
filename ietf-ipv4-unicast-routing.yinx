@@ -101,6 +101,26 @@
     </leaf>
   </augment>
 
+  <augment
+      target-node="/rt:routing-state/rt:ribs/rt:rib/rt:routes/rt:route/rt:next-hop/rt:next-hop-options/rt:next-hop-list/rt:next-hop-list/rt:next-hop/rt:address-or-interface">
+    <when
+        condition="../../../../../rt:address-family = 'v4ur:ipv4-unicast'">
+      <description>
+        <text>This augment is valid only for IPv4 unicast.</text>
+      </description>
+    </when>
+    <description>
+      <text>This leaf augments the 'next-hop-list' case of IPv4 unicast
+      routes.</text>
+    </description>
+    <leaf name="address">
+      <type name="inet:ipv4-address"/>
+      <description>
+        <text>IPv4 address of the next-hop.</text>
+      </description>
+    </leaf>
+  </augment>
+
   <!-- Configuration data -->
 
   <augment
@@ -139,6 +159,18 @@
         <container name="next-hop">
           <uses name="rt:next-hop-content">
             <augment target-node="next-hop-options">
+              <description>
+                <text>Augment 'next-hop-options' in IPv4 static
+                routes.</text>
+              </description>
+              <leaf name="next-hop-address">
+                <type name="inet:ipv4-address"/>
+                <description>
+                  <text>IPv4 address of the next-hop.</text>
+                </description>
+              </leaf>
+            </augment>
+            <augment target-node="next-hop-options/next-hop-list/next-hop-list/next-hop/address-or-interface">
               <description>
                 <text>Augment 'next-hop-options' in IPv4 static
                 routes.</text>

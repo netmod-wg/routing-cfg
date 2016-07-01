@@ -132,8 +132,8 @@
   </if:interfaces-state>
   <rt:routing>
    <rt:router-id>192.0.2.1</rt:router-id>
-   <rt:routing-protocols>
-    <rt:routing-protocol>
+   <rt:control-plane-protocols>
+    <rt:control-plane-protocol>
      <rt:type>rt:static</rt:type>
      <rt:name>st0</rt:name>
      <rt:description>
@@ -157,20 +157,20 @@
        </v6ur:route>
       </v6ur:ipv6>
      </rt:static-routes>
-    </rt:routing-protocol>
-   </rt:routing-protocols>
+    </rt:control-plane-protocol>
+   </rt:control-plane-protocols>
   </rt:routing>
   <rt:routing-state>
    <rt:interfaces>
     <rt:interface>eth0</rt:interface>
     <rt:interface>eth1</rt:interface>
    </rt:interfaces>
-   <rt:routing-protocols>
-    <rt:routing-protocol>
+   <rt:control-plane-protocols>
+    <rt:control-plane-protocol>
      <rt:type>rt:static</rt:type>
      <rt:name>st0</rt:name>
-    </rt:routing-protocol>
-   </rt:routing-protocols>
+    </rt:control-plane-protocol>
+   </rt:control-plane-protocols>
    <rt:ribs>
     <rt:rib>
      <rt:name>ipv4-master</rt:name>
