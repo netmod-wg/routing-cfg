@@ -45,10 +45,10 @@
       model which serves as a framework for configuring and managing a
       routing subsystem. It is expected that these modules will be
       augmented by additional YANG modules defining data models for
-      routing protocols, route filters and other functions. The core
+      control plane protocols, route filters and other functions. The core
       routing data model provides common building blocks for such
       extensions - routes, routing information bases (RIB), and
-      routing protocols.</t>
+      control plane protocols.</t>
     </abstract>
   </front>
   <middle>
@@ -77,7 +77,7 @@
       these three modules can be directly used for simple IP devices
       with static routing (see <xref target="app.minimum"/>), their
       main purpose is to provide essential building blocks for more
-      complicated data models involving multiple routing protocols,
+      complicated data models involving multiple control plane protocols,
       multicast routing, additional address families, and advanced
       functions such as route filtering or policy routing. To this
       end, it is expected that the core routing data model will be
@@ -185,7 +185,7 @@
         modules.</t>
         <t>On the other hand, the core routing framework must allow
         for complicated implementations involving multiple routing
-        information bases (RIB) and multiple routing protocols, as
+        information bases (RIB) and multiple control plane protocols, as
         well as controlled redistributions of routing information.</t>
         <t>Device vendors will want to map the data models built on this
         generic framework to their proprietary data models and
@@ -230,7 +230,7 @@
       format="counter"/> and <xref target="fig.statedata"
       format="counter"/>, the core routing data model introduces
       several generic components of a routing framework: routes, RIBs
-      containing lists of routes, and routing protocols. <xref
+      containing lists of routes, and control plane protocols. <xref
       target="sec.building-blocks"/> describes these components in
       more detail.</t>
 
@@ -310,7 +310,7 @@
         <t>In the core routing data model, RIBs are state data
         represented as entries of the list
         "/routing-state/ribs/rib". The contents of
-        RIBs are controlled and manipulated by routing protocol
+        RIBs are controlled and manipulated by control plane protocol
         operations which may result in route additions, removals and
         modifications. This also includes manipulations via the
         "static" and/or "direct" pseudo-protocols, see <xref
@@ -329,16 +329,17 @@
         purposes.</t>
       </section>
 
-      <section anchor="sec.proto" title="Routing Protocol">
+      <section anchor="sec.proto" title="Control Plane Protocol">
 
         <t>The core routing data model provides an open-ended
-        framework for defining multiple routing protocol
-        instances. Each routing protocol instance MUST be assigned a
-        type, which is an identity derived from the
-        "rt:routing-protocol" base identity. The core routing data
-        model defines two identities for the direct and static
-        pseudo-protocols (<xref target="sec.pseudoproto"/>).</t>
-        <t>Multiple routing protocol instances of the same type MAY be
+        framework for defining multiple control plane protocol
+        instances, e.g., for Layer 3 routing protocols. Each routing
+        protocol instance MUST be assigned a type, which is an
+        identity derived from the "rt:control-plane-protocol" base
+        identity. The core routing data model defines two identities
+        for the direct and static pseudo-protocols (<xref
+        target="sec.pseudoproto"/>).</t>
+        <t>Multiple control plane protocol instances of the same type MAY be
         configured.</t>
 
         <section anchor="sec.pseudoproto"
@@ -364,16 +365,16 @@
         </section>
 
         <section anchor="sec.newproto"
-                 title="Defining New Routing Protocols">
+                 title="Defining New Control Plane Protocols">
           <t>It is expected that future YANG modules will create data
-          models for additional routing protocol types. Such a new
+          models for additional control plane protocol types. Such a new
           module has to define the protocol-specific configuration and
           state data, and it has to integrate it into the core routing
           framework in the following way:
           <list style="symbols">
-            <t>A new identity MUST be defined for the routing protocol
-            and its base identity MUST be set to "rt:routing-protocol",
-            or to an identity derived from "rt:routing-protocol".</t>
+            <t>A new identity MUST be defined for the control plane protocol
+            and its base identity MUST be set to "rt:control-plane-protocol",
+            or to an identity derived from "rt:control-plane-protocol".</t>
             <t>Additional route attributes MAY be defined, preferably in
             one place by means of defining a YANG grouping. The new
             attributes have to be inserted by augmenting the definitions
@@ -393,7 +394,7 @@
             data, notifications, and RPC input or output.</t>
             <t>Configuration parameters and/or state data for the new
             protocol can be defined by augmenting the
-            "routing-protocol" data node under both "/routing" and "/routing-state".</t>
+            "control-plane-protocol" data node under both "/routing" and "/routing-state".</t>
           </list></t>
           <t>By using a "when" statement, the augmented configuration
           parameters and state data specific to the new protocol
@@ -699,8 +700,8 @@ reference:    RFC XXXX
       <list style="hanging">
 
         <t
-        hangText="/routing/routing-protocols/routing-protocol:">This
-        list specifies the routing protocols configured on a
+        hangText="/routing/control-plane-protocols/control-plane-protocol:">This
+        list specifies the control plane protocols configured on a
         device.</t>
 
         <t hangText="/routing/ribs/rib:">This list
@@ -791,15 +792,15 @@ reference:    RFC XXXX
       configuring instance(s) of the "static" pseudo-protocol.</t>
       <t>Platforms with severely constrained resources may use
       deviations for restricting the data model, e.g., limiting the
-      number of "static" routing protocol instances.</t>
+      number of "static" control plane protocol instances.</t>
 
     </section>
 
     <section anchor="app.rip"
-             title="Example: Adding a New Routing Protocol">
+             title="Example: Adding a New Control Plane Protocol">
 
       <t>This appendix demonstrates how the core routing data model
-      can be extended to support a new routing protocol. The YANG
+      can be extended to support a new control plane protocol. The YANG
       module "example-rip" shown below is intended as an illustration
       rather than a real definition of a data model for the RIP
       routing protocol. For the sake of brevity, this module does not
@@ -851,6 +852,17 @@ reference:    RFC XXXX
     <section anchor="change-log" title="Change Log">
 
       &ed-hint-remove-sec;
+
+      <section title="Changes Between Versions -21 and -22">
+        <t>
+          <list style="symbols">
+	    <t>Added "next-hop-list" as a new case of the
+	    "next-hop-options" choice.</t>
+	    <t>Renamed "routing protocol" to "control plane
+	    protocol" in both the YANG modules and I-D text.</t>
+	  </list>
+	</t>
+      </section>
 
       <section title="Changes Between Versions -20 and -21">
         <t>
