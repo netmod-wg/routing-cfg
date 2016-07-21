@@ -627,7 +627,7 @@
           </description>
         </leaf>
         <container name="static-routes">
-          <when condition="../type='rt:static'">
+          <when condition="derived-from-or-self(../type, 'rt:static')">
             <description>
               <text>
                 This container is only valid for the 'static'

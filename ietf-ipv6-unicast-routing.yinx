@@ -69,8 +69,7 @@
 
   <augment
       target-node="/rt:routing-state/rt:ribs/rt:rib/rt:routes/rt:route">
-    <when
-        condition="../../rt:address-family = 'v6ur:ipv6-unicast'">
+    <when condition="derived-from-or-self(../../rt:address-family, 'v6ur:ipv6-unicast')">
       <description>
         <text>This augment is valid only for IPv6 unicast.</text>
       </description>
@@ -89,7 +88,7 @@
   <augment
       target-node="/rt:routing-state/rt:ribs/rt:rib/rt:routes/rt:route/rt:next-hop/rt:next-hop-options/rt:simple-next-hop">
     <when
-        condition="../../../rt:address-family = 'v6ur:ipv6-unicast'">
+        condition="derived-from-or-self(../../../rt:address-family, 'v6ur:ipv6-unicast')">
       <description>
         <text>This augment is valid only for IPv6 unicast.</text>
       </description>
@@ -109,7 +108,7 @@
   <augment
       target-node="/rt:routing-state/rt:ribs/rt:rib/rt:routes/rt:route/rt:next-hop/rt:next-hop-options/rt:next-hop-list/rt:next-hop-list/rt:next-hop">
     <when
-        condition="../../../../../rt:address-family = 'v6ur:ipv6-unicast'">
+        condition="derived-from-or-self(../../../../../rt:address-family, 'v6ur:ipv6-unicast')">
       <description>
         <text>This augment is valid only for IPv6 unicast.</text>
       </description>
@@ -200,7 +199,7 @@
 
   <augment
       target-node="/rt:fib-route/rt:input/rt:destination-address">
-    <when condition="rt:address-family='v6ur:ipv6-unicast'">
+    <when condition="derived-from-or-self(rt:address-family, 'v6ur:ipv6-unicast')">
       <description>
         <text>This augment is valid only for IPv6 unicast.</text>
       </description>
@@ -218,7 +217,7 @@
   </augment>
 
   <augment target-node="/rt:fib-route/rt:output/rt:route">
-    <when condition="rt:address-family='v6ur:ipv6-unicast'">
+    <when condition="derived-from-or-self(rt:address-family, 'v6ur:ipv6-unicast')">
       <description>
         <text>This augment is valid only for IPv6 unicast.</text>
       </description>
@@ -237,7 +236,7 @@
 
   <augment
       target-node="/rt:fib-route/rt:output/rt:route/rt:next-hop/rt:next-hop-options/rt:simple-next-hop">
-    <when condition="../rt:address-family='v6ur:ipv6-unicast'">
+    <when condition="derived-from-or-self(../rt:address-family, 'v6ur:ipv6-unicast')">
       <description>
         <text>This augment is valid only for IPv6 unicast.</text>
       </description>
@@ -256,7 +255,7 @@
 
   <augment
       target-node="/rt:fib-route/rt:output/rt:route/rt:next-hop/rt:next-hop-options/rt:next-hop-list/rt:next-hop-list/rt:next-hop">
-    <when condition="../rt:address-family='v6ur:ipv6-unicast'">
+    <when condition="derived-from-or-self(../rt:address-family, 'v6ur:ipv6-unicast')">
       <description>
         <text>This augment is valid only for IPv6 unicast.</text>
       </description>

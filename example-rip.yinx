@@ -47,7 +47,7 @@
 
   <augment
       target-node="/rt:routing-state/rt:ribs/rt:rib/rt:routes/rt:route">
-    <when condition="rt:source-protocol = 'rip:rip'">
+    <when condition="derived-from-or-self(rt:source-protocol, 'rip:rip')">
       <description>
 	<text>This augment is only valid for a routes whose source
 	protocol is RIP.</text>
@@ -70,7 +70,7 @@
 
   <augment
       target-node="/rt:routing/rt:control-plane-protocols/rt:control-plane-protocol">
-    <when condition="rt:type = 'rip:rip'">
+    <when condition="derived-from-or-self(rt:type,'rip:rip')">
       <description>
 	<text>This augment is only valid for a routing protocol
 	instance of type 'rip'.</text>
