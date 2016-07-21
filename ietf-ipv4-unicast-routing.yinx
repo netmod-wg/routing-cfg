@@ -6,6 +6,7 @@
         xmlns:v4ur="urn:ietf:params:xml:ns:yang:ietf-ipv4-unicast-routing"
         xmlns:rt="urn:ietf:params:xml:ns:yang:ietf-routing"
         xmlns:inet="urn:ietf:params:xml:ns:yang:ietf-inet-types">
+  <yang-version value="1.1"/>
   <namespace uri="urn:ietf:params:xml:ns:yang:ietf-ipv4-unicast-routing"/>
   <prefix value="v4ur"/>
   <import module="ietf-routing">

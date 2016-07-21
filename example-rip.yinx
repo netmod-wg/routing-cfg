@@ -3,6 +3,7 @@
         xmlns="urn:ietf:params:xml:ns:yang:yin:1"
         xmlns:rip="http://example.com/rip"
         xmlns:rt="urn:ietf:params:xml:ns:yang:ietf-routing">
+  <yang-version value="1.1"/>
   <namespace uri="http://example.com/rip"/>
   <prefix value="rip"/>
   <import module="ietf-interfaces">

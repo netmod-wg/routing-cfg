@@ -6,6 +6,7 @@
         xmlns:inet="urn:ietf:params:xml:ns:yang:ietf-inet-types"
         xmlns:if="urn:ietf:params:xml:ns:yang:ietf-interfaces"
         xmlns:ip="urn:ietf:params:xml:ns:yang:ietf-ip">
+  <yang-version value="1.1"/>
   <belongs-to module="ietf-ipv6-unicast-routing">
     <prefix value="v6ur"/>
   </belongs-to>
