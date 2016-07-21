@@ -86,7 +86,7 @@
   </augment>
 
   <augment
-      target-node="/rt:routing-state/rt:ribs/rt:rib/rt:routes/rt:route/rt:next-hop/rt:next-hop-options">
+      target-node="/rt:routing-state/rt:ribs/rt:rib/rt:routes/rt:route/rt:next-hop/rt:next-hop-options/rt:simple-next-hop">
     <when
         condition="../../../rt:address-family = 'v6ur:ipv6-unicast'">
       <description>
@@ -94,7 +94,8 @@
       </description>
     </when>
     <description>
-      <text>Augment 'next-hop-options' in IPv6 unicast routes.</text>
+      <text>Augment 'simple-next-hop' case in IPv6 unicast
+      routes.</text>
     </description>
     <leaf name="next-hop-address">
       <type name="inet:ipv6-address"/>
@@ -105,7 +106,7 @@
   </augment>
 
   <augment
-      target-node="/rt:routing-state/rt:ribs/rt:rib/rt:routes/rt:route/rt:next-hop/rt:next-hop-options/rt:next-hop-list/rt:next-hop-list/rt:next-hop/rt:address-or-interface">
+      target-node="/rt:routing-state/rt:ribs/rt:rib/rt:routes/rt:route/rt:next-hop/rt:next-hop-options/rt:next-hop-list/rt:next-hop-list/rt:next-hop">
     <when
         condition="../../../../../rt:address-family = 'v6ur:ipv6-unicast'">
       <description>
@@ -161,9 +162,9 @@
         </leaf>
         <container name="next-hop">
           <uses name="rt:next-hop-content">
-            <augment target-node="next-hop-options">
+            <augment target-node="next-hop-options/simple-next-hop">
               <description>
-                <text>Augment 'next-hop-options' in IPv6 static
+                <text>Augment 'simple-next-hop' case in IPv6 static
                 routes.</text>
               </description>
               <leaf name="next-hop-address">
@@ -173,9 +174,9 @@
                 </description>
               </leaf>
             </augment>
-            <augment target-node="next-hop-options/next-hop-list/next-hop-list/next-hop/address-or-interface">
+            <augment target-node="next-hop-options/next-hop-list/next-hop-list/next-hop">
               <description>
-                <text>Augment 'next-hop-options' in IPv6 static
+                <text>Augment 'next-hop-list' case in IPv6 static
                 routes.</text>
               </description>
               <leaf name="next-hop-address">
@@ -234,14 +235,14 @@
   </augment>
 
   <augment
-      target-node="/rt:fib-route/rt:output/rt:route/rt:next-hop/rt:next-hop-options">
+      target-node="/rt:fib-route/rt:output/rt:route/rt:next-hop/rt:next-hop-options/rt:simple-next-hop">
     <when condition="../rt:address-family='v6ur:ipv6-unicast'">
       <description>
         <text>This augment is valid only for IPv6 unicast.</text>
       </description>
     </when>
     <description>
-      <text>Augment 'next-hop-options' in the reply to the
+      <text>Augment 'simple-next-hop' case in the reply to the
       'rt:fib-route' operation.</text>
     </description>
     <leaf name="next-hop-address">
@@ -253,14 +254,14 @@
   </augment>
 
   <augment
-      target-node="/rt:fib-route/rt:output/rt:route/rt:next-hop/rt:next-hop-options/rt:next-hop-list/rt:next-hop-list/rt:next-hop/rt:address-or-interface">
+      target-node="/rt:fib-route/rt:output/rt:route/rt:next-hop/rt:next-hop-options/rt:next-hop-list/rt:next-hop-list/rt:next-hop">
     <when condition="../rt:address-family='v6ur:ipv6-unicast'">
       <description>
         <text>This augment is valid only for IPv6 unicast.</text>
       </description>
     </when>
     <description>
-      <text>Augment 'next-hop' list entry in the reply to the
+      <text>Augment 'next-hop-list' case in the reply to the
       'rt:fib-route' operation.</text>
     </description>
     <leaf name="next-hop-address">
