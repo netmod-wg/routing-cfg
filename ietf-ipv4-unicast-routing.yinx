@@ -252,7 +252,7 @@
 
   <augment
       target-node="/rt:fib-route/rt:output/rt:route/rt:next-hop/rt:next-hop-options/rt:next-hop-list/rt:next-hop-list/rt:next-hop">
-    <when condition="derived-from-or-self(../rt:address-family, 'v4ur:ipv4-unicast')">
+    <when condition="derived-from-or-self(../../../rt:address-family, 'v4ur:ipv4-unicast')">
       <description>
         <text>This augment is valid only for IPv4 unicast.</text>
       </description>
