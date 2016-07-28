@@ -82,15 +82,6 @@
     </description>
   </feature>
 
-  <feature name="route-tag">
-    <description>
-      <text>
-	This feature indicates that the server supports a 32-bit tag
-	for routes.
-      </text>
-    </description>
-  </feature>
-
   <!-- Identities -->
 
   <identity name="address-family">
