@@ -66,8 +66,9 @@
         <t>Module "ietf-ipv6-unicast-routing" augments the
         "ietf-routing" module with additional data specific to IPv6
         unicast. Its submodule "ietf-ipv6-router-advertisements" also
-        augments the "ietf-interfaces" module <xref target="RFC7223"/>
-        with IPv6 router configuration variables required by <xref
+        augments the "ietf-interfaces" <xref target="RFC7223"/> and
+        "ietf-ip" <xref target="RFC7277"/> modules with IPv6 router
+        configuration variables required by <xref
         target="RFC4861"/>.</t>
       </list></t>
 
@@ -206,13 +207,15 @@
       augment the "ietf-routing" module with additional data nodes
       that are needed for IPv4 and IPv6 unicast routing,
       respectively. Module "ietf-ipv6-unicast-routing" has a
-      submodule, "ietf-ipv6-router-advertisements", that defines
-      configuration variables for IPv6 router advertisements as
-      required by <xref target="RFC4861"/>. Figures <xref
-      target="fig.confdata" format="counter"/> and <xref
-      target="fig.statedata" format="counter"/> show abridged views of
-      the configuration and state data hierarchies. See <xref
-      target="app.data-tree"/> for the complete data trees.</t>
+      submodule, "ietf-ipv6-router-advertisements", that augments the
+      "ietf-interfaces" <xref target="RFC7223"/> and "ietf-ip" <xref
+      target="RFC7277"/> modules with configuration variables for IPv6
+      router advertisements as required by <xref
+      target="RFC4861"/>. Figures <xref target="fig.confdata"
+      format="counter"/> and <xref target="fig.statedata"
+      format="counter"/> show abridged views of the configuration and
+      state data hierarchies. See <xref target="app.data-tree"/> for
+      the complete data trees.</t>
 
       <figure
           anchor="fig.confdata"
@@ -282,9 +285,9 @@
         system. The core routing data model defines only the following
         minimal set of route attributes:
         <list style="symbols">
-          <t>"destination-prefix": IP prefix specifying the set of
-          destination addresses for which the route may be used. This
-          attribute is mandatory.</t>
+          <t>"destination-prefix": address prefix specifying the set
+          of destination addresses for which the route may be
+          used. This attribute is mandatory.</t>
           <t>"route-preference": an integer value (also known as
           administrative distance) that is used for selecting a
           preferred route among routes with the same destination
@@ -297,7 +300,7 @@
         RIBs (<xref target="sec.rib"/>) but they may also be found in
         configuration data, for example as manually configured static
         routes. In the latter case, configurable route attributes are
-        generally a subset of route attributes described above.</t>
+        generally a subset of attributes defined for RIB routes.</t>
       </section>
 
       <section anchor="sec.rib" title="Routing Information Base (RIB)">
@@ -347,9 +350,9 @@
 
           <t>The core routing data model defines two special routing
           protocol types - "direct" and "static". Both are in fact
-          pseudo-protocols, which means they are confined to the local
-          device and do not exchange any routing information with
-          adjacent routers.</t>
+          pseudo-protocols, which means that they are confined to the
+          local device and do not exchange any routing information
+          with adjacent routers.</t>
           <t>Every implementation of the core routing data model MUST
           provide exactly one instance of the "direct" pseudo-protocol
           type. It is the source of direct routes for all configured
@@ -357,7 +360,7 @@
           operating system kernel, based on the configuration of
           network interface addresses, see <xref
           target="sec.ietf-ip"/>. Direct routes MUST be installed in
-          default RIBs of all supported address families.</t>
+          the default RIBs of all supported address families.</t>
           <t>A pseudo-protocol of the type "static" allows for specifying
           routes manually. It MAY be configured in zero or multiple
           instances, although a typical configuration will have exactly
@@ -399,8 +402,8 @@
           <t>By using a "when" statement, the augmented configuration
           parameters and state data specific to the new protocol
           SHOULD be made conditional and valid only if the value of
-          "rt:type" or "rt:source-protocol" is equal to the new
-          protocol's identity.</t>
+          "rt:type" or "rt:source-protocol" is equal to (or derived
+          from) the new protocol's identity.</t>
           <t>It is also RECOMMENDED that protocol-specific data nodes
           be encapsulated in an appropriately named container with
           presence. Such a container may contain mandatory data nodes
@@ -679,22 +682,21 @@ reference:    RFC XXXX
     <section anchor="sec-cons" title="Security Considerations">
 
       <t>Configuration and state data conforming to the core routing
-      data model (defined in this document) are designed to be accessed
-      via the NETCONF protocol <xref target="RFC6241"/>.  The lowest
-      NETCONF layer is the secure transport layer and the
-      mandatory-to-implement secure transport is SSH <xref
-      target="RFC6242"/>. The NETCONF access control model <xref
-      target="RFC6536"/> provides the means to restrict access for
-      particular NETCONF users to a pre-configured subset of all
-      available NETCONF protocol operations and content.</t>
-      <t>A number of data nodes defined in the YANG modules belonging to
-      the configuration part of the core routing data model are
+      data model (defined in this document) are designed to be
+      accessed via a management protocol with secure transport layer,
+      such as NETCONF <xref target="RFC6241"/>. The NETCONF access
+      control model <xref target="RFC6536"/> provides the means to
+      restrict access for particular NETCONF users to a pre-configured
+      subset of all available NETCONF protocol operations and
+      content.</t>
+      <t>A number of configuration data nodes defined in the YANG
+      modules belonging to the core routing data model are
       writable/creatable/deletable (i.e., "config true" in YANG terms,
       which is the default).  These data nodes may be considered
       sensitive or vulnerable in some network environments.  Write
-      operations to these data nodes, such as "edit-config", can have
-      negative effects on the network if the protocol operations are not
-      properly protected.</t>
+      operations to these data nodes, such as "edit-config" in
+      NETCONF, can have negative effects on the network if the
+      protocol operations are not properly protected.</t>
       <t>The vulnerable "config true" parameters and subtrees are the
       following:
       <list style="hanging">
@@ -720,9 +722,9 @@ reference:    RFC XXXX
       Dean Bogdanovic, Jeff Haas, Joel Halpern, Wes Hardaker,
       Sriganesh Kini, David Lamparter, Andrew McGregor, Jan Medved,
       Xiang Li, Stephane Litkowski, Thomas Morin, Tom Petch,
-      Bruno Rijsman, Juergen Schoenwaelder, Phil Shafer, Dave Thaler,
-      Yi Yang, Derek Man-Kit Yeung and Jeffrey Zhang for their helpful
-      comments and suggestions.</t>
+      Yingzhen Qu, Bruno Rijsman, Juergen Schoenwaelder, Phil Shafer,
+      Dave Thaler, Yi Yang, Derek Man-Kit Yeung and Jeffrey Zhang for
+      their helpful comments and suggestions.</t>
     </section>
 
   </middle>
@@ -841,7 +843,7 @@ reference:    RFC XXXX
       </figure>
 
       <t>A reply to the NETCONF &lt;get&gt; message sent by router "A"
-      would then be as follows:</t>
+      could then be as follows:</t>
 
       <figure>
         &example-get-reply.xml;
@@ -852,6 +854,18 @@ reference:    RFC XXXX
     <section anchor="change-log" title="Change Log">
 
       &ed-hint-remove-sec;
+
+      <section title="Changes Between Versions -22 and -23">
+        <t>
+          <list style="symbols">
+	    <t>Removed "route-tag" feature.</t>
+	    <t>Removed next-hop classifiers.</t>
+	    <t>Fixed invalid when expressions in augments.</t>
+	    <t>In simple-next-hop, an address, outgoing interface or
+	    both can be specified.</t>
+	  </list>
+	</t>
+      </section>
 
       <section title="Changes Between Versions -21 and -22">
         <t>
