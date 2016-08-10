@@ -559,6 +559,38 @@
             <uses name="route-metadata"/>
           </list>
         </container>
+	<action name="active-route">
+	  <description>
+	    <text>
+              <h:p>Return the active RIB route that is used for the
+              destination address.</h:p>
+	      <h:p>Address family specific modules MUST augment input
+	      parameters with a leaf named 'destination-address'.</h:p>
+	    </text>
+	  </description>
+	  <output>
+	    <container name="route">
+              <container name="next-hop">
+		<uses name="next-hop-state-content"/>
+		<description>
+		  <text>Route's next-hop attribute.</text>
+		</description>
+              </container>
+              <uses name="route-metadata"/>
+              <description>
+		<text>
+		  <h:p>The active RIB route for the specified
+		  destination.</h:p>
+		  <h:p>If no route exists in the RIB for the
+		  destination address, no output is returned.</h:p>
+		  <h:p>Address family specific modules MUST augment
+		  this container with appropriate route
+		  contents.</h:p>
+		</text>
+              </description>
+	    </container>
+	  </output>
+	</action>
       </list>
     </container>
   </container>
@@ -690,56 +722,5 @@
       </list>
     </container>
   </container>
-
-  <!-- RPC operations -->
-
-  <rpc name="fib-route">
-    <description>
-      <text>
-        <h:p>Return the active FIB route that is used for sending
-        packets to a destination address.</h:p>
-      </text>
-    </description>
-    <input>
-      <container name="destination-address">
-        <uses name="address-family"/>
-        <description>
-          <text>
-            <h:p>
-              Network layer destination address.
-            </h:p>
-            <h:p>
-              Address family specific modules MUST augment this
-              container with a leaf named 'address'.
-            </h:p>
-          </text>
-        </description>
-      </container>
-    </input>
-    <output>
-      <container name="route">
-        <uses name="address-family"/>
-        <container name="next-hop">
-          <uses name="next-hop-state-content"/>
-          <description>
-            <text>Route's next-hop attribute.</text>
-          </description>
-        </container>
-        <uses name="route-metadata"/>
-        <description>
-          <text>
-            <h:p>The active FIB route for the specified
-            destination.</h:p>
-            <h:p>If no active FIB route exists for the destination
-            address, no output is returned - the server SHALL send an
-            &lt;rpc-reply&gt; containing a single element
-            &lt;ok&gt;.</h:p>
-            <h:p>Address family specific modules MUST augment this
-            list with appropriate route contents.</h:p>
-          </text>
-        </description>
-      </container>
-    </output>
-  </rpc>
 
 </module>
