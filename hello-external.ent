@@ -1,5 +1,5 @@
 <!-- capabilities of external modules -->
-<capability>urn:ietf:params:xml:ns:yang:ietf-interfaces?module=ietf-interfaces</capability>
+<capability>urn:ietf:params:xml:ns:yang:ietf-interfaces?module=ietf-interfaces&amp;revision=2014-05-08</capability>
 <capability>urn:ietf:params:xml:ns:yang:iana-if-type?module=iana-if-type</capability>
-<capability>urn:ietf:params:xml:ns:yang:ietf-ip?module=ietf-ip</capability>
+<capability>urn:ietf:params:xml:ns:yang:ietf-ip?module=ietf-ip&amp;revision=2014-06-16</capability>
 <!-- <capability>http://example.com/rip?module=example-rip</capability> -->

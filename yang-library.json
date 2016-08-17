@@ -1,0 +1,65 @@
+{
+  "ietf-yang-library:modules-state": {
+    "module-set-id": "XXXX",
+    "module": [
+      {
+        "name": "ietf-routing",
+        "revision": "2016-08-15",
+        "feature": [
+          "multiple-ribs",
+          "router-id"
+        ],
+        "namespace": "urn:ietf:params:xml:ns:yang:ietf-routing",
+        "conformance-type": "implement"
+      },
+      {
+        "name": "ietf-ipv4-unicast-routing",
+        "revision": "2016-08-15",
+        "namespace": "urn:ietf:params:xml:ns:yang:ietf-ipv4-unicast-routing",
+        "conformance-type": "implement"
+      },
+      {
+        "name": "ietf-ipv6-unicast-routing",
+        "revision": "2016-08-15",
+        "namespace": "urn:ietf:params:xml:ns:yang:ietf-ipv6-unicast-routing",
+        "conformance-type": "implement",
+	"submodule": [
+	  {
+	    "name": "ietf-ipv6-router-advertisements",
+	    "revision": "2016-08-15"
+	  }
+	]
+      },
+      {
+        "name": "ietf-interfaces",
+        "revision": "2014-05-08",
+        "namespace": "urn:ietf:params:xml:ns:yang:ietf-interfaces",
+        "conformance-type": "implement"
+      },
+      {
+        "name": "iana-if-type",
+        "namespace": "urn:ietf:params:xml:ns:yang:iana-if-type",
+        "revision": "",
+        "conformance-type": "implement"
+      },
+      {
+        "name": "ietf-inet-types",
+        "revision": "2013-07-15",
+        "namespace": "urn:ietf:params:xml:ns:yang:ietf-inet-types",
+        "conformance-type": "import"
+      },
+      {
+        "name": "ietf-yang-types",
+        "revision": "2013-07-15",
+        "namespace": "urn:ietf:params:xml:ns:yang:ietf-yang-types",
+        "conformance-type": "import"
+      },
+      {
+        "name": "ietf-ip",
+        "revision": "2014-06-16",
+        "namespace": "urn:ietf:params:xml:ns:yang:ietf-ip",
+        "conformance-type": "implement"
+      }
+    ]
+  }
+}
