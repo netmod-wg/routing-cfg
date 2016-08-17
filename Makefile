@@ -4,11 +4,12 @@ DATE ?= $(shell date +%F)
 MODULES = ietf-routing ietf-ipv4-unicast-routing ietf-ipv6-unicast-routing # example-rip
 SUBMODULES = ietf-ipv6-router-advertisements
 FIGURES = config-coll-tree.txt state-coll-tree.txt \
-	config-tree.txt state-tree.txt example-rip.yang example-net.txt
+	  config-tree.txt state-tree.txt example-rip.yang example-net.txt \
+	  yang-library.json
 EXAMPLE_BASE = example
 EXAMPLE_TYPE = get-reply
 baty = $(EXAMPLE_BASE)-$(EXAMPLE_TYPE)
-EXAMPLE_INST = $(baty).xml
+EXAMPLE_INST = $(baty).json
 PYANG_OPTS =
 
 # Paths for pyang
@@ -143,5 +144,5 @@ static-routes-tree.txt: model.tree
 	     -v root=routing/routing-protocols/routing-protocol*/static-routes \
 	     -f .tools/awk/tree.awk $< > $@
 clean:
-	@rm -rf *.rng *.rnc *.sch *.dsrl hello.xml model.tree $(yass) \
+	@rm -rf *.rng *.rnc *.sch *.dsrl hello.xml model.* $(yass) \
 	        $(yams) $(idrev).* $(artworks) figures.ent yang.ent
