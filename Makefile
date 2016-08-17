@@ -27,13 +27,15 @@ xslpars = --stringparam date $(DATE) --stringparam i-d-name $(I_D) \
 schemas = $(baty).rng $(baty).sch $(baty).dsrl
 y2dopts = -t $(EXAMPLE_TYPE) -b $(EXAMPLE_BASE)
 
-.PHONY: all clean rnc refs validate yang
+.PHONY: all clean json rnc refs validate yang
 
 all: $(idrev).txt $(schemas) model.tree
 
 refs: stdrefs.ent
 
 yang: $(yass) $(yams)
+
+json: $(baty).json yang-library.json
 
 $(idrev).xml: $(I_D).xml $(artworks) figures.ent yang.ent
 	@xsltproc --novalid $(xslpars) $(xsldir)/upd-i-d.xsl $< | \
@@ -109,6 +111,16 @@ validate: $(EXAMPLE_INST) $(schemas)
 
 model.tree: hello.xml
 	pyang $(PYANG_OPTS) -f tree -o $@ -L $<
+
+model.xsl: hello.xml
+	pyang $(PYANG_OPTS) -f jsonxsl -o $@ -L $<
+
+$(baty).json: model.xsl $(baty).xml
+	@xsltproc -o $@ $^
+
+yang-library.json: hello.xml
+	@xsltproc $(xsldir)/hello2yanglib.xsl $< | \
+	  xsltproc -o $@ $(xsldir)/yang-library.xsl -
 
 state-tree.txt: model.tree
 	@awk -v yam=ietf-routing -v root=routing-state -v types=1 \
