@@ -47,7 +47,7 @@
       augmented by additional YANG modules defining data models for
       control plane protocols, route filters and other functions. The core
       routing data model provides common building blocks for such
-      extensions - routes, routing information bases (RIB), and
+      extensions -- routes, routing information bases (RIB), and
       control plane protocols.</t>
     </abstract>
   </front>
@@ -99,8 +99,10 @@
         <t>server.</t>
       </list></t>
 
-      <t>The following terms are defined in <xref target="RFC6020"/>:
+      <t>The following terms are defined in <xref
+      target="I-D.ietf-netmod-rfc6020bis"/>:
       <list style="symbols">
+	<t>action,</t>
         <t>augment,</t>
         <t>configuration data,</t>
         <t>container,</t>
@@ -146,7 +148,7 @@
       </section>
 
       <section anchor="sec.prefixes" title="Prefixes in Data Node Names">
-        <t>In this document, names of data nodes, RPC operations and other
+        <t>In this document, names of data nodes, actions and other
         data model objects are often used without a prefix, as long as
         it is clear from the context in which YANG module each name is
         defined. Otherwise, names are prefixed using the standard prefix
@@ -292,8 +294,8 @@
           administrative distance) that is used for selecting a
           preferred route among routes with the same destination
           prefix. A lower value means a more preferred route.</t>
-          <t>"next-hop": determines the action to be performed with a
-          packet.</t>
+          <t>"next-hop": determines the next-hop address(es) or other
+          operation to be performed with a packet.</t>
         </list>
         </t>
         <t>Routes are primarily state data that appear as entries of
@@ -330,6 +332,16 @@
         "multiple-ribs" feature support multiple RIBs per address
         family that can be used for policy routing and other
         purposes.</t>
+
+        <t>The following action (see Section 7.15 of <xref
+	target="I-D.ietf-netmod-rfc6020bis"/>) is defined for the
+	"rt:rib" list:
+        <list style="symbols">
+          <t>rt:active-route -- return the active RIB route for the
+          destination address that is specified as the action's input
+          parameter.</t>
+        </list></t>
+
       </section>
 
       <section anchor="sec.proto" title="Control Plane Protocol">
@@ -349,7 +361,7 @@
                  title="Routing Pseudo-Protocols">
 
           <t>The core routing data model defines two special routing
-          protocol types - "direct" and "static". Both are in fact
+          protocol types -- "direct" and "static". Both are in fact
           pseudo-protocols, which means that they are confined to the
           local device and do not exchange any routing information
           with adjacent routers.</t>
@@ -390,11 +402,12 @@
             and
             <figure>
               <artwork><![CDATA[
-    /rt:fib-route/rt:output/rt:route,]]>
+    /rt:routing-state/rt:ribs/rt:rib/rt:output/rt:route,]]>
               </artwork>
             </figure>
             and possibly other places in the configuration, state
-            data, notifications, and RPC input or output.</t>
+            data, notifications, and input/output parameters of an
+            action or RPC operation.</t>
             <t>Configuration parameters and/or state data for the new
             protocol can be defined by augmenting the
             "control-plane-protocol" data node under both "/routing" and "/routing-state".</t>
@@ -413,19 +426,6 @@
           for the RIP routing protocol in <xref
           target="app.rip"/>.</t>
         </section>
-      </section>
-
-      <section anchor="sec.rpcs" title="RPC Operations">
-
-        <t>The "ietf-routing" module defines one RPC operation:
-        <list style="symbols">
-          <t>fib-route: query the routing system for the active route
-          in the Forwarding Information Base (FIB). It is the route
-          that is currently used for sending datagrams to a
-          destination host whose address is passed as the input
-          parameter.</t>
-        </list></t>
-
       </section>
 
       <section anchor="sec.4861"
@@ -740,14 +740,15 @@ reference:    RFC XXXX
       &RFC6241;
       &RFC7223;
       &RFC7277;
+      &I-D.ietf-netmod-rfc6020bis;
     </references>
 
     <references title="Informative References">
 
       &RFC6087;
-      &RFC6242;
       &RFC6536;
-      &RFC7224;
+      &RFC7895;
+      &I-D.ietf-netmod-yang-json;
     </references>
 
     <section anchor="app.data-tree" title="The Complete Data Trees">
@@ -816,37 +817,33 @@ reference:    RFC XXXX
     </section>
 
     <section anchor="app.get-reply"
-             title="Example: NETCONF &lt;get&gt; Reply">
+             title="Data Tree Example">
 
-      <t>This section contains a sample reply to the NETCONF &lt;get&gt;
-      message, which could be sent by a server supporting (i.e.,
-      advertising them in the NETCONF &lt;hello&gt; message) the
-      following YANG modules:
-      <list style="symbols">
-        <t>ietf-interfaces <xref target="RFC7223"/>,</t>
-        <t>iana-if-type <xref target="RFC7224"/>,</t>
-        <t>ietf-ip <xref target="RFC7277"/>,</t>
-        <t>ietf-routing (<xref target="sec.mod-rt"/>),</t>
-        <t>ietf-ipv4-unicast-routing (<xref target="sec.mod-v4ur"/>),</t>
-        <t>ietf-ipv6-unicast-routing (<xref target="sec.mod-v6ur"/>).</t>
-      </list></t>
+      <t>This section contains an example instance data tree in the
+      JSON encoding <xref target="I-D.ietf-netmod-yang-json"/>,
+      containing both configuration and state data. The data conforms
+      to a data model that is defined by the following YANG library
+      specification <xref target="RFC7895"/>:
 
-      <t>We assume a simple network set-up as shown in <xref
-      target="fig.exnet"/>: router "A" uses static default routes with
-      the "ISP" router as the next-hop. IPv6 router advertisements are
-      configured only on the "eth1" interface and disabled on the
-      upstream "eth0" interface.</t>
+      <figure>
+	&yang-library.json;
+      </figure></t>
+
+      <t>A simple network set-up as shown in <xref
+      target="fig.exnet"/> is assumed: router "A" uses static default
+      routes with the "ISP" router as the next-hop. IPv6 router
+      advertisements are configured only on the "eth1" interface and
+      disabled on the upstream "eth0" interface.</t>
 
       <figure anchor="fig.exnet"
               title="Example network configuration">
         &example-net.txt;
       </figure>
 
-      <t>A reply to the NETCONF &lt;get&gt; message sent by router "A"
-      could then be as follows:</t>
+      <t>The instance data tree could then be as follows:</t>
 
       <figure>
-        &example-get-reply.xml;
+        &example-get-reply.json;
       </figure>
 
     </section>
@@ -863,6 +860,8 @@ reference:    RFC XXXX
 	    <t>Fixed invalid when expressions in augments.</t>
 	    <t>In simple-next-hop, an address, outgoing interface or
 	    both can be specified.</t>
+	    <t>RPC "fib-route" changed into RIB action
+	    "active-route".</t>
 	  </list>
 	</t>
       </section>
