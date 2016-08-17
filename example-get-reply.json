@@ -148,7 +148,7 @@
           "type": "ietf-routing:static",
           "name": "st0",
           "description":
-	    "Static routing is used for the internal network.",
+            "Static routing is used for the internal network.",
           "static-routes": {
             "ietf-ipv4-unicast-routing:ipv4": {
               "route": [
@@ -200,7 +200,7 @@
             "route": [
               {
                 "ietf-ipv4-unicast-routing:destination-prefix":
-		  "192.0.2.1/24",
+                  "192.0.2.1/24",
                 "next-hop": {
                   "outgoing-interface": "eth0"
                 },
@@ -210,7 +210,7 @@
               },
               {
                 "ietf-ipv4-unicast-routing:destination-prefix":
-		  "198.51.100.0/24",
+                  "198.51.100.0/24",
                 "next-hop": {
                   "outgoing-interface": "eth1"
                 },
@@ -220,12 +220,12 @@
               },
               {
                 "ietf-ipv4-unicast-routing:destination-prefix":
-		  "0.0.0.0/0",
+                  "0.0.0.0/0",
                 "source-protocol": "ietf-routing:static",
                 "route-preference": 5,
                 "next-hop": {
                   "ietf-ipv4-unicast-routing:next-hop-address":
-		    "192.0.2.2"
+                    "192.0.2.2"
                 },
                 "last-updated": "2015-10-24T18:02:45+02:00"
               }
@@ -240,7 +240,7 @@
             "route": [
               {
                 "ietf-ipv6-unicast-routing:destination-prefix":
-		  "2001:db8:0:1::/64",
+                  "2001:db8:0:1::/64",
                 "next-hop": {
                   "outgoing-interface": "eth0"
                 },
@@ -250,7 +250,7 @@
               },
               {
                 "ietf-ipv6-unicast-routing:destination-prefix":
-		  "2001:db8:0:2::/64",
+                  "2001:db8:0:2::/64",
                 "next-hop": {
                   "outgoing-interface": "eth1"
                 },
@@ -260,10 +260,10 @@
               },
               {
                 "ietf-ipv6-unicast-routing:destination-prefix":
-		  "::/0",
+                  "::/0",
                 "next-hop": {
                   "ietf-ipv6-unicast-routing:next-hop-address":
-		    "2001:db8:0:1::2"
+                    "2001:db8:0:1::2"
                 },
                 "source-protocol": "ietf-routing:static",
                 "route-preference": 5,
