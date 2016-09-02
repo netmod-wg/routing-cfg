@@ -1,5 +1,5 @@
 I_D = draft-ietf-netmod-routing-cfg
-REVNO = 23
+REVNO = 24
 DATE ?= $(shell date +%F)
 MODULES = ietf-routing ietf-ipv4-unicast-routing ietf-ipv6-unicast-routing # example-rip
 SUBMODULES = ietf-ipv6-router-advertisements
