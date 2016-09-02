@@ -519,9 +519,8 @@
               <h:p>This flag has the value of 'true' if and only if
               the RIB is the default RIB for the given address
               family.</h:p>
-              <h:p>A default RIB always receives direct routes. By
-              default it also receives routes from all routing
-              protocols.</h:p>
+              <h:p>By default, control plane protocols place their
+	      routes in the default RIBs.</h:p>
             </text>
           </description>
         </leaf>

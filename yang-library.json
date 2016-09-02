@@ -4,7 +4,7 @@
     "module": [
       {
         "name": "ietf-routing",
-        "revision": "2016-08-17",
+        "revision": "2016-08-18",
         "feature": [
           "multiple-ribs",
           "router-id"
@@ -14,21 +14,21 @@
       },
       {
         "name": "ietf-ipv4-unicast-routing",
-        "revision": "2016-08-17",
+        "revision": "2016-08-18",
         "namespace":
           "urn:ietf:params:xml:ns:yang:ietf-ipv4-unicast-routing",
         "conformance-type": "implement"
       },
       {
         "name": "ietf-ipv6-unicast-routing",
-        "revision": "2016-08-17",
+        "revision": "2016-08-18",
         "namespace":
           "urn:ietf:params:xml:ns:yang:ietf-ipv6-unicast-routing",
         "conformance-type": "implement",
         "submodule": [
           {
             "name": "ietf-ipv6-router-advertisements",
-            "revision": "2016-08-17"
+            "revision": "2016-08-18"
           }
         ]
       },

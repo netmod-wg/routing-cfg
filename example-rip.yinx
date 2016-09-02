@@ -59,7 +59,7 @@
     <uses name="route-content"/>
   </augment>
 
-  <augment target-node="/rt:fib-route/rt:output/rt:route">
+  <augment target-node="/rt:routing-state/rt:ribs/rt:rib/rt:active-route/rt:output/rt:route">
     <description>
       <text>
 	RIP-specific route attributes in the output of 'active-route' RPC.

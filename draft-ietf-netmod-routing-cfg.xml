@@ -294,8 +294,9 @@
           administrative distance) that is used for selecting a
           preferred route among routes with the same destination
           prefix. A lower value means a more preferred route.</t>
-          <t>"next-hop": determines the next-hop address(es) or other
-          operation to be performed with a packet.</t>
+          <t>"next-hop": determines the outgoing interface and/or
+          next-hop address(es), other operation to be performed with a
+          packet.</t>
         </list>
         </t>
         <t>Routes are primarily state data that appear as entries of
@@ -335,9 +336,9 @@
 
         <t>The following action (see Section 7.15 of <xref
 	target="I-D.ietf-netmod-rfc6020bis"/>) is defined for the
-	"rt:rib" list:
+	"rib" list:
         <list style="symbols">
-          <t>rt:active-route -- return the active RIB route for the
+          <t>active-route -- return the active RIB route for the
           destination address that is specified as the action's input
           parameter.</t>
         </list></t>
@@ -348,8 +349,8 @@
 
         <t>The core routing data model provides an open-ended
         framework for defining multiple control plane protocol
-        instances, e.g., for Layer 3 routing protocols. Each routing
-        protocol instance MUST be assigned a type, which is an
+        instances, e.g., for Layer 3 routing protocols. Each control
+        plane protocol instance MUST be assigned a type, which is an
         identity derived from the "rt:control-plane-protocol" base
         identity. The core routing data model defines two identities
         for the direct and static pseudo-protocols (<xref
@@ -371,8 +372,7 @@
           address families. Direct routes are normally supplied by the
           operating system kernel, based on the configuration of
           network interface addresses, see <xref
-          target="sec.ietf-ip"/>. Direct routes MUST be installed in
-          the default RIBs of all supported address families.</t>
+          target="sec.ietf-ip"/>.</t>
           <t>A pseudo-protocol of the type "static" allows for specifying
           routes manually. It MAY be configured in zero or multiple
           instances, although a typical configuration will have exactly
@@ -406,11 +406,12 @@
               </artwork>
             </figure>
             and possibly other places in the configuration, state
-            data, notifications, and input/output parameters of an
-            action or RPC operation.</t>
+            data, notifications, and input/output parameters of
+            actions or RPC operations.</t>
             <t>Configuration parameters and/or state data for the new
             protocol can be defined by augmenting the
-            "control-plane-protocol" data node under both "/routing" and "/routing-state".</t>
+            "control-plane-protocol" data node under both "/routing"
+            and "/routing-state".</t>
           </list></t>
           <t>By using a "when" statement, the augmented configuration
           parameters and state data specific to the new protocol
@@ -472,8 +473,9 @@
           the values might be reset again to the (higher) configured
           values after a configuration is reloaded. Moreover, no
           implementation is known to use the decrementing
-          behavior. The "ietf-ipv6-unicast-routing" module therefore
-          assumes the former behavior with constant values.</t>
+          behavior. The "ietf-ipv6-router-advertisements" submodule
+          therefore stipulates the former behavior with constant
+          values.</t>
         </list></t>
 
       </section>
@@ -862,6 +864,8 @@ reference:    RFC XXXX
 	    both can be specified.</t>
 	    <t>RPC "fib-route" changed into RIB action
 	    "active-route".</t>
+	    <t>The requirement that direct routes be always placed in
+	    default RIBs.</t>
 	  </list>
 	</t>
       </section>
