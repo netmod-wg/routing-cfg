@@ -99,8 +99,7 @@
         <t>server.</t>
       </list></t>
 
-      <t>The following terms are defined in <xref
-      target="I-D.ietf-netmod-rfc6020bis"/>:
+      <t>The following terms are defined in <xref target="RFC7950"/>:
       <list style="symbols">
 	<t>action,</t>
         <t>augment,</t>
@@ -335,8 +334,7 @@
         purposes.</t>
 
         <t>The following action (see Section 7.15 of <xref
-	target="I-D.ietf-netmod-rfc6020bis"/>) is defined for the
-	"rib" list:
+        target="RFC7950"/>) is defined for the "rib" list:
         <list style="symbols">
           <t>active-route -- return the active RIB route for the
           destination address that is specified as the action's input
@@ -742,7 +740,7 @@ reference:    RFC XXXX
       &RFC6241;
       &RFC7223;
       &RFC7277;
-      &I-D.ietf-netmod-rfc6020bis;
+      &RFC7950;
     </references>
 
     <references title="Informative References">
@@ -750,7 +748,7 @@ reference:    RFC XXXX
       &RFC6087;
       &RFC6536;
       &RFC7895;
-      &I-D.ietf-netmod-yang-json;
+      &RFC7951;
     </references>
 
     <section anchor="app.data-tree" title="The Complete Data Trees">
@@ -822,7 +820,7 @@ reference:    RFC XXXX
              title="Data Tree Example">
 
       <t>This section contains an example instance data tree in the
-      JSON encoding <xref target="I-D.ietf-netmod-yang-json"/>,
+      JSON encoding <xref target="RFC7951"/>,
       containing both configuration and state data. The data conforms
       to a data model that is defined by the following YANG library
       specification <xref target="RFC7895"/>:
@@ -853,6 +851,15 @@ reference:    RFC XXXX
     <section anchor="change-log" title="Change Log">
 
       &ed-hint-remove-sec;
+
+      <section title="Changes Between Versions -22 and -23">
+        <t>
+          <list style="symbols">
+            <t>Fix paths in "when" expressions due to errata 4749 of
+            RFC 7950.</t>
+          </list>
+        </t>
+      </section>
 
       <section title="Changes Between Versions -22 and -23">
         <t>
