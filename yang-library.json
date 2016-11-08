@@ -1,10 +1,10 @@
 {
   "ietf-yang-library:modules-state": {
-    "module-set-id": "861bf72bc2225c3b09fd66ebbae236363aa2ef1d",
+    "module-set-id": "c2e1f54169aa7f36e1a6e8d0865d441d3600f9c4",
     "module": [
       {
         "name": "ietf-routing",
-        "revision": "2016-10-20",
+        "revision": "2016-11-03",
         "feature": [
           "multiple-ribs",
           "router-id"
@@ -14,40 +14,22 @@
       },
       {
         "name": "ietf-ipv4-unicast-routing",
-        "revision": "2016-10-20",
+        "revision": "2016-11-03",
         "namespace":
           "urn:ietf:params:xml:ns:yang:ietf-ipv4-unicast-routing",
         "conformance-type": "implement"
       },
       {
         "name": "ietf-ipv6-unicast-routing",
-        "revision": "2016-10-20",
+        "revision": "2016-11-03",
         "namespace":
           "urn:ietf:params:xml:ns:yang:ietf-ipv6-unicast-routing",
-        "conformance-type": "implement",
-        "submodule": [
-          {
-            "name": "ietf-ipv6-router-advertisements",
-            "revision": "2016-10-20"
-          }
-        ]
+        "conformance-type": "implement"
       },
       {
         "name": "ietf-interfaces",
         "revision": "2014-05-08",
         "namespace": "urn:ietf:params:xml:ns:yang:ietf-interfaces",
-        "conformance-type": "implement"
-      },
-      {
-        "name": "iana-if-type",
-        "namespace": "urn:ietf:params:xml:ns:yang:iana-if-type",
-        "revision": "",
-        "conformance-type": "implement"
-      },
-      {
-        "name": "ietf-ip",
-        "revision": "2014-06-16",
-        "namespace": "urn:ietf:params:xml:ns:yang:ietf-ip",
         "conformance-type": "implement"
       },
       {
@@ -61,6 +43,18 @@
         "namespace": "urn:ietf:params:xml:ns:yang:ietf-yang-types",
         "revision": "2013-07-15",
         "conformance-type": "import"
+      },
+      {
+        "name": "iana-if-type",
+        "namespace": "urn:ietf:params:xml:ns:yang:iana-if-type",
+        "revision": "",
+        "conformance-type": "implement"
+      },
+      {
+        "name": "ietf-ip",
+        "revision": "2014-06-16",
+        "namespace": "urn:ietf:params:xml:ns:yang:ietf-ip",
+        "conformance-type": "implement"
       }
     ]
   }

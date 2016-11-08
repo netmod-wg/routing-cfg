@@ -194,7 +194,8 @@
       "rib": [
         {
           "name": "ipv4-master",
-          "address-family": "ietf-ipv4-unicast-routing:ipv4-unicast",
+          "address-family":
+            "ietf-ipv4-unicast-routing:ipv4-unicast",
           "default-rib": true,
           "routes": {
             "route": [
@@ -234,7 +235,8 @@
         },
         {
           "name": "ipv6-master",
-          "address-family": "ietf-ipv6-unicast-routing:ipv6-unicast",
+          "address-family":
+            "ietf-ipv6-unicast-routing:ipv6-unicast",
           "default-rib": true,
           "routes": {
             "route": [

@@ -793,6 +793,9 @@ reference:    RFC XXXX
       <t>In addition to the mandatory instance of the "direct"
       pseudo-protocol, a minimum implementation should support
       configuring instance(s) of the "static" pseudo-protocol.</t>
+      <t>For hosts that are never intended to act as routers, the
+      ability to turn on sending IPv6 router advertisements (<xref
+      target="sec.4861"/>) should be removed.</t>
       <t>Platforms with severely constrained resources may use
       deviations for restricting the data model, e.g., limiting the
       number of "static" control plane protocol instances.</t>
@@ -852,7 +855,15 @@ reference:    RFC XXXX
 
       &ed-hint-remove-sec;
 
-      <section title="Changes Between Versions -22 and -23">
+      <section title="Changes Between Versions -24 and -25">
+        <t>
+          <list style="symbols">
+            <t>Minor edits based on IETF Last Call reviews.</t>
+	  </list>
+	</t>
+      </section>
+
+      <section title="Changes Between Versions -23 and -24">
         <t>
           <list style="symbols">
             <t>Fix paths in "when" expressions due to errata 4749 of
