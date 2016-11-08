@@ -2785,14 +2785,7 @@ module example-rip {
             }
           ],
           "ietf-ipv6-unicast-routing:ipv6-router-advertisements": {
-            "send-advertisements": true,
-            "prefix-list": {
-              "prefix": [
-                {
-                  "prefix-spec": "2001:db8:0:2::/64"
-                }
-              ]
-            }
+            "send-advertisements": false
           }
         }
       },
