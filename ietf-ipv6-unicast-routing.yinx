@@ -10,7 +10,7 @@
   <namespace uri="urn:ietf:params:xml:ns:yang:ietf-ipv6-unicast-routing"/>
   <prefix value="v6ur"/>
   <include module="ietf-ipv6-router-advertisements">
-    <revision-date date="2016-03-08"/>
+    <revision-date date="2016-11-04"/>
   </include>
   <import module="ietf-routing">
     <prefix value="rt"/>
@@ -44,13 +44,13 @@
     </text>
   </description>
 
-  <revision date="2011-09-19">
+  <revision date="2016-11-04">
     <description>
       <text>Initial revision.</text>
     </description>
     <reference>
       <text>
-        RFC XXXX: A YANG Data Model for Routing Management
+        RFC 8022: A YANG Data Model for Routing Management
       </text>
     </reference>
   </revision>
@@ -100,7 +100,7 @@
     <leaf name="next-hop-address">
       <type name="inet:ipv6-address"/>
       <description>
-        <text>IPv6 address of the next-hop.</text>
+        <text>IPv6 address of the next hop.</text>
       </description>
     </leaf>
   </augment>
@@ -120,7 +120,7 @@
     <leaf name="address">
       <type name="inet:ipv6-address"/>
       <description>
-        <text>IPv6 address of the next-hop.</text>
+        <text>IPv6 address of the next hop.</text>
       </description>
     </leaf>
   </augment>
@@ -176,7 +176,7 @@
     <leaf name="next-hop-address">
       <type name="inet:ipv6-address"/>
       <description>
-        <text>IPv6 address of the next-hop.</text>
+        <text>IPv6 address of the next hop.</text>
       </description>
     </leaf>
   </augment>
@@ -195,7 +195,7 @@
     <leaf name="next-hop-address">
       <type name="inet:ipv6-address"/>
       <description>
-        <text>IPv6 address of the next-hop.</text>
+        <text>IPv6 address of the next hop.</text>
       </description>
     </leaf>
   </augment>
@@ -245,7 +245,7 @@
               <leaf name="next-hop-address">
                 <type name="inet:ipv6-address"/>
                 <description>
-                  <text>IPv6 address of the next-hop.</text>
+                  <text>IPv6 address of the next hop.</text>
                 </description>
               </leaf>
             </augment>
@@ -257,13 +257,13 @@
               <leaf name="next-hop-address">
                 <type name="inet:ipv6-address"/>
                 <description>
-                  <text>IPv6 address of the next-hop.</text>
+                  <text>IPv6 address of the next hop.</text>
                 </description>
               </leaf>
             </augment>
           </uses>
           <description>
-            <text>Configuration of next-hop.</text>
+            <text>Configuration of next hop.</text>
           </description>
         </container>
       </list>

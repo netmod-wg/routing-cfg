@@ -41,13 +41,13 @@
     </text>
   </description>
 
-  <revision date="2011-09-19">
+  <revision date="2016-11-04">
     <description>
       <text>Initial revision.</text>
     </description>
     <reference>
       <text>
-        RFC XXXX: A YANG Data Model for Routing Management
+        RFC 8022: A YANG Data Model for Routing Management
       </text>
     </reference>
   </revision>
@@ -97,7 +97,7 @@
     <leaf name="next-hop-address">
       <type name="inet:ipv4-address"/>
       <description>
-        <text>IPv4 address of the next-hop.</text>
+        <text>IPv4 address of the next hop.</text>
       </description>
     </leaf>
   </augment>
@@ -117,7 +117,7 @@
     <leaf name="address">
       <type name="inet:ipv4-address"/>
       <description>
-        <text>IPv4 address of the next-hop.</text>
+        <text>IPv4 address of the next hop.</text>
       </description>
     </leaf>
   </augment>
@@ -173,7 +173,7 @@
     <leaf name="next-hop-address">
       <type name="inet:ipv4-address"/>
       <description>
-        <text>IPv4 address of the next-hop.</text>
+        <text>IPv4 address of the next hop.</text>
       </description>
     </leaf>
   </augment>
@@ -192,7 +192,7 @@
     <leaf name="next-hop-address">
       <type name="inet:ipv4-address"/>
       <description>
-        <text>IPv4 address of the next-hop.</text>
+        <text>IPv4 address of the next hop.</text>
       </description>
     </leaf>
   </augment>
@@ -242,7 +242,7 @@
               <leaf name="next-hop-address">
                 <type name="inet:ipv4-address"/>
                 <description>
-                  <text>IPv4 address of the next-hop.</text>
+                  <text>IPv4 address of the next hop.</text>
                 </description>
               </leaf>
             </augment>
@@ -254,7 +254,7 @@
               <leaf name="next-hop-address">
                 <type name="inet:ipv4-address"/>
                 <description>
-                  <text>IPv4 address of the next-hop.</text>
+                  <text>IPv4 address of the next hop.</text>
                 </description>
               </leaf>
             </augment>
