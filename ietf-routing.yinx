@@ -6,6 +6,7 @@
         xmlns:yang="urn:ietf:params:xml:ns:yang:ietf-yang-types"
         xmlns:h="http://www.w3.org/1999/xhtml"
         xmlns:xi="http://www.w3.org/2001/XInclude">
+  <yang-version value="1.1"/>
   <namespace uri="urn:ietf:params:xml:ns:yang:ietf-routing"/>
   <prefix value="rt"/>
   <import module="ietf-yang-types">
@@ -41,13 +42,13 @@
     </text>
   </description>
 
-  <revision date="2011-09-11">
+  <revision date="2016-11-04">
     <description>
       <text>Initial revision.</text>
     </description>
     <reference>
       <text>
-        RFC XXXX: A YANG Data Model for Routing Management
+        RFC 8022: A YANG Data Model for Routing Management
       </text>
     </reference>
   </revision>
@@ -62,8 +63,8 @@
         </h:p>
         <h:p>Servers that do not advertise this feature SHOULD provide
         exactly one system-controlled RIB per supported address family
-        and make them also the default RIBs. These RIBs then appear as
-        entries of the list /routing-state/ribs/rib.</h:p>
+        and make it also the default RIB. This RIB then appears as an
+        entry of the list /routing-state/ribs/rib.</h:p>
     </text>
     </description>
   </feature>
@@ -75,9 +76,9 @@
         configuration of an explicit 32-bit router ID that is used by
         some routing protocols.</h:p>
         <h:p>Servers that do not advertise this feature set a router
-        ID algorithmically, usually to one of configured IPv4
-        addresses. However, this algorithm is
-        implementation-specific.</h:p>
+        ID algorithmically, usually to one of the configured IPv4
+        addresses. However, this algorithm is implementation
+        specific.</h:p>
       </text>
     </description>
   </feature>
@@ -108,7 +109,7 @@
   <identity name="control-plane-protocol">
     <description>
       <text>
-        Base identity from which control plane protocol identities are
+        Base identity from which control-plane protocol identities are
         derived.
       </text>
     </description>
@@ -197,7 +198,7 @@
     <description>
       <text>
         This grouping provides a leaf with an enumeration of special
-        next-hops.
+        next hops.
       </text>
     </description>
     <leaf name="special-next-hop">
@@ -229,20 +230,20 @@
         </enum>
       </type>
       <description>
-        <text>Special next-hop options.</text>
+        <text>Options for special next hops.</text>
       </description>
     </leaf>
   </grouping>
 
   <grouping name="next-hop-content">
     <description>
-      <text>Generic parameters of next-hops in static routes.</text>
+      <text>Generic parameters of next hops in static routes.</text>
     </description>
     <choice name="next-hop-options">
       <mandatory value="true"/>
       <description>
         <text>
-          <h:p>Options for next-hops in static routes.</h:p>
+          <h:p>Options for next hops in static routes.</h:p>
           <h:p>It is expected that further cases will be added through
           augments from other modules.</h:p>
         </text>
@@ -288,7 +289,7 @@
               <type name="string"/>
               <description>
                 <text>
-                  An user-specified identifier utilised to uniquely
+                  An user-specified identifier utilized to uniquely
                   reference the next-hop entry in the next-hop
                   list. The value of this index has no semantic
                   meaning other than for referencing the entry.
@@ -311,16 +312,16 @@
 
   <grouping name="next-hop-state-content">
     <description>
-      <text>Generic parameters of next-hops in state data.</text>
+      <text>Generic parameters of next hops in state data.</text>
     </description>
     <choice name="next-hop-options">
       <mandatory value="true"/>
       <description>
         <text>
-          <h:p>Options for next-hops in state data.</h:p>
+          <h:p>Options for next hops in state data.</h:p>
           <h:p>It is expected that further cases will be added through
           augments from other modules, e.g., for recursive
-          next-hops.</h:p>
+          next hops.</h:p>
         </text>
       </description>
       <case name="simple-next-hop">
@@ -348,7 +349,7 @@
       <case name="next-hop-list">
         <container name="next-hop-list">
           <description>
-            <text>Container for multiple next-hops.</text>
+            <text>Container for multiple next hops.</text>
           </description>
           <list name="next-hop">
             <description>
@@ -403,9 +404,9 @@
       <type name="yang:date-and-time"/>
       <description>
         <text>
-          Time stamp of the last modification of the route.
-          If the route was never modified, it is the time when
-          the route was inserted into the RIB.
+          Time stamp of the last modification of the route. If the
+          route was never modified, it is the time when the route was
+          inserted into the RIB.
         </text>
       </description>
     </leaf>
@@ -430,14 +431,14 @@
     <container name="interfaces">
       <description>
         <text>
-          Network layer interfaces used for routing.
+          Network-layer interfaces used for routing.
         </text>
       </description>
       <leaf-list name="interface">
         <description>
           <text>
             Each entry is a reference to the name of a configured
-            network layer interface.
+            network-layer interface.
           </text>
         </description>
         <type name="if:interface-state-ref"/>
@@ -453,11 +454,11 @@
         <key value="type name"/>
         <description>
           <text>
-            <h:p>State data of a control plane protocol
+            <h:p>State data of a control-plane protocol
             instance.</h:p>
             <h:p>An implementation MUST provide exactly one
             system-controlled instance of the 'direct'
-            pseudo-protocol. Instances of other control plane
+            pseudo-protocol. Instances of other control-plane
             protocols MAY be created by configuration.</h:p>
           </text>
         </description>
@@ -467,7 +468,7 @@
           </type>
           <description>
             <text>
-              Type of the control plane protocol.
+              Type of the control-plane protocol.
             </text>
           </description>
         </leaf>
@@ -475,7 +476,7 @@
           <type name="string"/>
           <description>
             <text>
-              <h:p>The name of the control plane protocol
+              <h:p>The name of the control-plane protocol
               instance.</h:p>
               <h:p>For system-controlled instances this name is
               persistent, i.e., it SHOULD NOT change across
@@ -518,9 +519,8 @@
               <h:p>This flag has the value of 'true' if and only if
               the RIB is the default RIB for the given address
               family.</h:p>
-              <h:p>A default RIB always receives direct routes. By
-              default it also receives routes from all routing
-              protocols.</h:p>
+              <h:p>By default, control-plane protocols place their
+	      routes in the default RIBs.</h:p>
             </text>
           </description>
         </leaf>
@@ -558,6 +558,38 @@
             <uses name="route-metadata"/>
           </list>
         </container>
+	<action name="active-route">
+	  <description>
+	    <text>
+              <h:p>Return the active RIB route that is used for the
+              destination address.</h:p>
+	      <h:p>Address-family-specific modules MUST augment input
+	      parameters with a leaf named 'destination-address'.</h:p>
+	    </text>
+	  </description>
+	  <output>
+	    <container name="route">
+              <container name="next-hop">
+		<uses name="next-hop-state-content"/>
+		<description>
+		  <text>Route's next-hop attribute.</text>
+		</description>
+              </container>
+              <uses name="route-metadata"/>
+              <description>
+		<text>
+		  <h:p>The active RIB route for the specified
+		  destination.</h:p>
+		  <h:p>If no route exists in the RIB for the
+		  destination address, no output is returned.</h:p>
+		  <h:p>Address-family-specific modules MUST augment
+		  this container with appropriate route
+		  contents.</h:p>
+		</text>
+              </description>
+	    </container>
+	  </output>
+	</action>
       </list>
     </container>
   </container>
@@ -574,19 +606,19 @@
         <text>
           Configuration of the global router ID. Routing protocols
           that use router ID can use this parameter or override it
-        with another value.</text>
+          with another value.</text>
       </description>
     </uses>
     <container name="control-plane-protocols">
       <description>
         <text>
-          Configuration of control plane protocol instances.
+          Configuration of control-plane protocol instances.
         </text>
       </description>
       <list name="control-plane-protocol">
         <key value="type name"/>
         <description>
-          <text>Each entry contains configuration of a control plane
+          <text>Each entry contains configuration of a control-plane
           protocol instance.</text>
         </description>
         <leaf name="type">
@@ -595,7 +627,7 @@
           </type>
           <description>
             <text>
-              Type of the control plane protocol - an identity derived
+              Type of the control-plane protocol - an identity derived
               from the 'control-plane-protocol' base identity.
             </text>
           </description>
@@ -604,7 +636,7 @@
           <type name="string"/>
           <description>
             <text>
-              An arbitrary name of the control plane protocol instance.
+              An arbitrary name of the control-plane protocol instance.
             </text>
           </description>
         </leaf>
@@ -612,12 +644,12 @@
           <type name="string"/>
           <description>
             <text>
-              Textual description of the control plane protocol instance.
+              Textual description of the control-plane protocol instance.
             </text>
           </description>
         </leaf>
         <container name="static-routes">
-          <when condition="../type='rt:static'">
+          <when condition="derived-from-or-self(../type, 'rt:static')">
             <description>
               <text>
                 This container is only valid for the 'static'
@@ -674,7 +706,7 @@
             <text>
               <h:p>Address family of the RIB.</h:p>
               <h:p>It is mandatory for user-controlled RIBs. For
-              system-controlled RIBs it can be omitted, otherwise it
+              system-controlled RIBs it can be omitted; otherwise, it
               must match the address family of the corresponding
               state entry.</h:p>
             </text>
@@ -689,56 +721,5 @@
       </list>
     </container>
   </container>
-
-  <!-- RPC operations -->
-
-  <rpc name="fib-route">
-    <description>
-      <text>
-        <h:p>Return the active FIB route that is used for sending
-        packets to a destination address.</h:p>
-      </text>
-    </description>
-    <input>
-      <container name="destination-address">
-        <uses name="address-family"/>
-        <description>
-          <text>
-            <h:p>
-              Network layer destination address.
-            </h:p>
-            <h:p>
-              Address family specific modules MUST augment this
-              container with a leaf named 'address'.
-            </h:p>
-          </text>
-        </description>
-      </container>
-    </input>
-    <output>
-      <container name="route">
-        <uses name="address-family"/>
-        <container name="next-hop">
-          <uses name="next-hop-state-content"/>
-          <description>
-            <text>Route's next-hop attribute.</text>
-          </description>
-        </container>
-        <uses name="route-metadata"/>
-        <description>
-          <text>
-            <h:p>The active FIB route for the specified
-            destination.</h:p>
-            <h:p>If no active FIB route exists for the destination
-            address, no output is returned - the server SHALL send an
-            &lt;rpc-reply&gt; containing a single element
-            &lt;ok&gt;.</h:p>
-            <h:p>Address family specific modules MUST augment this
-            list with appropriate route contents.</h:p>
-          </text>
-        </description>
-      </container>
-    </output>
-  </rpc>
 
 </module>

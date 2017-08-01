@@ -47,7 +47,7 @@
       augmented by additional YANG modules defining data models for
       control plane protocols, route filters and other functions. The core
       routing data model provides common building blocks for such
-      extensions - routes, routing information bases (RIB), and
+      extensions -- routes, routing information bases (RIB), and
       control plane protocols.</t>
     </abstract>
   </front>
@@ -99,8 +99,9 @@
         <t>server.</t>
       </list></t>
 
-      <t>The following terms are defined in <xref target="RFC6020"/>:
+      <t>The following terms are defined in <xref target="RFC7950"/>:
       <list style="symbols">
+	<t>action,</t>
         <t>augment,</t>
         <t>configuration data,</t>
         <t>container,</t>
@@ -146,7 +147,7 @@
       </section>
 
       <section anchor="sec.prefixes" title="Prefixes in Data Node Names">
-        <t>In this document, names of data nodes, RPC operations and other
+        <t>In this document, names of data nodes, actions and other
         data model objects are often used without a prefix, as long as
         it is clear from the context in which YANG module each name is
         defined. Otherwise, names are prefixed using the standard prefix
@@ -292,7 +293,8 @@
           administrative distance) that is used for selecting a
           preferred route among routes with the same destination
           prefix. A lower value means a more preferred route.</t>
-          <t>"next-hop": determines the action to be performed with a
+          <t>"next-hop": determines the outgoing interface and/or
+          next-hop address(es), other operation to be performed with a
           packet.</t>
         </list>
         </t>
@@ -330,14 +332,23 @@
         "multiple-ribs" feature support multiple RIBs per address
         family that can be used for policy routing and other
         purposes.</t>
+
+        <t>The following action (see Section 7.15 of <xref
+        target="RFC7950"/>) is defined for the "rib" list:
+        <list style="symbols">
+          <t>active-route -- return the active RIB route for the
+          destination address that is specified as the action's input
+          parameter.</t>
+        </list></t>
+
       </section>
 
       <section anchor="sec.proto" title="Control Plane Protocol">
 
         <t>The core routing data model provides an open-ended
         framework for defining multiple control plane protocol
-        instances, e.g., for Layer 3 routing protocols. Each routing
-        protocol instance MUST be assigned a type, which is an
+        instances, e.g., for Layer 3 routing protocols. Each control
+        plane protocol instance MUST be assigned a type, which is an
         identity derived from the "rt:control-plane-protocol" base
         identity. The core routing data model defines two identities
         for the direct and static pseudo-protocols (<xref
@@ -349,7 +360,7 @@
                  title="Routing Pseudo-Protocols">
 
           <t>The core routing data model defines two special routing
-          protocol types - "direct" and "static". Both are in fact
+          protocol types -- "direct" and "static". Both are in fact
           pseudo-protocols, which means that they are confined to the
           local device and do not exchange any routing information
           with adjacent routers.</t>
@@ -359,8 +370,7 @@
           address families. Direct routes are normally supplied by the
           operating system kernel, based on the configuration of
           network interface addresses, see <xref
-          target="sec.ietf-ip"/>. Direct routes MUST be installed in
-          the default RIBs of all supported address families.</t>
+          target="sec.ietf-ip"/>.</t>
           <t>A pseudo-protocol of the type "static" allows for specifying
           routes manually. It MAY be configured in zero or multiple
           instances, although a typical configuration will have exactly
@@ -390,14 +400,16 @@
             and
             <figure>
               <artwork><![CDATA[
-    /rt:fib-route/rt:output/rt:route,]]>
+    /rt:routing-state/rt:ribs/rt:rib/rt:output/rt:route,]]>
               </artwork>
             </figure>
             and possibly other places in the configuration, state
-            data, notifications, and RPC input or output.</t>
+            data, notifications, and input/output parameters of
+            actions or RPC operations.</t>
             <t>Configuration parameters and/or state data for the new
             protocol can be defined by augmenting the
-            "control-plane-protocol" data node under both "/routing" and "/routing-state".</t>
+            "control-plane-protocol" data node under both "/routing"
+            and "/routing-state".</t>
           </list></t>
           <t>By using a "when" statement, the augmented configuration
           parameters and state data specific to the new protocol
@@ -413,19 +425,6 @@
           for the RIP routing protocol in <xref
           target="app.rip"/>.</t>
         </section>
-      </section>
-
-      <section anchor="sec.rpcs" title="RPC Operations">
-
-        <t>The "ietf-routing" module defines one RPC operation:
-        <list style="symbols">
-          <t>fib-route: query the routing system for the active route
-          in the Forwarding Information Base (FIB). It is the route
-          that is currently used for sending datagrams to a
-          destination host whose address is passed as the input
-          parameter.</t>
-        </list></t>
-
       </section>
 
       <section anchor="sec.4861"
@@ -472,8 +471,9 @@
           the values might be reset again to the (higher) configured
           values after a configuration is reloaded. Moreover, no
           implementation is known to use the decrementing
-          behavior. The "ietf-ipv6-unicast-routing" module therefore
-          assumes the former behavior with constant values.</t>
+          behavior. The "ietf-ipv6-router-advertisements" submodule
+          therefore stipulates the former behavior with constant
+          values.</t>
         </list></t>
 
       </section>
@@ -740,14 +740,15 @@ reference:    RFC XXXX
       &RFC6241;
       &RFC7223;
       &RFC7277;
+      &RFC7950;
     </references>
 
     <references title="Informative References">
 
       &RFC6087;
-      &RFC6242;
       &RFC6536;
-      &RFC7224;
+      &RFC7895;
+      &RFC7951;
     </references>
 
     <section anchor="app.data-tree" title="The Complete Data Trees">
@@ -792,6 +793,9 @@ reference:    RFC XXXX
       <t>In addition to the mandatory instance of the "direct"
       pseudo-protocol, a minimum implementation should support
       configuring instance(s) of the "static" pseudo-protocol.</t>
+      <t>For hosts that are never intended to act as routers, the
+      ability to turn on sending IPv6 router advertisements (<xref
+      target="sec.4861"/>) should be removed.</t>
       <t>Platforms with severely constrained resources may use
       deviations for restricting the data model, e.g., limiting the
       number of "static" control plane protocol instances.</t>
@@ -816,37 +820,33 @@ reference:    RFC XXXX
     </section>
 
     <section anchor="app.get-reply"
-             title="Example: NETCONF &lt;get&gt; Reply">
+             title="Data Tree Example">
 
-      <t>This section contains a sample reply to the NETCONF &lt;get&gt;
-      message, which could be sent by a server supporting (i.e.,
-      advertising them in the NETCONF &lt;hello&gt; message) the
-      following YANG modules:
-      <list style="symbols">
-        <t>ietf-interfaces <xref target="RFC7223"/>,</t>
-        <t>iana-if-type <xref target="RFC7224"/>,</t>
-        <t>ietf-ip <xref target="RFC7277"/>,</t>
-        <t>ietf-routing (<xref target="sec.mod-rt"/>),</t>
-        <t>ietf-ipv4-unicast-routing (<xref target="sec.mod-v4ur"/>),</t>
-        <t>ietf-ipv6-unicast-routing (<xref target="sec.mod-v6ur"/>).</t>
-      </list></t>
+      <t>This section contains an example instance data tree in the
+      JSON encoding <xref target="RFC7951"/>,
+      containing both configuration and state data. The data conforms
+      to a data model that is defined by the following YANG library
+      specification <xref target="RFC7895"/>:
 
-      <t>We assume a simple network set-up as shown in <xref
-      target="fig.exnet"/>: router "A" uses static default routes with
-      the "ISP" router as the next-hop. IPv6 router advertisements are
-      configured only on the "eth1" interface and disabled on the
-      upstream "eth0" interface.</t>
+      <figure>
+	&yang-library.json;
+      </figure></t>
+
+      <t>A simple network set-up as shown in <xref
+      target="fig.exnet"/> is assumed: router "A" uses static default
+      routes with the "ISP" router as the next-hop. IPv6 router
+      advertisements are configured only on the "eth1" interface and
+      disabled on the upstream "eth0" interface.</t>
 
       <figure anchor="fig.exnet"
               title="Example network configuration">
         &example-net.txt;
       </figure>
 
-      <t>A reply to the NETCONF &lt;get&gt; message sent by router "A"
-      could then be as follows:</t>
+      <t>The instance data tree could then be as follows:</t>
 
       <figure>
-        &example-get-reply.xml;
+        &example-get-reply.json;
       </figure>
 
     </section>
@@ -854,6 +854,23 @@ reference:    RFC XXXX
     <section anchor="change-log" title="Change Log">
 
       &ed-hint-remove-sec;
+
+      <section title="Changes Between Versions -24 and -25">
+        <t>
+          <list style="symbols">
+            <t>Minor edits based on IETF Last Call reviews.</t>
+	  </list>
+	</t>
+      </section>
+
+      <section title="Changes Between Versions -23 and -24">
+        <t>
+          <list style="symbols">
+            <t>Fix paths in "when" expressions due to errata 4749 of
+            RFC 7950.</t>
+          </list>
+        </t>
+      </section>
 
       <section title="Changes Between Versions -22 and -23">
         <t>
@@ -863,6 +880,10 @@ reference:    RFC XXXX
 	    <t>Fixed invalid when expressions in augments.</t>
 	    <t>In simple-next-hop, an address, outgoing interface or
 	    both can be specified.</t>
+	    <t>RPC "fib-route" changed into RIB action
+	    "active-route".</t>
+	    <t>The requirement that direct routes be always placed in
+	    default RIBs.</t>
 	  </list>
 	</t>
       </section>

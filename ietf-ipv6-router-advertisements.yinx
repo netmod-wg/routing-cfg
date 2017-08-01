@@ -6,6 +6,7 @@
         xmlns:inet="urn:ietf:params:xml:ns:yang:ietf-inet-types"
         xmlns:if="urn:ietf:params:xml:ns:yang:ietf-interfaces"
         xmlns:ip="urn:ietf:params:xml:ns:yang:ietf-ip">
+  <yang-version value="1.1"/>
   <belongs-to module="ietf-ipv6-unicast-routing">
     <prefix value="v6ur"/>
   </belongs-to>
@@ -49,13 +50,13 @@
     </text>
   </reference>
 
-  <revision date="2016-03-08">
+  <revision date="2016-11-04">
     <description>
       <text>Initial revision.</text>
     </description>
     <reference>
       <text>
-        RFC XXXX: A YANG Data Model for Routing Management
+        RFC 8022: A YANG Data Model for Routing Management
       </text>
     </reference>
   </revision>
@@ -319,7 +320,7 @@
         <units name="seconds"/>
         <must condition=". &lt;= 0.75 * ../max-rtr-adv-interval">
           <description>
-            <text>The value MUST NOT be greater than 75 % of
+            <text>The value MUST NOT be greater than 75% of
             'max-rtr-adv-interval'.</text>
           </description>
         </must>
@@ -332,7 +333,8 @@
             <h:ul>
               <h:li>if max-rtr-adv-interval &gt;= 9 seconds, the
               default value is 0.33 * max-rtr-adv-interval;</h:li>
-              <h:li>otherwise it is 0.75 * max-rtr-adv-interval.</h:li>
+              <h:li>otherwise, it is 0.75 *
+              max-rtr-adv-interval.</h:li>
             </h:ul>
           </text>
         </description>
@@ -515,9 +517,9 @@
             <default value="advertise"/>
             <description>
               <text>
-                The prefix either may be explicitly removed from the
-                set of advertised prefixes, or parameters with which
-                it is advertised may be specified (default case).
+                Either the prefix is explicitly removed from the set
+                of advertised prefixes, or the parameters with which
+                it is advertised are specified (default case).
               </text>
             </description>
             <leaf name="no-advertise">

@@ -6,10 +6,11 @@
         xmlns:v6ur="urn:ietf:params:xml:ns:yang:ietf-ipv6-unicast-routing"
         xmlns:rt="urn:ietf:params:xml:ns:yang:ietf-routing"
         xmlns:inet="urn:ietf:params:xml:ns:yang:ietf-inet-types">
+  <yang-version value="1.1"/>
   <namespace uri="urn:ietf:params:xml:ns:yang:ietf-ipv6-unicast-routing"/>
   <prefix value="v6ur"/>
   <include module="ietf-ipv6-router-advertisements">
-    <revision-date date="2016-03-08"/>
+    <revision-date date="2016-11-04"/>
   </include>
   <import module="ietf-routing">
     <prefix value="rt"/>
@@ -43,13 +44,13 @@
     </text>
   </description>
 
-  <revision date="2011-09-19">
+  <revision date="2016-11-04">
     <description>
       <text>Initial revision.</text>
     </description>
     <reference>
       <text>
-        RFC XXXX: A YANG Data Model for Routing Management
+        RFC 8022: A YANG Data Model for Routing Management
       </text>
     </reference>
   </revision>
@@ -68,8 +69,7 @@
 
   <augment
       target-node="/rt:routing-state/rt:ribs/rt:rib/rt:routes/rt:route">
-    <when
-        condition="../../rt:address-family = 'v6ur:ipv6-unicast'">
+    <when condition="derived-from-or-self(../../rt:address-family, 'v6ur:ipv6-unicast')">
       <description>
         <text>This augment is valid only for IPv6 unicast.</text>
       </description>
@@ -88,7 +88,7 @@
   <augment
       target-node="/rt:routing-state/rt:ribs/rt:rib/rt:routes/rt:route/rt:next-hop/rt:next-hop-options/rt:simple-next-hop">
     <when
-        condition="../../../rt:address-family = 'v6ur:ipv6-unicast'">
+        condition="derived-from-or-self(../../../rt:address-family, 'v6ur:ipv6-unicast')">
       <description>
         <text>This augment is valid only for IPv6 unicast.</text>
       </description>
@@ -100,7 +100,7 @@
     <leaf name="next-hop-address">
       <type name="inet:ipv6-address"/>
       <description>
-        <text>IPv6 address of the next-hop.</text>
+        <text>IPv6 address of the next hop.</text>
       </description>
     </leaf>
   </augment>
@@ -108,7 +108,7 @@
   <augment
       target-node="/rt:routing-state/rt:ribs/rt:rib/rt:routes/rt:route/rt:next-hop/rt:next-hop-options/rt:next-hop-list/rt:next-hop-list/rt:next-hop">
     <when
-        condition="../../../../../rt:address-family = 'v6ur:ipv6-unicast'">
+        condition="derived-from-or-self(../../../../../rt:address-family, 'v6ur:ipv6-unicast')">
       <description>
         <text>This augment is valid only for IPv6 unicast.</text>
       </description>
@@ -120,7 +120,82 @@
     <leaf name="address">
       <type name="inet:ipv6-address"/>
       <description>
-        <text>IPv6 address of the next-hop.</text>
+        <text>IPv6 address of the next hop.</text>
+      </description>
+    </leaf>
+  </augment>
+
+  <augment
+      target-node="/rt:routing-state/rt:ribs/rt:rib/rt:active-route/rt:input">
+    <when condition="derived-from-or-self(../rt:address-family, 'v6ur:ipv6-unicast')">
+      <description>
+        <text>This augment is valid only for IPv6 unicast RIBs.</text>
+      </description>
+    </when>
+    <description>
+      <text>This augment adds the input parameter of the
+      'active-route' action.</text>
+    </description>
+    <leaf name="destination-address">
+      <type name="inet:ipv6-address"/>
+      <description>
+        <text>IPv6 destination address.</text>
+      </description>
+    </leaf>
+  </augment>
+
+  <augment target-node="/rt:routing-state/rt:ribs/rt:rib/rt:active-route/rt:output/rt:route">
+    <when condition="derived-from-or-self(../../rt:address-family, 'v6ur:ipv6-unicast')">
+      <description>
+        <text>This augment is valid only for IPv6 unicast.</text>
+      </description>
+    </when>
+    <description>
+      <text>This augment adds the destination prefix to the reply of
+      the 'active-route' action.</text>
+    </description>
+    <leaf name="destination-prefix">
+      <type name="inet:ipv6-prefix"/>
+      <description>
+        <text>IPv6 destination prefix.</text>
+      </description>
+    </leaf>
+  </augment>
+
+  <augment
+      target-node="/rt:routing-state/rt:ribs/rt:rib/rt:active-route/rt:output/rt:route/rt:next-hop/rt:next-hop-options/rt:simple-next-hop">
+    <when condition="derived-from-or-self(../../../rt:address-family, 'v6ur:ipv6-unicast')">
+      <description>
+        <text>This augment is valid only for IPv6 unicast.</text>
+      </description>
+    </when>
+    <description>
+      <text>Augment 'simple-next-hop' case in the reply to the
+      'active-route' action.</text>
+    </description>
+    <leaf name="next-hop-address">
+      <type name="inet:ipv6-address"/>
+      <description>
+        <text>IPv6 address of the next hop.</text>
+      </description>
+    </leaf>
+  </augment>
+
+  <augment
+      target-node="/rt:routing-state/rt:ribs/rt:rib/rt:active-route/rt:output/rt:route/rt:next-hop/rt:next-hop-options/rt:next-hop-list/rt:next-hop-list/rt:next-hop">
+    <when condition="derived-from-or-self(../../../../../rt:address-family, 'v6ur:ipv6-unicast')">
+      <description>
+        <text>This augment is valid only for IPv6 unicast.</text>
+      </description>
+    </when>
+    <description>
+      <text>Augment 'next-hop-list' case in the reply to the
+      'active-route' action.</text>
+    </description>
+    <leaf name="next-hop-address">
+      <type name="inet:ipv6-address"/>
+      <description>
+        <text>IPv6 address of the next hop.</text>
       </description>
     </leaf>
   </augment>
@@ -170,7 +245,7 @@
               <leaf name="next-hop-address">
                 <type name="inet:ipv6-address"/>
                 <description>
-                  <text>IPv6 address of the next-hop.</text>
+                  <text>IPv6 address of the next hop.</text>
                 </description>
               </leaf>
             </augment>
@@ -182,94 +257,17 @@
               <leaf name="next-hop-address">
                 <type name="inet:ipv6-address"/>
                 <description>
-                  <text>IPv6 address of the next-hop.</text>
+                  <text>IPv6 address of the next hop.</text>
                 </description>
               </leaf>
             </augment>
           </uses>
           <description>
-            <text>Configuration of next-hop.</text>
+            <text>Configuration of next hop.</text>
           </description>
         </container>
       </list>
     </container>
-  </augment>
-
-  <!-- RPC operations -->
-
-  <augment
-      target-node="/rt:fib-route/rt:input/rt:destination-address">
-    <when condition="rt:address-family='v6ur:ipv6-unicast'">
-      <description>
-        <text>This augment is valid only for IPv6 unicast.</text>
-      </description>
-    </when>
-    <description>
-      <text>This leaf augments the 'rt:destination-address' parameter
-      of the 'rt:fib-route' operation.</text>
-    </description>
-    <leaf name="address">
-      <type name="inet:ipv6-address"/>
-      <description>
-        <text>IPv6 destination address.</text>
-      </description>
-    </leaf>
-  </augment>
-
-  <augment target-node="/rt:fib-route/rt:output/rt:route">
-    <when condition="rt:address-family='v6ur:ipv6-unicast'">
-      <description>
-        <text>This augment is valid only for IPv6 unicast.</text>
-      </description>
-    </when>
-    <description>
-      <text>This leaf augments the reply to the 'rt:fib-route'
-      operation.</text>
-    </description>
-    <leaf name="destination-prefix">
-      <type name="inet:ipv6-prefix"/>
-      <description>
-        <text>IPv6 destination prefix.</text>
-      </description>
-    </leaf>
-  </augment>
-
-  <augment
-      target-node="/rt:fib-route/rt:output/rt:route/rt:next-hop/rt:next-hop-options/rt:simple-next-hop">
-    <when condition="../rt:address-family='v6ur:ipv6-unicast'">
-      <description>
-        <text>This augment is valid only for IPv6 unicast.</text>
-      </description>
-    </when>
-    <description>
-      <text>Augment 'simple-next-hop' case in the reply to the
-      'rt:fib-route' operation.</text>
-    </description>
-    <leaf name="next-hop-address">
-      <type name="inet:ipv6-address"/>
-      <description>
-        <text>IPv6 address of the next-hop.</text>
-      </description>
-    </leaf>
-  </augment>
-
-  <augment
-      target-node="/rt:fib-route/rt:output/rt:route/rt:next-hop/rt:next-hop-options/rt:next-hop-list/rt:next-hop-list/rt:next-hop">
-    <when condition="../../../rt:address-family='v6ur:ipv6-unicast'">
-      <description>
-        <text>This augment is valid only for IPv6 unicast.</text>
-      </description>
-    </when>
-    <description>
-      <text>Augment 'next-hop-list' case in the reply to the
-      'rt:fib-route' operation.</text>
-    </description>
-    <leaf name="next-hop-address">
-      <type name="inet:ipv6-address"/>
-      <description>
-        <text>IPv6 address of the next-hop.</text>
-      </description>
-    </leaf>
   </augment>
 
 </module>

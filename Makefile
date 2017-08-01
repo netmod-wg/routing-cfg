@@ -1,14 +1,15 @@
 I_D = draft-ietf-netmod-routing-cfg
-REVNO = 23
+REVNO = 25
 DATE ?= $(shell date +%F)
 MODULES = ietf-routing ietf-ipv4-unicast-routing ietf-ipv6-unicast-routing # example-rip
 SUBMODULES = ietf-ipv6-router-advertisements
 FIGURES = config-coll-tree.txt state-coll-tree.txt \
-	config-tree.txt state-tree.txt example-rip.yang example-net.txt
+	  config-tree.txt state-tree.txt example-rip.yang example-net.txt \
+	  yang-library.json
 EXAMPLE_BASE = example
 EXAMPLE_TYPE = get-reply
 baty = $(EXAMPLE_BASE)-$(EXAMPLE_TYPE)
-EXAMPLE_INST = $(baty).xml
+EXAMPLE_INST = $(baty).json
 PYANG_OPTS =
 
 # Paths for pyang
@@ -27,13 +28,15 @@ xslpars = --stringparam date $(DATE) --stringparam i-d-name $(I_D) \
 schemas = $(baty).rng $(baty).sch $(baty).dsrl
 y2dopts = -t $(EXAMPLE_TYPE) -b $(EXAMPLE_BASE)
 
-.PHONY: all clean rnc refs validate yang
+.PHONY: all clean json rnc refs validate yang
 
 all: $(idrev).txt $(schemas) model.tree
 
 refs: stdrefs.ent
 
 yang: $(yass) $(yams)
+
+json: $(baty).json yang-library.json
 
 $(idrev).xml: $(I_D).xml $(artworks) figures.ent yang.ent
 	@xsltproc --novalid $(xslpars) $(xsldir)/upd-i-d.xsl $< | \
@@ -110,6 +113,16 @@ validate: $(EXAMPLE_INST) $(schemas)
 model.tree: hello.xml
 	pyang $(PYANG_OPTS) -f tree -o $@ -L $<
 
+model.xsl: hello.xml
+	pyang $(PYANG_OPTS) -f jsonxsl -o $@ -L $<
+
+$(baty).json: model.xsl $(baty).xml
+	@xsltproc -o $@ $^
+
+yang-library.json: hello.xml
+	@xsltproc $(xsldir)/hello2yanglib.xsl $< | \
+	  xsltproc -o $@ $(xsldir)/yang-library.xsl -
+
 state-tree.txt: model.tree
 	@awk -v yam=ietf-routing -v root=routing-state -v types=1 \
 	     -f .tools/awk/tree.awk $< > $@
@@ -131,5 +144,5 @@ static-routes-tree.txt: model.tree
 	     -v root=routing/routing-protocols/routing-protocol*/static-routes \
 	     -f .tools/awk/tree.awk $< > $@
 clean:
-	@rm -rf *.rng *.rnc *.sch *.dsrl hello.xml model.tree $(yass) \
+	@rm -rf *.rng *.rnc *.sch *.dsrl hello.xml model.* $(yass) \
 	        $(yams) $(idrev).* $(artworks) figures.ent yang.ent
